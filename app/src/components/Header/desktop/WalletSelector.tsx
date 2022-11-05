@@ -17,7 +17,7 @@ function WalletSelectorBase(props: WalletSelectorProps) {
   const { walletAddress, initializing, className, onClick, onClose, children } =
     props;
 
-  const { uUST } = useBalances();
+  const { uAxlUSDC } = useBalances();
 
   // ---------------------------------------------
   // presentation
@@ -47,7 +47,7 @@ function WalletSelectorBase(props: WalletSelectorProps) {
       <div className={className}>
         <ConnectWalletButton
           walletAddress={walletAddress}
-          totalUST={uUST}
+          totalAxlUSDC={uAxlUSDC}
           onClick={onClick}
         />
         {children}

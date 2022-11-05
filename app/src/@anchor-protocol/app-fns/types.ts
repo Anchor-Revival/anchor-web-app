@@ -12,6 +12,7 @@ import {
   u,
   UST,
   CollateralAmount,
+  AxlUSDC,
 } from '@anchor-protocol/types';
 import Big from 'big.js';
 import { WhitelistCollateral } from 'queries';
@@ -27,6 +28,7 @@ import { WhitelistCollateral } from 'queries';
  */
 export interface AnchorTokenBalances {
   uUST: u<UST>;
+  uAxlUSDC: u<AxlUSDC>;
   uaUST: u<aUST>;
   uLuna: u<Luna>;
   ubLuna: u<bLuna>;
@@ -51,8 +53,8 @@ export const DefaultAnchorTokenBalances = {
 
 export interface AnchorBalances {
   uNative: u<Native>; // the native token for the chain, ie, LUNA, ETH, AVAX
-  uUST: u<UST>;
   uaUST: u<aUST>;
+  uAxlUSDC: u<AxlUSDC>;
 
   fetchWalletBalance: (
     collateral?: WhitelistCollateral,
@@ -61,7 +63,6 @@ export interface AnchorBalances {
 
 export const DefaultAnchorBalances: Partial<AnchorBalances> = {
   uNative: '0' as u<Native>,
-  uUST: '0' as u<UST>,
   uaUST: '0' as u<aUST>,
 };
 

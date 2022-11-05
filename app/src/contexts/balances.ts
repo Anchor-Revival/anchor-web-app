@@ -10,6 +10,7 @@ export const BalancesContext = createContext<AnchorBalances>(
 
 const useBalances = (): AnchorBalances => {
   const context = useContext(BalancesContext);
+
   if (context === undefined) {
     throw new Error('The BalancesContext has not been defined.');
   }

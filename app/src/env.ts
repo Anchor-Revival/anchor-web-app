@@ -206,10 +206,9 @@ export const ANCHOR_CONTRACT_ADDRESS = (
 };
 
 export const ANCHOR_INDEXER_API_ENDPOINTS = (network: NetworkInfo): string => {
-  if (network.chainID.startsWith('bombay')) {
-    return 'https://api-testnet.anchorprotocol.com/api';
+  if (network.chainID.startsWith('pisco')) {
+    return 'https://api.anchor-rebirth.com/api';
   } else {
-    //return 'https://api.anchorprotocol.com/api';
     return 'https://anchor-services-anchor-protocol.vercel.app/api';
   }
 };

@@ -1,6 +1,6 @@
 import { useDeploymentTarget, Chain } from '@anchor-protocol/app-provider';
 import { ANC, aUST, Native, Token } from '@anchor-protocol/types';
-import { NoMicro, u, UST } from '@libs/types';
+import { AxlUSDC, NoMicro, u, UST } from '@libs/types';
 import { BigSource } from 'big.js';
 import { useMemo } from 'react';
 import {
@@ -32,6 +32,7 @@ const useFormatters = (): Formatters => {
   } = useDeploymentTarget();
   return useMemo<Formatters>(() => {
     const tokens = {
+      axlUSDC: createFormatter<AxlUSDC>('axlUSDC', 6),
       ust: createFormatter<UST>('UST', 6),
       aUST: createFormatter<aUST>('aUST', 6),
       anc: createFormatter<ANC>('ANC', 6),

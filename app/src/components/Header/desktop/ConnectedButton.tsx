@@ -3,7 +3,7 @@ import { truncate } from '@libs/formatter';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
 import React, { ButtonHTMLAttributes, DetailedHTMLProps } from 'react';
 import styled from 'styled-components';
-import { u, UST } from '@anchor-protocol/types';
+import { AxlUSDC, u } from '@anchor-protocol/types';
 import { useFormatters } from '@anchor-protocol/formatter/useFormatters';
 
 interface ConnectedButtonProps
@@ -15,16 +15,16 @@ interface ConnectedButtonProps
     'children'
   > {
   walletAddress: string;
-  totalUST: u<UST>;
+  totalAxlUSDC: u<AxlUSDC>;
 }
 
 function ConnectedButtonBase({
   walletAddress,
-  totalUST,
+  totalAxlUSDC,
   ...buttonProps
 }: ConnectedButtonProps) {
   const {
-    ust: { formatOutput, demicrofy, symbol },
+    axlUSDC: { formatOutput, demicrofy, symbol },
   } = useFormatters();
   return (
     <button {...buttonProps}>
@@ -34,7 +34,7 @@ function ConnectedButtonBase({
         </span>
         <span className="wallet-address">{truncate(walletAddress)}</span>
         <div className="wallet-balance">
-          {`${formatOutput(demicrofy(totalUST))} ${symbol}`}
+          {`${formatOutput(demicrofy(totalAxlUSDC))} ${symbol}`}
         </div>
       </IconSpan>
     </button>
