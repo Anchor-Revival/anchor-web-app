@@ -4,7 +4,7 @@
   "extensions": {
     "endpoints": {
       "Development": {
-        "url": "https://bombay-mantle.terra.dev",
+        "url": "http://localhost:8085/graphql",
         "headers": {
           "user-agent": "JS GraphQL"
         },

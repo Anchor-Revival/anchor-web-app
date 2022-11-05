@@ -32,6 +32,7 @@ export type SGD<T = string> = T & NominalType<'sgd'>;
 export type THB<T = string> = T & NominalType<'thb'>;
 export type KRT<T = string> = T & NominalType<'krt'>;
 export type Luna<T = string> = T & NominalType<'luna'>;
+export type AxlUSDC<T = string> = T & NominalType<'axlUSDC'>;
 
 // Astroport currencies
 export type Astro<T = string> = T & NominalType<'astro'>;
@@ -64,6 +65,7 @@ export type NativeToken<T = string> = T &
     | 'thb'
     | 'krt'
     | 'luna'
+    | 'axlUSDC'
   >;
 
 // All currencies

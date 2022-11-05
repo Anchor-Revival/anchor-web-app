@@ -12,7 +12,7 @@ describe('wasm query test', () => {
     };
 
     const res = await fetch(
-      `https://bombay-lcd.terra.dev/wasm/contracts/${bLunaTokenAddr}/store?query_msg=${JSON.stringify(
+      `https://pisco-lcd.terra.dev/wasm/contracts/${bLunaTokenAddr}/store?query_msg=${JSON.stringify(
         balanceQuery,
       )}`,
     );
@@ -50,7 +50,7 @@ describe('wasm query test', () => {
   test('should get wasm json result from lcd client', async () => {
     const result = await lcdFetch<TestQuery>({
       wasmQuery: testQuery,
-      lcdEndpoint: 'https://bombay-lcd.terra.dev',
+      lcdEndpoint: 'https://pisco-lcd.terra.dev',
     });
 
     expect(typeof +result.bluna.balance).toBe('number');
@@ -60,7 +60,7 @@ describe('wasm query test', () => {
   test('should get wasm json result from hive client', async () => {
     const result = await hiveFetch<TestQuery>({
       wasmQuery: testQuery,
-      hiveEndpoint: 'https://bombay-mantle.terra.dev',
+      hiveEndpoint: 'https://pisco-mantle.terra.dev',
       variables: {},
     });
 

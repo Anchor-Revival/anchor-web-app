@@ -23,9 +23,9 @@ export async function lcdFetch<WasmQueries>({
   const rawData = await Promise.all(
     wasmKeys.map((key) => {
       const { query, contractAddress } = wasmQuery[key];
-      const endpoint = `${lcdEndpoint}/wasm/contracts/${contractAddress}/store?query_msg=${JSON.stringify(
-        query,
-      )}${id ? '&' + id : ''}`;
+      const endpoint = `${lcdEndpoint}/cosmwasm/wasm/v1/contract/${contractAddress}/smart/${Buffer.from(
+        JSON.stringify(query),
+      ).toString('base64')}?${id ? '&' + id : ''}`;
       return lcdFetcher<LcdResult<any>>(endpoint, requestInit);
     }),
   );

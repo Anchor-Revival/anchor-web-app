@@ -53,7 +53,6 @@ export interface AnchorBalances {
   uNative: u<Native>; // the native token for the chain, ie, LUNA, ETH, AVAX
   uUST: u<UST>;
   uaUST: u<aUST>;
-  uANC: u<ANC>;
 
   fetchWalletBalance: (
     collateral?: WhitelistCollateral,
@@ -64,7 +63,6 @@ export const DefaultAnchorBalances: Partial<AnchorBalances> = {
   uNative: '0' as u<Native>,
   uUST: '0' as u<UST>,
   uaUST: '0' as u<aUST>,
-  uANC: '0' as u<ANC>,
 };
 
 /**

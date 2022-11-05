@@ -6,21 +6,29 @@ import { fixHMR } from 'fix-hmr';
 import React from 'react';
 import styled from 'styled-components';
 import { LiquidationQueueSection } from './components/LiquidationQueueSection';
-import { PlaceBidSection } from './components/InterestSection';
 import { LiquidationStatsSection } from './components/LiquidationStatsSection';
+import { EarnProps } from 'pages/earn';
+import { useBidPoolsByCollateralQuery } from '@anchor-protocol/app-provider';
+import { HumanAddr } from '@libs/types';
 
 export interface LiquidationProps {
   className?: string;
 }
 
 function Component({ className }: EarnProps) {
+  const result = useBidPoolsByCollateralQuery(
+    'terra1qplftykc0sehm2632zd0n5swdxc3k24sjtsf9lm8em50fqyyt8aq2k6u26' as HumanAddr,
+  );
+
+  console.warn(result);
+
   return (
-    <CenteredLayout className={className} maxWidth="2000px">
+    <CenteredLayout className={className} maxWidth={2000}>
       <FlexTitleContainer>
         <PageTitle title="LIQUIDATE" docs={links.docs.liquidate} />
       </FlexTitleContainer>
       <section className="grid">
-        <PlaceBidSection className="place-bid" />
+        {/* <PlaceBidSection className="place-bid" /> */}
         <LiquidationQueueSection className="liquidation-graph" />
         <LiquidationStatsSection className="liquidation-stats" />
       </section>

@@ -11,9 +11,9 @@ import { UseQueryResult } from 'react-query';
 export function DEFAULT_HIVE_WASM_CLIENT(
   network: NetworkInfo,
 ): HiveQueryClient {
-  if (network.chainID.startsWith('bombay')) {
+  if (network.chainID.startsWith('pisco')) {
     return {
-      hiveEndpoint: 'https://bombay-mantle.terra.dev',
+      hiveEndpoint: 'https://pisco-mantle.terra.dev',
       hiveFetcher: defaultHiveFetcher,
     };
   } else {

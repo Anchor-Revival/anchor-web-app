@@ -20,7 +20,7 @@ And you can run scripts
 - `yarn run app:build-storybook`
 - `yarn run landing:start` Development run `/landing` directory (web browser will open)
 - `yarn run landing:build` Build `/landing` directory (`/landing/build` directory will created)
-- `yarn run landing:test`
+- `yarn run landing:test`xrx
 - `yarn run landing:coverage`
 
 # Environments

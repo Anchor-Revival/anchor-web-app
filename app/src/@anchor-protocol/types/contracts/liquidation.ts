@@ -1,4 +1,5 @@
 import {
+  AxlUSDC,
   CW20Addr,
   HumanAddr,
   NativeDenom,
@@ -121,6 +122,88 @@ export namespace liquidation {
         max_slot: number;
         premium_rate_per_slot: Rate;
       };
+    }
+    /**
+     * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bid
+     */
+    export interface Bid {
+      bid: {
+        bid_idx: number;
+      };
+    }
+
+    /**
+     * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidresponse
+     */
+    export interface BidResponse {
+      collateral_token: HumanAddr;
+      bidder: HumanAddr;
+      amount: u<AxlUSDC>;
+      premium_rate: Rate;
+      idx: number;
+      premium_slot: number;
+      product_snapshot: number;
+      sum_snapshot: number;
+      pending_liquidated_collateral: number;
+      wait_end?: number;
+      epoch_snapshot: number;
+      scale_snapshot: number;
+    }
+
+    /**
+     * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidpool
+     */
+    export interface BidPool {
+      bid_pool: {
+        collateral_token: String;
+        bid_slot: number;
+      };
+    }
+
+    /**
+     * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidpoolresponse
+     */
+    export interface BidPoolResponse {
+      sum_snapshot: Number;
+      product_snapshot: Number;
+      total_bid_amount: Number;
+      premium_rate: Number;
+      current_epoch: Number;
+      current_scale: Number;
+    }
+
+    /**
+     * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidpoolsbycollateral
+     */
+    export interface BidPoolsByCollateral {
+      bid_pools_by_collateral: {
+        collateral_token: String;
+        start_after?: HumanAddr;
+        limit?: number;
+      };
+    }
+
+    export interface BidsPoolsByCollateralResponse {
+      bid_pools: Array<BidResponse>;
+    }
+
+    /**
+     * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidsbyuser
+     */
+    export interface BidsByUser {
+      bids_by_user: {
+        collateral_token: HumanAddr;
+        bidder?: HumanAddr;
+        start_after?: HumanAddr;
+        limit?: number;
+      };
+    }
+
+    /**
+     * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidsbyuserresponse
+     */
+    export interface BidsByUserResponse {
+      bids: Array<BidResponse>;
     }
   }
 }

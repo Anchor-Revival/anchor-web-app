@@ -50,12 +50,7 @@ export const links = {
 // chain
 // ---------------------------------------------
 export function ANCHOR_QUERY_CLIENT(network: NetworkInfo): 'lcd' | 'hive' {
-  if (network.chainID.startsWith('bombay')) {
-    return 'lcd';
-  } else {
-    return 'hive';
-  }
-  //return 'hive';
+  return 'lcd';
 }
 
 export function ANCHOR_CONSTANTS(network: NetworkInfo): AnchorConstants {
@@ -72,10 +67,12 @@ export function ANCHOR_CONSTANTS(network: NetworkInfo): AnchorConstants {
 }
 
 const PHOENIX_CONTRACT_ADDRESS = {
-  bLunaHub: 'terra1mtwph2juhj0rvjz7dy92gvl6xvukaxu8rfv8ts',
-  bLunaToken: 'terra1kc87mu460fwkqte29rquh4hc20m54fxwtsx7gp',
-  bLunaReward: 'terra17yap3mhph35pcwvhza38c2lkj7gzywzy05h7l0',
-  bLunaAirdrop: 'terra199t7hg7w5vymehhg834r6799pju2q3a0ya7ae9',
+  bLunaHub: 'terra1u28n7urqhnu2v7d4vs3x6z2yqmz0g5n7dx9lwrnynjxjchm2lv8s276kdn',
+  bLunaToken:
+    'terra1qplftykc0sehm2632zd0n5swdxc3k24sjtsf9lm8em50fqyyt8aq2k6u26',
+  bLunaReward:
+    'terra18e9c80ehqaee0963uqeaykapfef3v0a2xdm5uc28f44l9cv3tdeqyesm2e',
+  bLunaAirdrop: '',
   bLunaValidatorsRegistry: 'terra10wt548y4y3xeqfrqsgqlqh424lll8fqxp6dyed',
   mmInterestModel: 'terra1kq8zzq5hufas9t0kjsjc62t2kucfnx8txf547n',
   mmOracle: 'terra1cgg6yef7qcdm070qftghfulaxmllgmvk77nc7t',
@@ -107,40 +104,46 @@ const PHOENIX_CONTRACT_ADDRESS = {
 };
 
 const PISCO_CONTRACT_ADDRESS = {
-  bLunaHub: 'terra1fflas6wv4snv8lsda9knvq2w0cyt493r8puh2e',
-  bLunaToken: 'terra1u0t35drzyy0mujj8rkdyzhe264uls4ug3wdp3x',
-  bLunaReward: 'terra1ac24j6pdxh53czqyrkr6ygphdeftg7u3958tl2',
+  bLunaHub: 'terra1u28n7urqhnu2v7d4vs3x6z2yqmz0g5n7dx9lwrnynjxjchm2lv8s276kdn',
+  bLunaToken:
+    'terra1qplftykc0sehm2632zd0n5swdxc3k24sjtsf9lm8em50fqyyt8aq2k6u26',
+  bLunaReward:
+    'terra18e9c80ehqaee0963uqeaykapfef3v0a2xdm5uc28f44l9cv3tdeqyesm2e',
   bLunaValidatorsRegistry: '',
-  bLunaAirdrop: 'terra1334h20c9ewxguw9p9vdxzmr8994qj4qu77ux6q',
+  bLunaAirdrop: '',
   //bEthReward: 'terra1ja3snkedk4t0zp7z3ljd064hcln8dsv5x004na',
   //bEthToken: 'terra19mkj9nec6e3y5754tlnuz4vem7lzh4n0lc2s3l',
-  mmInterestModel: 'terra1m25aqupscdw2kw4tnq5ql6hexgr34mr76azh5x',
-  mmOracle: 'terra1p4gg3p2ue6qy2qfuxtrmgv2ec3f4jmgqtazum8',
-  mmMarket: 'terra15dwd5mj8v59wpj0wvt233mf5efdff808c5tkal',
-  mmOverseer: 'terra1qljxd0y3j3gk97025qvl3lgq8ygup4gsksvaxv',
-  mmCustody: 'terra1ltnkx0mv7lf2rca9f8w740ashu93ujughy4s7p',
-  mmCustodyBEth: 'terra1j6fey5tl70k9fvrv7mea7ahfr8u2yv7l23w5e6',
-  mmLiquidation: 'terra16vc4v9hhntswzkuunqhncs9yy30mqql3gxlqfe',
-  mmLiquidationQueue: 'terra18j0wd0f62afcugw2rx5y8e6j5qjxd7d6qsc87r',
-  mmDistributionModel: 'terra1u64cezah94sq3ye8y0ung28x3pxc37tv8fth7h',
-  aTerra: 'terra1ajt556dpzvjwl0kl5tzku3fc3p3knkg9mkv8jl',
-  bLunaLunaPair: 'terra1esle9h9cjeavul53dqqws047fpwdhj6tynj5u4',
-  bLunaLunaLPToken: 'terra14e7z2ll6eweq6cxe6qkvl28hatapmw2uflxcyt',
-  ancUstPair: 'terra13r3vngakfw457dwhw9ef36mc8w6agggefe70d9',
-  ancUstLPToken: 'terra1agu2qllktlmf0jdkuhcheqtchnkppzrl4759y6',
-  gov: 'terra16ckeuu7c6ggu52a8se005mg5c0kd2kmuun63cu',
-  distributor: 'terra1z7nxemcnm8kp7fs33cs7ge4wfuld307v80gypj',
-  collector: 'terra1n2q466gq8flc9aqe0jqjhapvq4rjmztlnu38rk',
-  community: 'terra17g577z0pqt6tejhceh06y3lyeudfs3v90mzduy',
-  staking: 'terra1q68gyyxqnlh58jacz5r6rxfmxqpmmjv583fzqq',
-  ANC: 'terra1747mad58h0w4y589y3sk84r5efqdev9q4r02pc',
-  airdrop: 'terra1u5ywhlve3wugzqslqvm8ks2j0nsvrqjx0mgxpk',
-  investor_vesting: 'not available in testnet',
-  team_vesting: 'not available in testnet',
-  terraswapFactory: 'terra18qpjm4zkvqnpjpw0zn0tdr8gdzvt8au35v45xf',
-  astroportGenerator: 'terra1gjm7d9nmewn27qzrvqyhda8zsfl40aya7tvaw5',
-  vesting: 'terra15rq8j7auyyd6ydcfkktm3kdagcg56228uclkzy',
-  astroUstPair: 'terra1ec0fnjk2u6mms05xyyrte44jfdgdaqnx0upesr',
+  mmInterestModel:
+    'terra192p3z7wdqq0hgvgu23wkrkpeqwyp99nxrex78d3mrehdgu87gexq6aw2lu',
+  mmOracle: 'terra1z7483ujm8fdqmmdy8c2ncq9p5lf4rx2dca6dmsm2536mwvskvt6qjaqz4s',
+  mmMarket: 'terra17xhgwkrk3pnlkkw0rdsv75qn0m0whgeaw4rd2muqmtgsdmgkutqqaa4a44',
+  mmOverseer:
+    'terra1qq3m9yn7h9gjgd6rs2t58qkjrqngl436sv6w3dak2svkc8lapx4qtxylsv',
+  mmCustody: '',
+  mmCustodyBEth: '',
+  mmLiquidation:
+    'terra1l34ampvph32lmsa086gdplc2g8y68r4du4pepjecf9wu0xfnt0eq3ur8dv',
+  mmLiquidationQueue:
+    'terra1jhydm6anuuweuzx2p6aq7j03qtehakwv0m4y9x9ce8jqcn3d2r4qw90w48',
+  mmDistributionModel: 'terra14mufqpr5mevdfn92p4jchpkxp7xr46uyknqjwq',
+  aTerra: 'terra1nn7dewwfnjqzy580uykvfp2fa3c8rmpu5dh7cmrptye0lgzsrh7q7mkeme',
+  bLunaLunaPair: '',
+  bLunaLunaLPToken: '',
+  ancUstPair: '',
+  ancUstLPToken: '',
+  gov: '',
+  distributor: '',
+  collector: '',
+  community: '',
+  staking: '',
+  ANC: '',
+  airdrop: '',
+  investor_vesting: '',
+  team_vesting: '',
+  terraswapFactory: '',
+  astroportGenerator: '',
+  vesting: '',
+  astroUstPair: '',
 };
 
 export const ANCHOR_CONTRACT_ADDRESS = (

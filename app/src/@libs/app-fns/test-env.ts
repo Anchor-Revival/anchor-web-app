@@ -7,12 +7,12 @@ import {
 import { CW20Addr, HumanAddr } from '@libs/types';
 
 export const TEST_HIVE_CLIENT: HiveQueryClient = {
-  hiveEndpoint: 'https://bombay-mantle.terra.dev',
+  hiveEndpoint: 'http://localhost:8085/graphql/',
   hiveFetcher: defaultHiveFetcher,
 };
 
 export const TEST_LCD_CLIENT: LcdQueryClient = {
-  lcdEndpoint: 'https://bombay-lcd.terra.dev',
+  lcdEndpoint: 'https://pisco-lcd.terra.dev',
   lcdFetcher: defaultLcdFetcher,
 };
 

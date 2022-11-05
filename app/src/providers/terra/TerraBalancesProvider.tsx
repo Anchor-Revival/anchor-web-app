@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { UIElementProps } from '@libs/ui';
 import { BalancesContext } from 'contexts/balances';
 import { useAnchorWebapp } from '@anchor-protocol/app-provider';
-import { ANC, aUST, CollateralAmount, Native, u } from '@anchor-protocol/types';
+import { aUST, CollateralAmount, Native, u } from '@anchor-protocol/types';
 import { useCW20Balance, useTerraNativeBalances } from '@libs/app-provider';
 import { useAccount } from 'contexts/account';
 import Big from 'big.js';
@@ -17,11 +17,6 @@ const TerraBalancesProvider = ({ children }: UIElementProps) => {
 
   const uaUST = useCW20Balance<aUST>(
     contractAddress.cw20.aUST,
-    terraWalletAddress,
-  );
-
-  const uANC = useCW20Balance<ANC>(
-    contractAddress.cw20.ANC,
     terraWalletAddress,
   );
 
@@ -41,10 +36,9 @@ const TerraBalancesProvider = ({ children }: UIElementProps) => {
       uUST,
       uaUST,
       uNative: uLuna.toString() as u<Native>,
-      uANC,
       fetchWalletBalance,
     };
-  }, [uUST, uLuna, uaUST, uANC, fetchWalletBalance]);
+  }, [uUST, uLuna, uaUST, fetchWalletBalance]);
 
   return (
     <BalancesContext.Provider value={balances}>

@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { screen } from 'env';
 
@@ -18,6 +18,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  TooltipItem,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 
@@ -97,8 +98,8 @@ function Component({ className }: LiquidationQueueProps) {
         },
         tooltip: {
           callbacks: {
-            title: (item: TooltipItem) => 'Click to Bid',
-            label: (item: TooltipItem) => [
+            title: (item: TooltipItem<any>) => 'Click to Bid',
+            label: (item: TooltipItem<any>) => [
               `Premium : ${item.label}`,
               `Value : ${item.formattedValue} axlUSDC`,
             ],
@@ -132,7 +133,8 @@ function Component({ className }: LiquidationQueueProps) {
         {
           label: 'Dataset 1',
           data: graphData.data,
-          backgroundColor: 'cyan',
+          backgroundColor:
+            'linear-gradient(180deg,rgba(30,146,230,.8) 0%,rgba(96,251,208,.8) 125%)',
         },
       ],
     }),
@@ -152,9 +154,8 @@ function Component({ className }: LiquidationQueueProps) {
       return;
     }
     const barGradient = chart.ctx.createLinearGradient(0, 0, 0, 500);
-    barGradient.addColorStop(0, 'green');
-    barGradient.addColorStop(0.5, 'cyan');
-    barGradient.addColorStop(1, 'green');
+    barGradient.addColorStop(0, '#4BDB4B');
+    barGradient.addColorStop(1, 'rgb(45, 131, 45)');
 
     const chartData = {
       ...data,
@@ -235,6 +236,7 @@ const FlexContainer = styled.div`
     flex-direction: row;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 20px;
   }
 `;
