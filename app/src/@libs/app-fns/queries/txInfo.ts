@@ -1,4 +1,4 @@
-import { LcdFetchError, QueryClient } from '@libs/query-client';
+import { QueryClient } from '@libs/query-client';
 import { Gas, ISODateFormat, Num } from '@libs/types';
 import { TxFailed } from '@terra-money/wallet-provider';
 import { CreateTxOptions } from '@terra-money/terra.js';
@@ -52,14 +52,16 @@ const TX_INFO_QUERY = `
 `;
 
 interface LcdTxs {
-  gas_used: Gas<string>;
-  gas_wanted: Gas<string>;
-  height: Num;
-  logs: RawLogMsg[];
-  raw_log: string;
-  timestamp: ISODateFormat;
   tx: any; // TODO CreateTxOptions + .toJSON()
-  txhash: string;
+  tx_response: {
+    txhash: string;
+    gas_used: Gas<string>;
+    gas_wanted: Gas<string>;
+    height: Num;
+    logs: RawLogMsg[];
+    raw_log: string;
+    timestamp: ISODateFormat;
+  };
 }
 
 interface LcdTxsFail {
@@ -87,15 +89,15 @@ export async function txInfoQuery({
     'lcdEndpoint' in queryClient
       ? queryClient
           .lcdFetcher<LcdTxs | LcdTxsFail>(
-            `${queryClient.lcdEndpoint}/txs/${txhash}`,
+            `${queryClient.lcdEndpoint}/cosmos/tx/v1beta1/txs/${txhash}`,
           )
           .then((result) => {
-            if ('logs' in result) {
+            if ('tx_response' in result) {
               return [
                 {
-                  TxHash: result.txhash,
+                  TxHash: result.tx_response.txhash,
                   Success: true,
-                  RawLog: result.logs,
+                  RawLog: result.tx_response.raw_log,
                 },
               ];
             } else {
@@ -103,23 +105,7 @@ export async function txInfoQuery({
             }
           })
           .catch((error) => {
-            if (error instanceof LcdFetchError) {
-              return [
-                {
-                  TxHash: error.txhash,
-                  Success: false,
-                  RawLog: error.raw_log,
-                },
-              ];
-            } else {
-              return [
-                {
-                  TxHash: 'unknown',
-                  Success: false,
-                  RawLog: String(error),
-                },
-              ];
-            }
+            return [];
           })
       : queryClient
           .hiveFetcher<TxInfoVariables, TxInfoRawData>(
@@ -180,7 +166,7 @@ export async function pollTxInfo({
     });
 
     if (txInfo.length > 0) {
-      const fail = txInfo.find(({ Success }) => !Success);
+      const fail = txInfo.find(({ RawLog }) => !RawLog);
 
       if (fail) {
         console.log('txInfo.ts..pollTxInfo()', fail);

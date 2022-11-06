@@ -21,7 +21,7 @@ export interface EarnDepositFormStates extends EarnDepositFormInput {
   availablePost: boolean;
   maxAmount: u<UST>;
   sendAmount?: u<UST>;
-  txFee?: u<UST>;
+  txFee?: u<Luna>;
   invalidTxFee?: string;
   invalidDepositAmount?: string;
   invalidNextTxFee?: string;
@@ -113,7 +113,7 @@ export const earnDepositForm =
     return [
       {
         depositAmount,
-        txFee: txFee?.toFixed() as u<UST>,
+        txFee: txFee?.toFixed() as u<Luna>,
         sendAmount: sendAmount?.toFixed() as u<UST>,
         maxAmount: maxAmount?.toFixed() as u<UST>,
         invalidTxFee,

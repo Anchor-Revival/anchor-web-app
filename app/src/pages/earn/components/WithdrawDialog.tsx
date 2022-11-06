@@ -62,6 +62,7 @@ function WithdrawDialogBase(props: WithdrawDialogProps) {
 
   const {
     ust: { formatOutput, formatInput, demicrofy, symbol },
+    luna,
   } = useFormatters();
 
   const { data } = useEarnEpochStatesQuery();
@@ -144,7 +145,7 @@ function WithdrawDialogBase(props: WithdrawDialogProps) {
           <AmountSlider
             disabled={!connected}
             max={Number(demicrofy(totalDeposit))}
-            txFee={Number(demicrofy(txFee ?? ('0' as UST)))}
+            txFee={Number(luna.demicrofy(txFee ?? ('0' as UST)))}
             value={Number(withdrawAmount)}
             onChange={(value) => {
               updateWithdrawAmount(formatInput(value.toString() as UST));
@@ -156,8 +157,8 @@ function WithdrawDialogBase(props: WithdrawDialogProps) {
           <TxFeeList className="receipt">
             {big(txFee).gt(0) && (
               <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-                {formatOutput(demicrofy(txFee))}
-                {` ${symbol}`}
+                {luna.formatOutput(luna.demicrofy(txFee))}
+                {` ${luna.symbol}`}
               </TxFeeListItem>
             )}
             <TxFeeListItem label="Receive Amount">

@@ -1,10 +1,10 @@
-import { AxlUSDC, Luna, u, UST } from '@anchor-protocol/types';
+import { AxlUSDC, Luna, u } from '@anchor-protocol/types';
 import { microfy } from '@libs/formatter';
 import { FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 
 export interface EarnWithdrawFormInput {
-  withdrawAmount: UST;
+  withdrawAmount: AxlUSDC;
 }
 
 export interface EarnWithdrawFormDependency {
@@ -68,7 +68,7 @@ export const earnWithdrawForm =
         }
 
         return microfy(withdrawAmount).gt(totalDeposit)
-          ? `Not enough aUST`
+          ? `Not enough aUSDC`
           : big(userUUSTBalance).lt(txFee)
           ? `Not enough axlUSDC`
           : undefined;

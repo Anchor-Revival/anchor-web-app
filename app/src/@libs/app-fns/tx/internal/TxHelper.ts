@@ -1,5 +1,5 @@
 import { formatUToken } from '@libs/formatter';
-import { u, UST } from '@libs/types';
+import { Luna, u, UST } from '@libs/types';
 import { NetworkInfo, TxResult } from '@terra-money/wallet-provider';
 import { CreateTxOptions } from '@terra-money/terra.js';
 import { BigSource } from 'big.js';
@@ -47,10 +47,10 @@ export class TxHelper {
     };
   };
 
-  txFeeReceipt = (txFee?: u<UST<BigSource>>): TxReceipt => {
+  txFeeReceipt = (txFee?: u<Luna<BigSource>>): TxReceipt => {
     return {
       name: 'Tx Fee',
-      value: formatUToken(txFee ?? this.$.txFee) + ' UST',
+      value: formatUToken(txFee ?? this.$.txFee) + ' Luna',
     };
   };
 
