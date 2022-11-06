@@ -11,7 +11,7 @@ import {
   useRewardsAncGovernanceRewardsQuery,
 } from '@anchor-protocol/app-provider';
 import { useFormatters } from '@anchor-protocol/formatter/useFormatters';
-import { u, UST } from '@anchor-protocol/types';
+import { AxlUSDC, u, UST } from '@anchor-protocol/types';
 import { sum } from '@libs/big-math';
 import { BorderButton } from '@libs/neumorphism-ui/components/BorderButton';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
@@ -82,14 +82,14 @@ function TotalValueBase({ className }: TotalValueProps) {
   const { ref, width = 400 } = useResizeObserver();
 
   const { totalValue, data } = useMemo<{
-    totalValue: u<UST<BigSource>>;
+    totalValue: u<AxlUSDC<BigSource>>;
     data: Item[];
   }>(() => {
     if (!connected) {
-      return { totalValue: '0' as u<UST>, data: [] };
+      return { totalValue: '0' as u<AxlUSDC>, data: [] };
     }
 
-    const ust = tokenBalances.uUST;
+    const ust = tokenBalances.uAxlUSDC;
     const deposit = computeTotalDeposit(
       tokenBalances.uaUST,
       moneyMarketEpochState,
@@ -98,8 +98,8 @@ function TotalValueBase({ className }: TotalValueProps) {
       overseerCollaterals && oraclePrices && marketBorrowerInfo && ustBorrow
         ? (computeCollateralsTotalUST(overseerCollaterals, oraclePrices)
             .minus(marketBorrowerInfo.loan_amount)
-            .plus(ustBorrow.rewardValue) as u<UST<Big>>)
-        : ('0' as u<UST>);
+            .plus(ustBorrow.rewardValue) as u<AxlUSDC<Big>>)
+        : ('0' as u<AxlUSDC>);
     const holdings = computeHoldings(
       tokenBalances,
       ancPrice,
@@ -111,18 +111,18 @@ function TotalValueBase({ className }: TotalValueProps) {
       ancUstLp && ancPrice
         ? (big(big(ancUstLp.poolAssets.anc).mul(ancPrice)).plus(
             ancUstLp.poolAssets.ust,
-          ) as u<UST<Big>>)
-        : ('0' as u<UST>);
+          ) as u<AxlUSDC<Big>>)
+        : ('0' as u<AxlUSDC>);
 
     const farming = ancUstLp
       ? (big(ancUstLp.stakedValue).plus(ancUstLp.rewardsAmountInUst) as u<
-          UST<Big>
+          AxlUSDC<Big>
         >)
-      : ('0' as u<UST>);
+      : ('0' as u<AxlUSDC>);
     const govern =
       userGovStakingInfo && ancPrice
-        ? (big(userGovStakingInfo.balance).mul(ancPrice) as u<UST<Big>>)
-        : ('0' as u<UST>);
+        ? (big(userGovStakingInfo.balance).mul(ancPrice) as u<AxlUSDC<Big>>)
+        : ('0' as u<AxlUSDC>);
 
     const totalValue = sum(
       ust,

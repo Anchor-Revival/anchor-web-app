@@ -1,11 +1,11 @@
 import { GasPrice } from '@libs/app-fns';
-import { Gas, u, UST } from '@libs/types';
+import { Gas, Luna, u } from '@libs/types';
 import { BigSource } from 'big.js';
 import { computeGasPrice } from './computeGasPrice';
 
-export const computeGasToUst = (
+export const computeGasToLuna = (
   gasPrice: GasPrice,
   gas: Gas<BigSource>,
-): u<UST> => {
-  return computeGasPrice(gasPrice, gas, 'uusd') as u<UST>;
+): u<Luna> => {
+  return computeGasPrice(gasPrice, gas, 'uluna') as u<Luna>;
 };

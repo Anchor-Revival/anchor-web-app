@@ -64,10 +64,15 @@ export function earnDepositTx($: {
           },
 
           // coins
-          new Coins([new Coin('uusd', formatTokenInput($.depositAmount))]),
+          new Coins([
+            new Coin(
+              'ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389',
+              formatTokenInput($.depositAmount),
+            ),
+          ]),
         ),
       ],
-      fee: new Fee($.gasFee, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasFee, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

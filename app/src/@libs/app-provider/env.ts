@@ -36,57 +36,19 @@ export function DEFAULT_GAS_PRICE_ENDPOINTS(network: NetworkInfo): string {
   return `${fcd}/v1/txs/gas_prices`;
 }
 
-const FALLBACK_GAS_PRICE_COLUMNBUS = {
-  uluna: '0.01133',
-  usdr: '0.104938',
-  uusd: '0.15',
-  ukrw: '169.77',
-  umnt: '428.571',
-  ueur: '0.125',
-  ucny: '0.98',
-  ujpy: '16.37',
-  ugbp: '0.11',
-  uinr: '10.88',
-  ucad: '0.19',
-  uchf: '0.14',
-  uaud: '0.19',
-  usgd: '0.2',
-  uthb: '4.62',
-  usek: '1.25',
-  unok: '1.25',
-  udkk: '0.9',
-  uidr: '2180.0',
-  uphp: '7.6',
-  uhkd: '1.17',
+const FALLBACK_GAS_PRICE_PHOENIX = {
+  uluna: '0.10',
 };
 
-const FALLBACK_GAS_PRICE_BOMBAY = {
-  ...FALLBACK_GAS_PRICE_COLUMNBUS,
-  uluna: '0.15',
-  usdr: '0.1018',
-  uusd: '0.15',
-  ukrw: '178.05',
-  umnt: '431.6259',
-  ueur: '0.125',
-  ucny: '0.97',
-  ujpy: '16',
-  ugbp: '0.11',
-  uinr: '11',
-  ucad: '0.19',
-  uchf: '0.13',
-  uaud: '0.19',
-  usgd: '0.2',
-  uthb: '4.62',
-  usek: '1.25',
-  unok: '1.25',
-  udkk: '0.9',
+const FALLBACK_GAS_PRICE_PISCO = {
+  uluna: '0.10',
 };
 
 export function DEFAULT_FALLBACK_GAS_PRICE(network: NetworkInfo): GasPrice {
-  if (network.chainID.startsWith('bombay')) {
-    return FALLBACK_GAS_PRICE_BOMBAY as GasPrice;
+  if (network.chainID.startsWith('pisco')) {
+    return FALLBACK_GAS_PRICE_PISCO as GasPrice;
   } else {
-    return FALLBACK_GAS_PRICE_COLUMNBUS as GasPrice;
+    return FALLBACK_GAS_PRICE_PHOENIX as GasPrice;
   }
 }
 

@@ -31,7 +31,7 @@ function EarnBase({ className }: EarnProps) {
   // ---------------------------------------------
   // queries
   // ---------------------------------------------
-  const { uUST, uaUST } = useBalances();
+  const { uAxlUSDC, uaUST } = useBalances();
 
   const { data: { moneyMarketEpochState } = {} } = useEarnEpochStatesQuery();
 
@@ -100,7 +100,7 @@ function EarnBase({ className }: EarnProps) {
             <td>
               <ActionButton
                 disabled={
-                  !connected || !moneyMarketEpochState || Big(uUST).lte(0)
+                  !connected || !moneyMarketEpochState || Big(uAxlUSDC).lte(0)
                 }
                 onClick={openDeposit}
               >

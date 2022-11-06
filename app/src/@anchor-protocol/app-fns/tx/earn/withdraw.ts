@@ -74,7 +74,7 @@ export function earnWithdrawTx($: {
           },
         }),
       ],
-      fee: new Fee($.gasFee, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasFee, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

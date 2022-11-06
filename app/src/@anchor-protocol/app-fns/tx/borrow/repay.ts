@@ -70,11 +70,11 @@ export function borrowRepayTx($: {
             repay_stable: {},
           },
           // sending stablecoin
-          new Coins([new Coin('uusd', formatTokenInput($.repayAmount))]),
+          new Coins([new Coin('uluna', formatTokenInput($.repayAmount))]),
         ),
       ],
       // FIXME repay's txFee is not fixed_gas (user ust transfer)
-      fee: new Fee($.gasFee, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasFee, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

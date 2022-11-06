@@ -38,10 +38,12 @@ export namespace cw20 {
   }
 
   export interface TokenInfoResponse<T extends Token> {
-    decimals: number;
-    name: string;
-    symbol: string;
-    total_supply: u<T>;
+    data: {
+      decimals: number;
+      name: string;
+      symbol: string;
+      total_supply: u<T>;
+    };
   }
 
   export interface Minter {

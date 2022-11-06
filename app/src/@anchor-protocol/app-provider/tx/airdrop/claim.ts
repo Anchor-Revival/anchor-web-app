@@ -22,7 +22,7 @@ export function useAirdropClaimTx() {
   const { queryClient, txErrorReporter, constants, contractAddress } =
     useAnchorWebapp();
 
-  const airdropFee = useGasPrice(constants.airdropGas, 'uusd');
+  const airdropFee = useGasPrice(constants.airdropGas, 'uluna');
 
   const refetchQueries = useRefetchQueries();
 
