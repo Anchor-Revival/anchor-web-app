@@ -113,7 +113,7 @@ function Component({ className }: OverviewProps) {
               <p>
                 <IconSpan>
                   Borrowed:{' '}
-                  {formatUSTWithPostfixUnits(demicrofy(borrowedValue))} UST{' '}
+                  {formatUSTWithPostfixUnits(demicrofy(borrowedValue))} axlUSDC{' '}
                   <InfoTooltip>
                     The borrow amount for this specific stablecoin
                   </InfoTooltip>
