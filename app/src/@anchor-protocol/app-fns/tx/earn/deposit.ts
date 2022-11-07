@@ -66,7 +66,10 @@ export function earnDepositTx($: {
           // coins
           new Coins([
             new Coin(
-              'ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389',
+              $.network.chainID === 'pisco'
+                ? 'ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389'
+                : 'ibc/B3504E092456BA618CC28AC671A71FB08C6CA0FD0BE7C8A5B5A3E2DD933CC9E4',
+
               formatTokenInput($.depositAmount),
             ),
           ]),
