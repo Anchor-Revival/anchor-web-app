@@ -187,10 +187,10 @@ export function CollateralList(props: UIElementProps) {
                   </div>
                 </td>
                 <td>
-                  <div className="value">{formatUSTOutput(price)} UST</div>
+                  <div className="value">{formatUSTOutput(price)} axlUSDC</div>
                   <p className="volatility">
                     {Boolean(Number(liquidationPrice)) &&
-                      formatUSTOutput(liquidationPrice!) + ' UST'}
+                      formatUSTOutput(liquidationPrice!) + ' axlUSDC'}
                   </p>
                 </td>
                 <td>
@@ -204,7 +204,7 @@ export function CollateralList(props: UIElementProps) {
                     {collateral.symbol}
                   </div>
                   <p className="volatility">
-                    {formatUSTOutput(demicrofyUST(lockedAmountInUST))} UST
+                    {formatUSTOutput(demicrofyUST(lockedAmountInUST))} axlUSDC
                   </p>
                 </td>
                 <td>
