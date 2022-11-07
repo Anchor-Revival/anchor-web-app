@@ -68,7 +68,7 @@ export function cw20SellTokenTx<T extends Token>(
           },
         } as cw20.Send<T>),
       ],
-      fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasWanted, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

@@ -61,7 +61,7 @@ export function rewardsAncUstLpClaimTx($: {
           },
         }),
       ],
-      fee: new Fee($.gasFee, floor($.fixedGas) + 'uusd'),
+      fee: new Fee($.gasFee, floor($.fixedGas) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

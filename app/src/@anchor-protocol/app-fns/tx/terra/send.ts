@@ -61,7 +61,7 @@ export function terraSendTx($: {
               new Coin(`u${$.currency.value}`, formatTokenInput($.amount)),
             ]),
           ],
-      fee: new Fee($.gasFee, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasFee, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
       memo: $.memo,
     }),

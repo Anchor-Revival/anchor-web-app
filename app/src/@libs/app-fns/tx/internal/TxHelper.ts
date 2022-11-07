@@ -1,5 +1,5 @@
 import { formatUToken } from '@libs/formatter';
-import { Luna, u, UST } from '@libs/types';
+import { Luna, u } from '@libs/types';
 import { NetworkInfo, TxResult } from '@terra-money/wallet-provider';
 import { CreateTxOptions } from '@terra-money/terra.js';
 import { BigSource } from 'big.js';
@@ -10,7 +10,7 @@ export class TxHelper {
   private _savedTx: CreateTxOptions | null = null;
   private _savedTxResult: TxResult | null = null;
 
-  constructor(private $: { txFee: u<UST>; network: NetworkInfo }) {}
+  constructor(private $: { txFee: u<Luna>; network: NetworkInfo }) {}
 
   get savedTx(): CreateTxOptions {
     if (!this._savedTx) {

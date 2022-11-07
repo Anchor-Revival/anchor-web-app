@@ -4,20 +4,20 @@ import { createContext, useContext } from 'react';
 
 export const TESTNET: NetworkInfo = {
   name: 'testnet',
-  chainID: 'bombay-12',
-  lcd: 'https://bombay-lcd.terra.dev',
+  chainID: 'pisco-1',
+  lcd: 'https://pisco-lcd.terra.dev',
 };
 
 export const CLASSIC: NetworkInfo = {
   name: 'classic',
   chainID: 'columbus-5',
-  lcd: 'https://lcd.terra.dev',
+  lcd: 'https://columbus-lcd.terra.dev',
 };
 
 export const MAINNET: NetworkInfo = {
   name: 'mainnet',
-  chainID: 'columbus-5',
-  lcd: 'https://lcd.terra.dev',
+  chainID: 'phoenix-1',
+  lcd: 'https://phoenix-lcd.terra.dev',
 };
 
 const LCDClients: Record<string, LCDClient> = {

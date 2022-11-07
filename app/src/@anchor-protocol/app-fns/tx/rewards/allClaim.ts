@@ -75,7 +75,7 @@ export function rewardsAllClaimTx($: {
   return pipe(
     _createTxOptions({
       msgs,
-      fee: new Fee($.gasFee, floor($.fixedGas) + 'uusd'),
+      fee: new Fee($.gasFee, floor($.fixedGas) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

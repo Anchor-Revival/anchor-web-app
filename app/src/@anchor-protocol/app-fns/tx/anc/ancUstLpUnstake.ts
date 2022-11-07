@@ -62,7 +62,7 @@ export function ancAncUstLpUnstakeTx($: {
         }),
         // TODO execute_msg type
       ],
-      fee: new Fee($.gasFee, floor($.fixedGas) + 'uusd'),
+      fee: new Fee($.gasFee, floor($.fixedGas) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

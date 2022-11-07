@@ -50,7 +50,7 @@ export function sendTx(
                 },
               ),
             ],
-      fee: new Fee($.gasWanted, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasWanted, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
       memo: $.memo,
     }),

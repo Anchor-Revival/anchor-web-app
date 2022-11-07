@@ -66,7 +66,7 @@ export function ancGovernanceStakeTx($: {
           },
         } as cw20.Send<ANC>),
       ],
-      fee: new Fee($.gasFee, floor($.fixedGas) + 'uusd'),
+      fee: new Fee($.gasFee, floor($.fixedGas) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),
