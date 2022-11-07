@@ -92,7 +92,7 @@ export function ExpectedInterestSection({
               ? demicrofy(expectedInterest)
               : (0 as AxlUSDC<number>)}
           </AnimateNumber>{' '}
-          <span className="denom">axlUST</span>
+          <span className="denom">axlUSDC</span>
         </span>
       </div>
 

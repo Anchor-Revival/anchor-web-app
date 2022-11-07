@@ -34,7 +34,9 @@ export type NativeDenom =
   | 'usgd'
   | 'uthb'
   | 'ukrt'
-  | 'uAxlUSDC';
+  | 'uAxlUSDC'
+  | 'ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389'
+  | 'ibc/B3504E092456BA618CC28AC671A71FB08C6CA0FD0BE7C8A5B5A3E2DD933CC9E4';
 export type bAssetDenom = string & NominalType<'bAssetDenom'>;
 export type AssetDenom = string & NominalType<'AssetDenom'>;
 export type Denom = NativeDenom | bAssetDenom | AssetDenom;

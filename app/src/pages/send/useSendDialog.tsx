@@ -144,7 +144,7 @@ function ComponentBase({
           formatLunaInput(demicrofy(bank.tokenBalances.uLuna)),
       },
       {
-        label: 'bLUNA',
+        label: 'aLUNA',
         value: 'bluna',
         integerPoints: LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
         decimalPoints: LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,

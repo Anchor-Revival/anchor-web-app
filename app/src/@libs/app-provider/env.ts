@@ -13,12 +13,12 @@ export function DEFAULT_HIVE_WASM_CLIENT(
 ): HiveQueryClient {
   if (network.chainID.startsWith('pisco')) {
     return {
-      hiveEndpoint: 'https://pisco-mantle.terra.dev',
+      hiveEndpoint: '',
       hiveFetcher: defaultHiveFetcher,
     };
   } else {
     return {
-      hiveEndpoint: 'https://mantle.terra.dev',
+      hiveEndpoint: '',
       hiveFetcher: defaultHiveFetcher,
     };
   }

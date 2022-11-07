@@ -1,5 +1,4 @@
 import {
-  APY,
   BorrowAPR,
   BorrowValue,
   CollateralValue,
@@ -38,7 +37,7 @@ function Component({ className }: OverviewProps) {
     netAPR,
     currentLtv,
     //dangerLtv,
-    borrowerDistributionAPYs,
+    // borrowerDistributionAPYs,
   } = useBorrowOverviewData();
 
   // ---------------------------------------------
@@ -73,7 +72,7 @@ function Component({ className }: OverviewProps) {
                 <AnimateNumber format={formatUST}>
                   {demicrofy(collateralValue)}
                 </AnimateNumber>{' '}
-                UST
+                axlUSDC
               </SubAmount>
             )}
           </div>
@@ -105,7 +104,7 @@ function Component({ className }: OverviewProps) {
                 <AnimateNumber format={formatUST}>
                   {demicrofy(borrowedValue)}
                 </AnimateNumber>{' '}
-                UST
+                axlUSDC
               </SubAmount>
             )}
           </div>
@@ -154,25 +153,6 @@ function Component({ className }: OverviewProps) {
                 <p>
                   Borrow APR
                   <b>{formatRate(borrowAPR)}%</b>
-                </p>
-              </div>
-              <div>
-                <TooltipIconCircle
-                  style={{ cursor: 'help' }}
-                  title="Annual percentage yield determined by ANC rewards given to borrowers where the principal is taken to be the loan amount"
-                  placement="top"
-                >
-                  <APY />
-                </TooltipIconCircle>
-                <p>
-                  Distribution APR
-                  <b>
-                    {borrowerDistributionAPYs &&
-                    borrowerDistributionAPYs.length > 0
-                      ? formatRate(borrowerDistributionAPYs[0].DistributionAPY)
-                      : 0}
-                    %
-                  </b>
                 </p>
               </div>
             </Circles>

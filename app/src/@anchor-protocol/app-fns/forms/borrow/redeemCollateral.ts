@@ -3,7 +3,14 @@ import {
   computeBorrowLimit,
   computeLtv,
 } from '@anchor-protocol/app-fns';
-import { bAsset, moneyMarket, Rate, u, UST } from '@anchor-protocol/types';
+import {
+  AxlUSDC,
+  bAsset,
+  Luna,
+  moneyMarket,
+  Rate,
+  u,
+} from '@anchor-protocol/types';
 import { FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { computeLtvToRedeemAmount } from '../../logics/borrow/computeLtvToRedeemAmount';
@@ -23,8 +30,8 @@ export interface BorrowRedeemCollateralFormInput {
 
 export interface BorrowRedeemCollateralFormDependency {
   collateral: WhitelistCollateral;
-  fixedFee: u<UST>;
-  userUSTBalance: u<UST>;
+  fixedFee: u<Luna>;
+  userUSTBalance: u<AxlUSDC>;
   userBAssetBalance: u<bAsset>;
   oraclePrices: moneyMarket.oracle.PricesResponse;
   bAssetLtvs: BAssetLtvs;
@@ -40,12 +47,12 @@ export interface BorrowRedeemCollateralFormStates
   ltvStepFunction: (draftLtv: Rate<Big>) => Rate<Big>;
   collateral: WhitelistCollateral;
   userMaxLtv: Rate<Big>;
-  txFee: u<UST>;
+  txFee: u<Luna>;
   currentLtv: Rate<Big> | undefined;
   nextLtv: Rate<Big> | undefined;
   withdrawableAmount: u<bAsset<Big>>;
   withdrawableMaxAmount: u<bAsset<Big>>;
-  borrowLimit: u<UST<Big>>;
+  borrowLimit: u<AxlUSDC<Big>>;
   invalidTxFee: string | undefined;
   invalidRedeemAmount: string | undefined;
   userBAssetBalance: u<bAsset>;

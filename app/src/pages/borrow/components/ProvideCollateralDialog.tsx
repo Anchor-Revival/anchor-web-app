@@ -73,7 +73,7 @@ function ProvideCollateralDialogBase(props: ProvideCollateralDialogProps) {
   );
 
   const {
-    ust: {
+    luna: {
       formatInput: formatUSTInput,
       formatOutput: formatUSTOutput,
       demicrofy: demicrofyUST,
@@ -207,7 +207,9 @@ function ProvideCollateralDialogBase(props: ProvideCollateralDialogProps) {
           readOnly
           InputProps={{
             readOnly: true,
-            endAdornment: <InputAdornment position="end">UST</InputAdornment>,
+            endAdornment: (
+              <InputAdornment position="end">axlUSDC</InputAdornment>
+            ),
             inputMode: 'numeric',
           }}
           style={{ pointerEvents: 'none' }}
@@ -229,7 +231,7 @@ function ProvideCollateralDialogBase(props: ProvideCollateralDialogProps) {
         {states.depositAmount.length > 0 && big(states.txFee).gt(0) && (
           <TxFeeList className="receipt">
             <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-              {formatUSTOutput(demicrofyUST(states.txFee))} UST
+              {formatUSTOutput(demicrofyUST(states.txFee))} Luna
             </TxFeeListItem>
           </TxFeeList>
         )}

@@ -2,7 +2,15 @@ import {
   formatAUSTWithPostfixUnits,
   formatUSTWithPostfixUnits,
 } from '@anchor-protocol/notation';
-import { aUST, Gas, HumanAddr, Rate, u, UST } from '@anchor-protocol/types';
+import {
+  aUST,
+  AxlUSDC,
+  Gas,
+  HumanAddr,
+  Rate,
+  u,
+  UST,
+} from '@anchor-protocol/types';
 import {
   pickAttributeValue,
   pickEvent,
@@ -66,7 +74,7 @@ export function earnDepositTx($: {
           // coins
           new Coins([
             new Coin(
-              $.network.chainID === 'pisco'
+              $.network.name !== 'pisco'
                 ? 'ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389'
                 : 'ibc/B3504E092456BA618CC28AC671A71FB08C6CA0FD0BE7C8A5B5A3E2DD933CC9E4',
 
@@ -94,7 +102,7 @@ export function earnDepositTx($: {
       }
 
       try {
-        const depositAmount = pickAttributeValue<u<UST>>(fromContract, 4);
+        const depositAmount = pickAttributeValue<u<AxlUSDC>>(fromContract, 4);
 
         const receivedAmount = pickAttributeValue<u<aUST>>(fromContract, 3);
 
@@ -113,7 +121,8 @@ export function earnDepositTx($: {
             depositAmount && {
               name: 'Deposit Amount',
               value:
-                formatUSTWithPostfixUnits(demicrofy(depositAmount)) + ' UST',
+                formatUSTWithPostfixUnits(demicrofy(depositAmount)) +
+                ' axlUSDC',
             },
             receivedAmount && {
               name: 'Received Amount',
