@@ -8,7 +8,7 @@ import { useMediaQuery } from 'react-responsive';
 import styled from 'styled-components';
 import { Earn } from './components/Earn';
 import { TotalValue } from './components/TotalValue';
-import { TransactionHistory } from './components/TransactionHistory';
+// import { TransactionHistory } from './components/TransactionHistory';
 
 export interface MypageProps {
   className?: string;
@@ -78,12 +78,12 @@ function MypageBase({ className }: MypageProps) {
         </>
       )}
 
-      {(isSmallLayout || tab.value === 'all' || tab.value === 'history') && (
+      {/* {(isSmallLayout || tab.value === 'all' || tab.value === 'history') && (
         <>
           <h2>TRANSACTION HISTORY</h2>
           <TransactionHistory />
         </>
-      )}
+      )} */}
     </PaddedLayout>
   );
 }
