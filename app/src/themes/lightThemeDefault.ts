@@ -47,6 +47,15 @@ export const defaultLightTheme = {
     palette: {
       type: 'light',
     },
+    overrides: {
+      MuiTableRow: {
+        root: {
+          '&:last-child td': {
+            borderBottom: 0,
+          },
+        },
+      },
+    },
   }),
   // VARIABLES (SHOULD BE CHANGED)
   textColor: GRAY_700,

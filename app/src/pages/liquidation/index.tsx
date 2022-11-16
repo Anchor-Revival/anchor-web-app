@@ -10,6 +10,8 @@ import { LiquidationStatsSection } from './components/LiquidationStatsSection';
 import { EarnProps } from 'pages/earn';
 import { useBidPoolsByCollateralQuery } from '@anchor-protocol/app-provider';
 import { HumanAddr } from '@libs/types';
+import { PlaceBidSection } from './components/PlaceBidSection';
+import { MyBidsSection } from './components/MyBidsSection';
 
 export interface LiquidationProps {
   className?: string;
@@ -28,9 +30,10 @@ function Component({ className }: EarnProps) {
         <PageTitle title="LIQUIDATE" docs={links.docs.liquidate} />
       </FlexTitleContainer>
       <section className="grid">
-        {/* <PlaceBidSection className="place-bid" /> */}
+        <PlaceBidSection className="place-bid" />
         <LiquidationQueueSection className="liquidation-graph" />
         <LiquidationStatsSection className="liquidation-stats" />
+        <MyBidsSection className="my-bids" />
       </section>
     </CenteredLayout>
   );
@@ -124,7 +127,8 @@ const StyledComponent = styled(Component)`
   // ---------------------------------------------
   // layout
   // ---------------------------------------------
-  .liquidation-stats {
+  .liquidation-stats,
+  .my-bids {
     h2 {
       margin-bottom: 15px;
     }
@@ -147,7 +151,7 @@ const StyledComponent = styled(Component)`
     .grid {
       display: grid;
 
-      grid-template-columns: 1fr 1fr 500px;
+      grid-template-columns: repeat(12, 1fr);
       grid-template-rows: auto auto auto;
       grid-gap: 20px;
 
@@ -156,17 +160,21 @@ const StyledComponent = styled(Component)`
       }
 
       .liquidation-graph {
-        grid-column: 1/3;
+        grid-column: 1/10;
         grid-row: 1 / 3;
       }
 
       .place-bid {
-        grid-column: 3;
+        grid-column: 10/13;
         grid-row: 1/3;
       }
 
       .liquidation-stats {
-        grid-column: 1/4;
+        grid-column: 1/6;
+        grid-row: 3/4;
+      }
+      .my-bids {
+        grid-column: 6/13;
         grid-row: 3/4;
       }
     }
@@ -202,7 +210,8 @@ const StyledComponent = styled(Component)`
       display: none;
     }
 
-    .liquidation-stats {
+    .liquidation-stats,
+    .my-bids {
       h2 {
         margin-bottom: 10px;
       }

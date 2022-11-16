@@ -21,6 +21,7 @@ import {
   TooltipItem,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { useMediaQuery } from '@material-ui/core';
 
 export interface LiquidationQueueProps {
   className?: string;
@@ -81,8 +82,11 @@ function Component({ className }: LiquidationQueueProps) {
     Legend,
   );
 
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
+
   const options = useMemo(
     () => ({
+      maintainAspectRatio: false,
       responsive: true,
       plugins: {
         legend: {
@@ -121,9 +125,14 @@ function Component({ className }: LiquidationQueueProps) {
             },
           },
         },
+        y: {
+          ticks: {
+            display: !isSmallScreen,
+          },
+        },
       },
     }),
-    [],
+    [isSmallScreen],
   );
 
   const data = useMemo(
@@ -198,7 +207,7 @@ function Component({ className }: LiquidationQueueProps) {
   // ---------------------------------------------
   return (
     <Section className={className}>
-      <div className="liquidation-stats-graph">
+      <div className="liquidation-stats-graph" style={{ minHeight: 400 }}>
         <Bar ref={chartRef} options={chartOptions} data={chartData} />
       </div>
       <FlexContainer>
