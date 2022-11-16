@@ -2,7 +2,7 @@ import {
   UST_INPUT_MAXIMUM_DECIMAL_POINTS,
   UST_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
-import { UST } from '@anchor-protocol/types';
+import { AxlUSDC } from '@anchor-protocol/types';
 import { EarnDepositFormReturn } from '@anchor-protocol/app-provider';
 import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
@@ -55,7 +55,8 @@ function DepositDialogBase(props: DepositDialogProps) {
   const account = useAccount();
 
   const {
-    ust: { formatOutput, formatInput, demicrofy, symbol },
+    axlUSDC: { formatOutput, formatInput, demicrofy, symbol },
+    luna,
   } = useFormatters();
 
   const renderBroadcastTx = useMemo(() => {
@@ -97,10 +98,12 @@ function DepositDialogBase(props: DepositDialogProps) {
           label="AMOUNT"
           error={!!invalidDepositAmount}
           onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
-            updateDepositAmount(target.value as UST)
+            updateDepositAmount(target.value as AxlUSDC)
           }
           InputProps={{
-            endAdornment: <InputAdornment position="end">UST</InputAdornment>,
+            endAdornment: (
+              <InputAdornment position="end">axlUSDC</InputAdornment>
+            ),
           }}
         />
 
@@ -132,10 +135,10 @@ function DepositDialogBase(props: DepositDialogProps) {
             <AmountSlider
               disabled={!account.connected}
               max={Number(demicrofy(maxAmount))}
-              txFee={Number(demicrofy(txFee ?? ('0' as UST)))}
+              txFee={Number(demicrofy(txFee ?? ('0' as AxlUSDC)))}
               value={Number(depositAmount)}
               onChange={(value) => {
-                updateDepositAmount(formatInput(value.toString() as UST));
+                updateDepositAmount(formatInput(value.toString() as AxlUSDC));
               }}
             />
           </figure>
@@ -145,7 +148,7 @@ function DepositDialogBase(props: DepositDialogProps) {
           <TxFeeList className="receipt">
             {big(txFee).gt(0) && (
               <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-                {`${formatOutput(demicrofy(txFee))} ${symbol}`}
+                {`${luna.formatOutput(luna.demicrofy(txFee))} ${luna.symbol}`}
               </TxFeeListItem>
             )}
             <TxFeeListItem label="Send Amount">

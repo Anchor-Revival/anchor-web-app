@@ -64,8 +64,8 @@ function Component({ className }: BlunaWithdrawProps) {
   // logics
   // ---------------------------------------------
   const invalidTxFee = useMemo(
-    () => !!connectedWallet && validateTxFee(tokenBalances.uUST, fixedFee),
-    [connectedWallet, tokenBalances.uUST, fixedFee],
+    () => !!connectedWallet && validateTxFee(tokenBalances.uLuna, fixedFee),
+    [connectedWallet, tokenBalances.uLuna, fixedFee],
   );
 
   const withdrawableAmount = useMemo(

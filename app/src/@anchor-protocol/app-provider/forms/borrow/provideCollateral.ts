@@ -23,7 +23,7 @@ export function useBorrowProvideCollateralForm(
 
   const fixedFee = useFixedFee();
 
-  const { uUST } = useBalances();
+  const { uAxlUSDC } = useBalances();
 
   const { data: whitelist = [] } = useWhitelistCollateralQuery();
 
@@ -39,7 +39,7 @@ export function useBorrowProvideCollateralForm(
     {
       collateral,
       userBAssetBalance: balance,
-      userUSTBalance: uUST,
+      userUSTBalance: uAxlUSDC,
       connected,
       oraclePrices,
       overseerCollaterals,

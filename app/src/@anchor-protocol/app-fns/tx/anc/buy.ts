@@ -72,7 +72,7 @@ export function ancBuyTx($: {
               offer_asset: {
                 info: {
                   native_token: {
-                    denom: 'uusd',
+                    denom: 'uluna',
                   },
                 },
                 amount: formatTokenInput($.fromAmount) as u<UST>,
@@ -81,10 +81,10 @@ export function ancBuyTx($: {
               max_spread: $.maxSpread,
             },
           } as terraswap.pair.Swap<UST>,
-          new Coins([new Coin('uusd', formatTokenInput($.fromAmount))]),
+          new Coins([new Coin('uluna', formatTokenInput($.fromAmount))]),
         ),
       ],
-      fee: new Fee($.gasFee, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasFee, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

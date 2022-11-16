@@ -1,6 +1,6 @@
 import { DeploymentTarget } from '@anchor-protocol/app-provider';
 import { moneyMarket, Rate } from '@anchor-protocol/types';
-import { u, UST } from '@libs/types';
+import { AxlUSDC, u, UST } from '@libs/types';
 import { FormReturn } from '@libs/use-form';
 import big, { Big } from 'big.js';
 import { computeBorrowAPR } from '../../logics/borrow/computeBorrowAPR';
@@ -46,20 +46,20 @@ export interface BorrowRepayFormDependency {
 }
 
 export interface BorrowRepayFormStates extends BorrowRepayFormInput {
-  amountToLtv: (repayAmount: u<UST>) => Rate<Big>;
-  ltvToAmount: (ltv: Rate<Big>) => u<UST<Big>>;
+  amountToLtv: (repayAmount: u<AxlUSDC>) => Rate<Big>;
+  ltvToAmount: (ltv: Rate<Big>) => u<AxlUSDC<Big>>;
   ltvStepFunction: (draftLtv: Rate<Big>) => Rate<Big>;
-  borrowLimit: u<UST<Big>>;
+  borrowLimit: u<AxlUSDC<Big>>;
   currentLtv: Rate<Big> | undefined;
   apr: Rate<Big>;
-  maxRepayingAmount: u<UST<Big>>;
+  maxRepayingAmount: u<AxlUSDC<Big>>;
   invalidTxFee: string | undefined;
   dangerLtv: Rate<Big>;
   nextLtv: Rate<Big> | undefined;
-  txFee: u<UST<Big>> | undefined;
+  txFee: u<AxlUSDC<Big>> | undefined;
   estimatedLiquidationPrice: string | null;
-  sendAmount: u<UST<Big>> | undefined;
-  totalOutstandingLoan: u<UST<Big>> | undefined;
+  sendAmount: u<AxlUSDC<Big>> | undefined;
+  totalOutstandingLoan: u<AxlUSDC<Big>> | undefined;
   invalidRepayAmount: string | undefined;
   availablePost: boolean;
 }

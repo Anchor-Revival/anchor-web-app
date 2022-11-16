@@ -33,7 +33,7 @@ export function TotalDepositSection({ className }: TotalDepositSectionProps) {
   // ---------------------------------------------
   // queries
   // ---------------------------------------------
-  const { uUST, uaUST } = useBalances();
+  const { uAxlUSDC, uaUST } = useBalances();
 
   const { data: { moneyMarketEpochState } = {} } = useEarnEpochStatesQuery();
 
@@ -70,7 +70,7 @@ export function TotalDepositSection({ className }: TotalDepositSectionProps) {
         <IconSpan>
           TOTAL DEPOSIT{' '}
           <InfoTooltip>
-            Total amount of UST deposited and interest earned by the user
+            Total amount of axlUSDC deposited and interest earned by the user
           </InfoTooltip>
         </IconSpan>
       </h2>
@@ -79,20 +79,22 @@ export function TotalDepositSection({ className }: TotalDepositSectionProps) {
         <AnimateNumber format={formatUSTWithPostfixUnits}>
           {demicrofy(totalDeposit)}
         </AnimateNumber>{' '}
-        <span className="denom">UST</span>
+        <span className="denom">axlUSDC</span>
         {totalDeposit.gt(MILLION * MICRO) && (
           <SubAmount style={{ fontSize: '16px' }}>
             <AnimateNumber format={formatUST}>
               {demicrofy(totalDeposit)}
             </AnimateNumber>{' '}
-            UST
+            axlUSDC
           </SubAmount>
         )}
       </div>
 
       <aside className="total-deposit-buttons">
         <ActionButton
-          disabled={!connected || !moneyMarketEpochState || Big(uUST).lte(0)}
+          disabled={
+            !connected || !moneyMarketEpochState || Big(uAxlUSDC).lte(0)
+          }
           onClick={openDeposit}
         >
           Deposit

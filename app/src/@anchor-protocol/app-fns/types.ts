@@ -77,5 +77,5 @@ export const DefaultAnchorBalances: Partial<AnchorBalances> = {
  */
 export interface AnchorTax {
   taxRate: Rate;
-  maxTaxUUSD: u<UST>;
+  maxTaxUUSD: u<Luna>;
 }

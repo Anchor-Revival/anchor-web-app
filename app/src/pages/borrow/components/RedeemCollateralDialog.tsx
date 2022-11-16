@@ -206,7 +206,9 @@ function RedeemCollateralDialogBase(props: RedeemCollateralDialogProps) {
           readOnly
           InputProps={{
             readOnly: true,
-            endAdornment: <InputAdornment position="end">UST</InputAdornment>,
+            endAdornment: (
+              <InputAdornment position="end">axlUSDC</InputAdornment>
+            ),
           }}
           style={{ pointerEvents: 'none' }}
         />
@@ -242,7 +244,7 @@ function RedeemCollateralDialogBase(props: RedeemCollateralDialogProps) {
         {states.redeemAmount.length > 0 && big(states.txFee).gt(0) && (
           <TxFeeList className="receipt">
             <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-              {formatUSTOutput(demicrofyUST(states.txFee))} UST
+              {formatUSTOutput(demicrofyUST(states.txFee))} Luna
             </TxFeeListItem>
           </TxFeeList>
         )}

@@ -187,11 +187,11 @@ function RepayDialogBase(props: RepayDialogProps) {
             </TxFeeListItem>
             {big(states.txFee).gt(0) && (
               <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-                {formatUST(demicrofy(states.txFee))} UST
+                {formatUST(demicrofy(states.txFee))} Luna
               </TxFeeListItem>
             )}
             <TxFeeListItem label="Send Amount">
-              {formatUST(demicrofy(states.sendAmount))} UST
+              {formatUST(demicrofy(states.sendAmount))} axlUSDC
             </TxFeeListItem>
           </TxFeeList>
         )}

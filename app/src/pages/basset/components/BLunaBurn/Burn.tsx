@@ -8,7 +8,6 @@ import {
 import {
   formatLuna,
   formatLunaInput,
-  formatUST,
   LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
   LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
@@ -106,7 +105,7 @@ export function Component({
   );
 
   const invalidTxFee = useMemo(
-    () => connected && validateTxFee(bank.tokenBalances.uUST, fixedFee),
+    () => connected && validateTxFee(bank.tokenBalances.uLuna, fixedFee),
     [bank, fixedFee, connected],
   );
 
@@ -127,7 +126,7 @@ export function Component({
         if (estimated) {
           setEstimatedGasWanted(estimated.gasWanted);
           setEstimatedFee(
-            big(estimated.txFee).mul(gasPrice.uusd).toFixed() as u<UST>,
+            big(estimated.txFee).mul(gasPrice.uluna).toFixed() as u<Luna>,
           );
         } else {
           setEstimatedGasWanted(null);
@@ -135,7 +134,7 @@ export function Component({
         }
       });
     }, 500);
-  }, [estimateFee, gasPrice.uusd]);
+  }, [estimateFee, gasPrice.uluna]);
 
   // ---------------------------------------------
   // callbacks
@@ -203,7 +202,10 @@ export function Component({
         burn({
           burnAmount,
           gasWanted: estimated.gasWanted,
-          txFee: big(estimated.txFee).mul(gasPrice.uusd).toFixed() as u<UST>,
+          txFee: big(estimated.txFee)
+            .mul(gasPrice.uluna)
+            .mul(new Big(1.25))
+            .toFixed() as u<UST>,
           exchangeRate: exchangeRate?.exchange_rate ?? ('1' as Rate<string>),
           onTxSucceed: () => {
             init();
@@ -229,7 +231,7 @@ export function Component({
       contractAddress.cw20.bLuna,
       exchangeRate,
       estimateFee,
-      gasPrice.uusd,
+      gasPrice.uluna,
       init,
       openAlert,
       terraWalletAddress,
@@ -281,7 +283,7 @@ export function Component({
     estimate,
     estimateFee,
     fixedFee,
-    gasPrice.uusd,
+    gasPrice.uluna,
   ]);
 
   useEffect(() => {
@@ -455,7 +457,7 @@ export function Component({
         )}
         {burnAmount.length > 0 && estimatedFee && (
           <TxFeeListItem label={<IconSpan>Estimated Tx Fee</IconSpan>}>
-            ≈ {formatUST(demicrofy(estimatedFee))} UST
+            ≈ {formatLuna(demicrofy(estimatedFee))} Luna
           </TxFeeListItem>
         )}
       </TxFeeList>

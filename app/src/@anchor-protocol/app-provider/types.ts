@@ -44,6 +44,7 @@ export interface AnchorContractAddress extends AppContractAddress {
     ancUstPair: HumanAddr;
   };
   cw20: {
+    aAxelUSDC: CW20Addr;
     bLuna: CW20Addr;
     aUST: CW20Addr;
     ANC: CW20Addr;

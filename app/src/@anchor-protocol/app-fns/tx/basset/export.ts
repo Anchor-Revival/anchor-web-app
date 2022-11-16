@@ -67,7 +67,7 @@ export function bAssetExportTx($: {
           },
         } as cw20.Send<bAsset>),
       ],
-      fee: new Fee($.gasFee, floor($.fixedGas) + 'uusd'),
+      fee: new Fee($.gasFee, floor($.fixedGas) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

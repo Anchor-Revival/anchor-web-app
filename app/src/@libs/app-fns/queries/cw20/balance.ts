@@ -45,7 +45,10 @@ export async function cw20BalanceQuery<T extends Token>(
   if (tokenInfo.decimals !== 6) {
     return {
       tokenBalance: {
-        balance: importCW20Decimals<T>(result.tokenBalance.balance, tokenInfo),
+        balance: importCW20Decimals<T>(
+          result.tokenBalance.balance,
+          tokenInfo.data,
+        ),
       },
     };
   } else {

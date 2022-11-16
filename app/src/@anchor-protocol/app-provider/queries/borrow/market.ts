@@ -7,6 +7,8 @@ import {
   BorrowMarketWithDisplay,
   withBorrowMarketTokenDisplay,
 } from './utils/tokenDisplay';
+import { useNetwork } from '@anchor-protocol/app-provider';
+
 import { useQueryWithTokenDisplay } from '../utils/tokenDisplay';
 
 const queryFn = createQueryFn(borrowMarketQuery);
@@ -14,8 +16,10 @@ const queryFn = createQueryFn(borrowMarketQuery);
 export function useBorrowMarketQuery(): UseQueryResult<
   BorrowMarketWithDisplay | undefined
 > {
-  const { contractAddress, hiveQueryClient, queryErrorReporter } =
+  const { contractAddress, queryClient, queryErrorReporter } =
     useAnchorWebapp();
+
+  const { network } = useNetwork();
 
   const borrowMarket = useQuery(
     [
@@ -24,7 +28,8 @@ export function useBorrowMarketQuery(): UseQueryResult<
       contractAddress.moneyMarket.interestModel,
       contractAddress.moneyMarket.oracle,
       contractAddress.moneyMarket.overseer,
-      hiveQueryClient,
+      queryClient,
+      network,
     ],
     queryFn,
     {

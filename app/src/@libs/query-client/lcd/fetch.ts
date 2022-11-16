@@ -1,10 +1,7 @@
 import { LcdFetchError } from '../errors';
 
 export type LcdResult<Data> =
-  | {
-      height: string;
-      result: Data;
-    }
+  | Data
   | {
       txhash: string;
       code: number;

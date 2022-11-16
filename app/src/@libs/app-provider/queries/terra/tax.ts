@@ -1,4 +1,4 @@
-import { NativeDenom, Rate, Token, u, UST } from '@libs/types';
+import { Luna, NativeDenom, Rate, Token, u } from '@libs/types';
 import { useTerraTreasuryTaxCapQuery } from './treasuryTaxCap';
 import { useTerraTreasuryTaxRateQuery } from './treasuryTaxRate';
 
@@ -15,6 +15,6 @@ export function useTax<T extends Token>(
   };
 }
 
-export function useUstTax(): { taxRate: Rate; maxTax: u<UST> } {
-  return useTax<UST>('uusd');
+export function useUstTax(): { taxRate: Rate; maxTax: u<Luna> } {
+  return useTax<Luna>('uluna');
 }

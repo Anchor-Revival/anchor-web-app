@@ -2,7 +2,15 @@ import {
   computeBorrowedAmount,
   computeBorrowLimit,
 } from '@anchor-protocol/app-fns';
-import { bAsset, moneyMarket, Rate, u, UST } from '@anchor-protocol/types';
+import {
+  AxlUSDC,
+  bAsset,
+  Luna,
+  moneyMarket,
+  Rate,
+  u,
+  UST,
+} from '@anchor-protocol/types';
 import { FormReturn } from '@libs/use-form';
 import big, { Big } from 'big.js';
 import { computeLtv } from '../../logics/borrow/computeLtv';
@@ -24,8 +32,8 @@ export interface BorrowProvideCollateralFormInput {
 
 export interface BorrowProvideCollateralFormDependency {
   collateral: WhitelistCollateral;
-  fixedFee: u<UST>;
-  userUSTBalance: u<UST>;
+  fixedFee: u<Luna>;
+  userUSTBalance: u<AxlUSDC>;
   userBAssetBalance: u<bAsset>;
   oraclePrices: moneyMarket.oracle.PricesResponse;
   bAssetLtvs: BAssetLtvs;

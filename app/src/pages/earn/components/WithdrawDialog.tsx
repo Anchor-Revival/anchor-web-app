@@ -7,7 +7,7 @@ import {
   UST_INPUT_MAXIMUM_DECIMAL_POINTS,
   UST_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
-import { UST } from '@anchor-protocol/types';
+import { AxlUSDC, Luna } from '@anchor-protocol/types';
 import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
 import { NumberInput } from '@libs/neumorphism-ui/components/NumberInput';
@@ -61,7 +61,8 @@ function WithdrawDialogBase(props: WithdrawDialogProps) {
   const { uaUST } = useBalances();
 
   const {
-    ust: { formatOutput, formatInput, demicrofy, symbol },
+    axlUSDC: { formatOutput, formatInput, demicrofy, symbol },
+    luna,
   } = useFormatters();
 
   const { data } = useEarnEpochStatesQuery();
@@ -111,7 +112,7 @@ function WithdrawDialogBase(props: WithdrawDialogProps) {
           label="AMOUNT"
           error={!!invalidWithdrawAmount}
           onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
-            updateWithdrawAmount(target.value as UST)
+            updateWithdrawAmount(target.value as AxlUSDC)
           }
           InputProps={{
             endAdornment: (
@@ -144,10 +145,10 @@ function WithdrawDialogBase(props: WithdrawDialogProps) {
           <AmountSlider
             disabled={!connected}
             max={Number(demicrofy(totalDeposit))}
-            txFee={Number(demicrofy(txFee ?? ('0' as UST)))}
+            txFee={Number(luna.demicrofy(txFee ?? ('0' as Luna)))}
             value={Number(withdrawAmount)}
             onChange={(value) => {
-              updateWithdrawAmount(formatInput(value.toString() as UST));
+              updateWithdrawAmount(formatInput(value.toString() as AxlUSDC));
             }}
           />
         </figure>
@@ -156,8 +157,8 @@ function WithdrawDialogBase(props: WithdrawDialogProps) {
           <TxFeeList className="receipt">
             {big(txFee).gt(0) && (
               <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-                {formatOutput(demicrofy(txFee))}
-                {` ${symbol}`}
+                {luna.formatOutput(luna.demicrofy(txFee))}
+                {` ${luna.symbol}`}
               </TxFeeListItem>
             )}
             <TxFeeListItem label="Receive Amount">

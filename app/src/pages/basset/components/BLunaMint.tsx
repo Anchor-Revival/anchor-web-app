@@ -8,7 +8,6 @@ import {
 import {
   formatLuna,
   formatLunaInput,
-  formatUST,
   LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
   LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
@@ -98,7 +97,7 @@ function Component({ className }: BLunaMintProps) {
   );
 
   const invalidTxFee = useMemo(
-    () => connected && validateTxFee(bank.tokenBalances.uUST, fixedFee),
+    () => connected && validateTxFee(bank.tokenBalances.uLuna, fixedFee),
     [bank, fixedFee, connected],
   );
 
@@ -122,7 +121,7 @@ function Component({ className }: BLunaMintProps) {
         if (estimated) {
           setEstimatedGasWanted(estimated.gasWanted);
           setEstimatedFee(
-            big(estimated.txFee).mul(gasPrice.uusd).toFixed() as u<UST>,
+            big(estimated.txFee).mul(gasPrice.uluna).toFixed() as u<Luna>,
           );
         } else {
           setEstimatedGasWanted(null);
@@ -130,7 +129,7 @@ function Component({ className }: BLunaMintProps) {
         }
       });
     }, 500);
-  }, [estimateFee, gasPrice.uusd]);
+  }, [estimateFee, gasPrice.uluna]);
 
   useEffect(() => {
     if (!connected || !terraWalletAddress || bondAmount.length === 0) {
@@ -154,7 +153,9 @@ function Component({ className }: BLunaMintProps) {
         terraWalletAddress,
         contractAddress.bluna.hub,
         {
-          bond: {},
+          bond: {
+            validator: 'terravaloper1zdpgj8am5nqqvht927k3etljyl6a52kwqndjz2',
+          },
         },
         {
           uluna: amount.toFixed(),
@@ -170,7 +171,7 @@ function Component({ className }: BLunaMintProps) {
     estimate,
     estimateFee,
     fixedFee,
-    gasPrice.uusd,
+    gasPrice.uluna,
     terraWalletAddress,
   ]);
 
@@ -232,7 +233,9 @@ function Component({ className }: BLunaMintProps) {
           terraWalletAddress,
           contractAddress.bluna.hub,
           {
-            bond: {},
+            bond: {
+              validator: 'terravaloper1zdpgj8am5nqqvht927k3etljyl6a52kwqndjz2',
+            },
           },
           {
             uluna: floor(big(bondAmount).mul(MICRO)).toFixed(),
@@ -244,7 +247,10 @@ function Component({ className }: BLunaMintProps) {
         mint({
           bondAmount,
           gasWanted: estimated.gasWanted,
-          txFee: big(estimated.txFee).mul(gasPrice.uusd).toFixed() as u<UST>,
+          txFee: big(estimated.txFee)
+            .mul(gasPrice.uluna)
+            .mul(new Big(1.25))
+            .toFixed() as u<Luna>,
           exchangeRate: big(1)
             .div(exchangeRate?.exchange_rate ?? '1')
             .toString() as Rate<string>,
@@ -270,7 +276,7 @@ function Component({ className }: BLunaMintProps) {
       contractAddress.bluna.hub,
       estimateFee,
       exchangeRate,
-      gasPrice.uusd,
+      gasPrice.uluna,
       init,
       mint,
       openAlert,
@@ -418,7 +424,7 @@ function Component({ className }: BLunaMintProps) {
         )}
         {bondAmount.length > 0 && estimatedFee && (
           <TxFeeListItem label={<IconSpan>Estimated Tx Fee</IconSpan>}>
-            ≈ {formatUST(demicrofy(estimatedFee))} UST
+            ≈ {formatLuna(demicrofy(estimatedFee))} Luna
           </TxFeeListItem>
         )}
       </TxFeeList>

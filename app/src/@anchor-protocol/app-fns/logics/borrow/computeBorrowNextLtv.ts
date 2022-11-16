@@ -1,4 +1,4 @@
-import type { Rate, u, UST } from '@anchor-protocol/types';
+import type { AxlUSDC, Rate, u } from '@anchor-protocol/types';
 import { microfy } from '@libs/formatter';
 import big, { Big } from 'big.js';
 import { computeBorrowAmountToLtv } from './computeBorrowAmountToLtv';
@@ -6,9 +6,9 @@ import { computeBorrowAmountToLtv } from './computeBorrowAmountToLtv';
 // (Loan_amount + borrow_amount) / ((Borrow_info.balance - Borrow_info.spendable - redeemed_collateral) * Oracleprice)
 
 export function computeBorrowNextLtv(
-  amount: UST,
-  borrowLimit: u<UST<Big>>,
-  borrowedAmount: u<UST<Big>>,
+  amount: AxlUSDC,
+  borrowLimit: u<AxlUSDC<Big>>,
+  borrowedAmount: u<AxlUSDC<Big>>,
 ): Rate<Big> | undefined {
   if (amount.length === 0) {
     return undefined;

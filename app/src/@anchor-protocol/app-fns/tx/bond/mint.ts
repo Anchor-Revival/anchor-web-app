@@ -1,13 +1,5 @@
 import { formatLuna } from '@anchor-protocol/notation';
-import {
-  bLuna,
-  Gas,
-  HumanAddr,
-  Luna,
-  Rate,
-  u,
-  UST,
-} from '@anchor-protocol/types';
+import { bLuna, Gas, HumanAddr, Luna, Rate, u } from '@anchor-protocol/types';
 import {
   pickAttributeValue,
   pickEvent,
@@ -44,7 +36,7 @@ export function bondMintTx($: {
   bondAmount: Luna;
   gasFee: Gas;
   gasAdjustment: Rate<number>;
-  fixedGas: u<UST>;
+  fixedGas: u<Luna>;
   exchangeRate: Rate<string>;
   network: NetworkInfo;
   queryClient: QueryClient;
@@ -61,7 +53,9 @@ export function bondMintTx($: {
           $.walletAddr,
           $.bAssetHubAddr,
           {
-            bond: {},
+            bond: {
+              validator: 'terravaloper1zdpgj8am5nqqvht927k3etljyl6a52kwqndjz2',
+            },
           },
 
           // send native token
@@ -70,7 +64,7 @@ export function bondMintTx($: {
           },
         ),
       ],
-      fee: new Fee($.gasFee, floor($.fixedGas) + 'uusd'),
+      fee: new Fee($.gasFee, floor($.fixedGas) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

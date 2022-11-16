@@ -95,7 +95,7 @@ export function ancAncUstLpProvideTx($: {
                 {
                   info: {
                     native_token: {
-                      denom: 'uusd',
+                      denom: 'uluna',
                     },
                   },
                   amount: formatTokenInput($.ustAmount),
@@ -104,10 +104,10 @@ export function ancAncUstLpProvideTx($: {
               slippage_tolerance: $.slippageTolerance,
             },
           } as terraswap.pair.ProvideLiquidity<ANC, UST>,
-          new Coins([new Coin('uusd', formatTokenInput($.ustAmount))]),
+          new Coins([new Coin('uluna', formatTokenInput($.ustAmount))]),
         ),
       ],
-      fee: new Fee($.gasFee, floor($.txFee) + 'uusd'),
+      fee: new Fee($.gasFee, floor($.txFee) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

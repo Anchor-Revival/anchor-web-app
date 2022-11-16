@@ -1,4 +1,4 @@
-import { Rate, u, UST } from '@anchor-protocol/types';
+import { AxlUSDC, Luna, Rate, u, UST } from '@anchor-protocol/types';
 import { computeMaxUstBalanceForUstTransfer } from '@libs/app-fns';
 import { max, min } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
@@ -6,14 +6,14 @@ import { FormReturn } from '@libs/use-form';
 import big, { Big } from 'big.js';
 
 export interface EarnDepositFormInput {
-  depositAmount: UST;
+  depositAmount: AxlUSDC;
 }
 
 export interface EarnDepositFormDependency {
-  userUUSTBalance: u<UST>;
-  fixedGas: u<UST>;
+  userUUSTBalance: u<AxlUSDC>;
+  fixedGas: u<Luna>;
   taxRate: Rate;
-  maxTaxUUSD: u<UST>;
+  maxTaxUUSD: u<Luna>;
   isConnected: boolean;
 }
 
@@ -21,7 +21,7 @@ export interface EarnDepositFormStates extends EarnDepositFormInput {
   availablePost: boolean;
   maxAmount: u<UST>;
   sendAmount?: u<UST>;
-  txFee?: u<UST>;
+  txFee?: u<Luna>;
   invalidTxFee?: string;
   invalidDepositAmount?: string;
   invalidNextTxFee?: string;
@@ -113,7 +113,7 @@ export const earnDepositForm =
     return [
       {
         depositAmount,
-        txFee: txFee?.toFixed() as u<UST>,
+        txFee: txFee?.toFixed() as u<Luna>,
         sendAmount: sendAmount?.toFixed() as u<UST>,
         maxAmount: maxAmount?.toFixed() as u<UST>,
         invalidTxFee,

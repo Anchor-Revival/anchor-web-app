@@ -1,14 +1,15 @@
 import {
+  AxlUSDC,
   CW20Addr,
   HumanAddr,
   moneyMarket,
   Rate,
   u,
-  UST,
 } from '@anchor-protocol/types';
+import { terraBalancesQuery } from '@libs/app-fns';
 import {
-  hiveFetch,
-  HiveQueryClient,
+  QueryClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
 } from '@libs/query-client';
@@ -45,32 +46,12 @@ export interface BorrowMarketStateQueryVariables {
   marketContract: string;
 }
 
-export interface BorrowMarketStateQueryResult {
-  marketBalances: {
-    Result: { Denom: string; Amount: string }[];
-  };
-}
-
 export type BorrowMarket = WasmQueryData<BorrowMarketWasmQuery> & {
   marketBalances: {
-    uUST: u<UST>;
+    uUST: u<AxlUSDC>;
   };
   bAssetLtvs: BAssetLtvs;
 };
-
-// language=graphql
-export const BORROW_MARKET_STATE_QUERY = `
-  query (
-    $marketContract: String!
-  ) {
-    marketBalances: BankBalancesAddress(Address: $marketContract) {
-      Result {
-        Denom
-        Amount
-      }
-    }
-  }
-`;
 
 type MarketStateWasmQuery = Pick<BorrowMarketWasmQuery, 'marketState'>;
 type MarketWasmQuery = Omit<BorrowMarketWasmQuery, 'marketState'>;
@@ -80,14 +61,31 @@ export async function borrowMarketQuery(
   interestContract: HumanAddr,
   oracleContract: HumanAddr,
   overseerContract: HumanAddr,
-  hiveQueryClient: HiveQueryClient,
+  queryClient: QueryClient,
+  network: any,
 ): Promise<BorrowMarket> {
-  const { marketBalances: _marketBalances, marketState } = await hiveFetch<
-    MarketStateWasmQuery,
-    BorrowMarketStateQueryVariables,
-    BorrowMarketStateQueryResult
-  >({
-    ...hiveQueryClient,
+  const _marketBalances = await terraBalancesQuery(
+    marketContract,
+    [
+      {
+        native_token: {
+          denom: 'uluna',
+        },
+      },
+      {
+        native_token: {
+          denom:
+            network.name !== 'pisco'
+              ? 'ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389'
+              : 'ibc/B3504E092456BA618CC28AC671A71FB08C6CA0FD0BE7C8A5B5A3E2DD933CC9E4',
+        },
+      },
+    ],
+    queryClient,
+  );
+
+  const { marketState } = await wasmFetch<MarketStateWasmQuery>({
+    ...queryClient,
     id: `borrow--market-state`,
     wasmQuery: {
       marketState: {
@@ -97,26 +95,26 @@ export async function borrowMarketQuery(
         },
       },
     },
-    variables: {
-      marketContract,
-    },
-    query: BORROW_MARKET_STATE_QUERY,
   });
 
   const marketBalances: Pick<BorrowMarket, 'marketBalances'>['marketBalances'] =
     {
-      uUST: (_marketBalances.Result.find(({ Denom }) => Denom === 'uusd')
-        ?.Amount ?? '0') as u<UST>,
+      uUST: (_marketBalances.balances.find(
+        ({ asset }: any) =>
+          asset?.native_token?.denom ===
+          (network.chainID !== 'pisco'
+            ? 'ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389'
+            : 'ibc/B3504E092456BA618CC28AC671A71FB08C6CA0FD0BE7C8A5B5A3E2DD933CC9E4'),
+      )?.balance ?? '0') as u<AxlUSDC>,
     };
 
   const {
     borrowRate,
     oraclePrices: _oraclePrices,
     overseerWhitelist,
-  } = await hiveFetch<MarketWasmQuery>({
-    ...hiveQueryClient,
+  } = await wasmFetch<MarketWasmQuery>({
+    ...queryClient,
     id: `borrow--market`,
-    variables: {},
     wasmQuery: {
       borrowRate: {
         contractAddress: interestContract,

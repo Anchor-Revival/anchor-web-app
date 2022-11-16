@@ -1,12 +1,12 @@
 import { min } from '@libs/big-math';
-import { Rate, u, UST } from '@libs/types';
+import { AxlUSDC, Luna, Rate, u, UST } from '@libs/types';
 import big, { Big, BigSource } from 'big.js';
 
 export function computeMaxUstBalanceForUstTransfer(
-  ustBalance: u<UST<BigSource>>,
+  ustBalance: u<AxlUSDC<BigSource>>,
   taxRate: Rate,
-  maxTaxUUSD: u<UST>,
-  fixedFee: u<UST<BigSource>>,
+  maxTaxUUSD: u<Luna>,
+  fixedFee: u<Luna<BigSource>>,
 ) {
   if (big(ustBalance).lte(0)) {
     return big('0') as u<UST<Big>>;

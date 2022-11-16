@@ -1,22 +1,22 @@
-import { u, UST } from '@anchor-protocol/types';
+import { AxlUSDC, Luna, u } from '@anchor-protocol/types';
 import { microfy } from '@libs/formatter';
 import { FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 
 export interface EarnWithdrawFormInput {
-  withdrawAmount: UST;
+  withdrawAmount: AxlUSDC;
 }
 
 export interface EarnWithdrawFormDependency {
-  userUUSTBalance: u<UST<BigSource>>;
-  fixedGas: u<UST<BigSource>>;
-  totalDeposit: u<UST<BigSource>>;
+  userUUSTBalance: u<AxlUSDC<BigSource>>;
+  fixedGas: u<Luna<BigSource>>;
+  totalDeposit: u<AxlUSDC<BigSource>>;
   isConnected: boolean;
 }
 
 export interface EarnWithdrawFormStates extends EarnWithdrawFormInput {
-  receiveAmount?: u<UST<BigSource>>;
-  txFee?: u<UST<BigSource>>;
+  receiveAmount?: u<AxlUSDC<BigSource>>;
+  txFee?: u<Luna<BigSource>>;
   invalidTxFee?: string;
   invalidWithdrawAmount?: string;
   availablePost: boolean;
@@ -40,17 +40,19 @@ export const earnWithdrawForm =
     if (withdrawAmount.length === 0) {
       return [
         {
-          withdrawAmount: '' as UST,
+          withdrawAmount: '' as AxlUSDC,
           availablePost: false,
         },
         undefined,
       ];
     } else {
       // txFee
-      const txFee = big(fixedGas) as u<UST<Big>>;
+      const txFee = big(fixedGas) as u<Luna<Big>>;
 
       // receiveAmount
-      const receiveAmount = microfy(withdrawAmount).minus(txFee) as u<UST<Big>>;
+      const receiveAmount = microfy(withdrawAmount).minus(txFee) as u<
+        AxlUSDC<Big>
+      >;
 
       // invalidTxFee
       const invalidTxFee = (() => {
@@ -66,9 +68,9 @@ export const earnWithdrawForm =
         }
 
         return microfy(withdrawAmount).gt(totalDeposit)
-          ? `Not enough aUST`
+          ? `Not enough aUSDC`
           : big(userUUSTBalance).lt(txFee)
-          ? `Not enough UST`
+          ? `Not enough axlUSDC`
           : undefined;
       })();
 

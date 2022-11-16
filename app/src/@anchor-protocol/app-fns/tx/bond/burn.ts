@@ -7,7 +7,6 @@ import {
   Luna,
   Rate,
   u,
-  UST,
 } from '@anchor-protocol/types';
 import {
   pickAttributeValueByKey,
@@ -48,7 +47,7 @@ export function bondBurnTx($: {
   burnAmount: bLuna;
   gasFee: Gas;
   gasAdjustment: Rate<number>;
-  fixedGas: u<UST>;
+  fixedGas: u<Luna>;
   exchangeRate: Rate<string>;
   network: NetworkInfo;
   queryClient: QueryClient;
@@ -72,7 +71,7 @@ export function bondBurnTx($: {
           },
         }),
       ],
-      fee: new Fee($.gasFee, floor($.fixedGas) + 'uusd'),
+      fee: new Fee($.gasFee, floor($.fixedGas) + 'uluna'),
       gasAdjustment: $.gasAdjustment,
     }),
     _postTx({ helper, ...$ }),

@@ -1,4 +1,4 @@
-import { u, UST } from '@anchor-protocol/types';
+import { AxlUSDC, Luna, u } from '@anchor-protocol/types';
 import { useEarnDepositForm } from '@anchor-protocol/app-provider';
 import { ActionButton } from '@libs/neumorphism-ui/components/ActionButton';
 import { useConfirm } from '@libs/neumorphism-ui/components/useConfirm';
@@ -24,8 +24,8 @@ export function TerraDepositDialog(props: DialogProps<{}, void>) {
 
   const proceed = useCallback(
     async (
-      depositAmount: UST,
-      txFee: u<UST<BigSource>> | undefined,
+      depositAmount: AxlUSDC,
+      txFee: u<Luna<BigSource>> | undefined,
       confirm: ReactNode,
     ) => {
       if (!account.connected || !deposit) {
@@ -46,7 +46,7 @@ export function TerraDepositDialog(props: DialogProps<{}, void>) {
 
       deposit({
         depositAmount,
-        txFee: txFee!.toString() as u<UST>,
+        txFee: txFee!.toString() as u<Luna>,
       });
     },
     [account.connected, deposit, openConfirm],
