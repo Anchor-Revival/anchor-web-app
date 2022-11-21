@@ -1,7 +1,6 @@
 import { hiveFetch, QueryClient } from '@libs/query-client';
 import {
   AUD,
-  AxlUSDC,
   CAD,
   CHF,
   CNY,
@@ -80,7 +79,6 @@ export interface NativeBalances {
   uTHB: u<THB>;
   uKRT: u<KRT>;
   uLuna: u<Luna>;
-  uAxlUSDC: u<AxlUSDC>;
 }
 
 export const EMPTY_NATIVE_BALANCES: NativeBalances = {
@@ -106,7 +104,6 @@ export const EMPTY_NATIVE_BALANCES: NativeBalances = {
   uTHB: '0' as u<THB>,
   uKRT: '0' as u<KRT>,
   uLuna: '0' as u<Luna>,
-  uAxlUSDC: '0' as u<AxlUSDC>,
 };
 
 export async function terraNativeBalancesQuery(
@@ -132,11 +129,11 @@ export async function terraNativeBalancesQuery(
               denom: denom
                 .replace(
                   'ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389',
-                  'uAxlUSDC',
+                  'uusd',
                 )
                 .replace(
                   'ibc/B3504E092456BA618CC28AC671A71FB08C6CA0FD0BE7C8A5B5A3E2DD933CC9E4',
-                  'uAxlUSDC',
+                  'uusd',
                 ) as NativeDenom,
             }));
           })
@@ -154,10 +151,10 @@ export async function terraNativeBalancesQuery(
           return nativeTokenBalances.Result.map(({ Denom, Amount }) => ({
             denom: Denom.replace(
               'ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389',
-              'uAxlUSDC',
+              'uusd',
             ).replace(
               'ibc/B3504E092456BA618CC28AC671A71FB08C6CA0FD0BE7C8A5B5A3E2DD933CC9E4',
-              'uAxlUSDC',
+              'uusd',
             ) as NativeDenom,
             amount: Amount,
           }));
@@ -166,7 +163,6 @@ export async function terraNativeBalancesQuery(
   const balances = await balancesPromise;
 
   const result = { ...EMPTY_NATIVE_BALANCES };
-
   for (const { denom, amount } of balances) {
     switch (denom) {
       case 'uusd':
@@ -235,9 +231,6 @@ export async function terraNativeBalancesQuery(
       case 'ukrt':
         result.uKRT = amount as u<KRT>;
         break;
-      case 'uAxlUSDC':
-        result.uAxlUSDC = amount as u<AxlUSDC>;
-        break;
     }
   }
 
@@ -293,8 +286,6 @@ export function pickNativeBalance<T extends Token>(
       return balances.uTHB as u<T>;
     case 'ukrt':
       return balances.uKRT as u<T>;
-    case 'uAxlUSDC':
-      return balances.uAxlUSDC as u<T>;
     default:
       return '0' as u<T>;
   }

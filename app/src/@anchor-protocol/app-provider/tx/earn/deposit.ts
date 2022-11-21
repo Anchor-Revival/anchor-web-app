@@ -1,5 +1,5 @@
 import { earnDepositTx } from '@anchor-protocol/app-fns';
-import { AxlUSDC, Luna, u } from '@anchor-protocol/types';
+import { UST, Luna, u } from '@anchor-protocol/types';
 import { useRefetchQueries } from '@libs/app-provider';
 import { useStream } from '@rx-stream/react';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
@@ -8,7 +8,7 @@ import { useAnchorWebapp } from '../../contexts/context';
 import { ANCHOR_TX_KEY } from '../../env';
 
 export interface EarnDepositTxParams {
-  depositAmount: AxlUSDC;
+  depositAmount: UST;
   txFee: u<Luna>;
   onTxSucceed?: () => void;
 }

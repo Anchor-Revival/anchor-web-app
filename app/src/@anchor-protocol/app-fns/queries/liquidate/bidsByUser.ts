@@ -1,4 +1,4 @@
-import { HumanAddr, liquidation } from '@anchor-protocol/types';
+import { CW20Addr, HumanAddr, liquidation } from '@anchor-protocol/types';
 import {
   QueryClient,
   wasmFetch,
@@ -18,7 +18,7 @@ export type BidByUser = WasmQueryData<BidByUserWasmQuery>;
 export async function bidsByUserQuery(
   queryClient: QueryClient,
   liquidationContract: HumanAddr,
-  collateralToken: HumanAddr,
+  collateralToken: CW20Addr,
   userAddress?: HumanAddr,
   startAfter?: HumanAddr,
   limit?: number,

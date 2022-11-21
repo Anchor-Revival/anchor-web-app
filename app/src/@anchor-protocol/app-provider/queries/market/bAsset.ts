@@ -18,6 +18,7 @@ export function useMarketBAssetQuery(): UseQueryResult<
       contractAddress.cw20.bLuna,
       contractAddress.moneyMarket.oracle,
       contractAddress.bluna.custody,
+      contractAddress.native.usd,
       queryClient,
     ],
     queryFn,
@@ -27,6 +28,5 @@ export function useMarketBAssetQuery(): UseQueryResult<
       onError: queryErrorReporter,
     },
   );
-
   return result;
 }

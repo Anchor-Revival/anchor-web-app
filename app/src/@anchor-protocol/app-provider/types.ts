@@ -1,6 +1,6 @@
 import { Gas } from '@anchor-protocol/types';
 import { AppConstants, AppContractAddress } from '@libs/app-provider';
-import { CW20Addr, HumanAddr } from '@libs/types';
+import { CW20Addr, HumanAddr, NativeDenom } from '@libs/types';
 
 export interface AnchorContractAddress extends AppContractAddress {
   bluna: {
@@ -44,13 +44,15 @@ export interface AnchorContractAddress extends AppContractAddress {
     ancUstPair: HumanAddr;
   };
   cw20: {
-    aAxelUSDC: CW20Addr;
     bLuna: CW20Addr;
     aUST: CW20Addr;
     ANC: CW20Addr;
     AncUstLP: CW20Addr;
     bLunaLunaLP: CW20Addr;
   };
+  native: {
+    usd: NativeDenom
+  }
 }
 
 export interface AnchorConstants extends AppConstants {

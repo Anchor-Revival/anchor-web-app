@@ -75,6 +75,9 @@ export const TEST_ADDRESSES = {
     AncUstLP: 'terra1agu2qllktlmf0jdkuhcheqtchnkppzrl4759y6' as CW20Addr,
     bLunaLunaLP: 'terra1tj4pavqjqjfm0wh73sh7yy9m4uq3m2cpmgva6n' as CW20Addr,
   },
+  native: {
+    usd: "ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389"
+  }
 };
 
 export const TEST_WALLET_ADDRESS =

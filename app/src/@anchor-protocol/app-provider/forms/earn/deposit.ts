@@ -2,7 +2,7 @@ import {
   earnDepositForm,
   EarnDepositFormStates,
 } from '@anchor-protocol/app-fns';
-import { AxlUSDC } from '@anchor-protocol/types';
+import { UST } from '@anchor-protocol/types';
 import { useFixedFee, useUstTax } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import { useAccount } from 'contexts/account';
@@ -10,7 +10,7 @@ import { useBalances } from 'contexts/balances';
 import { useCallback } from 'react';
 
 export interface EarnDepositFormReturn extends EarnDepositFormStates {
-  updateDepositAmount: (depositAmount: AxlUSDC) => void;
+  updateDepositAmount: (depositAmount: UST) => void;
 }
 
 export function useEarnDepositForm(): EarnDepositFormReturn {
@@ -18,7 +18,7 @@ export function useEarnDepositForm(): EarnDepositFormReturn {
 
   const fixedFee = useFixedFee();
 
-  const { uAxlUSDC } = useBalances();
+  const { uUST } = useBalances();
 
   const { taxRate, maxTax } = useUstTax();
 
@@ -29,13 +29,13 @@ export function useEarnDepositForm(): EarnDepositFormReturn {
       fixedGas: fixedFee,
       taxRate: taxRate,
       maxTaxUUSD: maxTax,
-      userUUSTBalance: uAxlUSDC,
+      userUUSTBalance: uUST,
     },
-    () => ({ depositAmount: '' as AxlUSDC }),
+    () => ({ depositAmount: '' as UST }),
   );
 
   const updateDepositAmount = useCallback(
-    (depositAmount: AxlUSDC) => {
+    (depositAmount: UST) => {
       input({
         depositAmount,
       });

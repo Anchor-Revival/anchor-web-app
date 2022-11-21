@@ -4,7 +4,7 @@ import {
   useDeploymentTarget,
 } from '@anchor-protocol/app-provider';
 import { useFixedFee, useUstTax } from '@libs/app-provider';
-import { AxlUSDC } from '@libs/types';
+import { UST } from '@libs/types';
 import { useForm } from '@libs/use-form';
 import { useAccount } from 'contexts/account';
 import { useBalances } from 'contexts/balances';
@@ -27,7 +27,7 @@ export function useBorrowBorrowForm(
     constants: { blocksPerYear },
   } = useAnchorWebapp();
 
-  const { uAxlUSDC } = useBalances();
+  const { uUST } = useBalances();
 
   const { taxRate, maxTax } = useUstTax();
 
@@ -47,7 +47,7 @@ export function useBorrowBorrowForm(
       target,
       maxTaxUUSD: maxTax,
       taxRate: taxRate,
-      userUSTBalance: uAxlUSDC,
+      userUSTBalance: uUST,
       connected,
       oraclePrices,
       borrowRate,
@@ -59,7 +59,7 @@ export function useBorrowBorrowForm(
       fixedFee,
     },
     () => ({
-      borrowAmount: '' as AxlUSDC,
+      borrowAmount: '' as UST,
     }),
   );
 }

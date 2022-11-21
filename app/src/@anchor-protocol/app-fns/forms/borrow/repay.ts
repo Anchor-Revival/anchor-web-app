@@ -1,6 +1,6 @@
 import { DeploymentTarget } from '@anchor-protocol/app-provider';
 import { moneyMarket, Rate } from '@anchor-protocol/types';
-import { AxlUSDC, u, UST } from '@libs/types';
+import { UST, u } from '@libs/types';
 import { FormReturn } from '@libs/use-form';
 import big, { Big } from 'big.js';
 import { computeBorrowAPR } from '../../logics/borrow/computeBorrowAPR';
@@ -31,6 +31,7 @@ export interface BorrowRepayFormDependency {
   target: DeploymentTarget;
   fixedFee: u<UST>;
   userUSTBalance: u<UST>;
+  userLunaBalance: u<Luna>;
   marketBorrowerInfo: moneyMarket.market.BorrowerInfoResponse;
   overseerCollaterals: moneyMarket.overseer.CollateralsResponse;
   oraclePrices: moneyMarket.oracle.PricesResponse;
@@ -46,20 +47,20 @@ export interface BorrowRepayFormDependency {
 }
 
 export interface BorrowRepayFormStates extends BorrowRepayFormInput {
-  amountToLtv: (repayAmount: u<AxlUSDC>) => Rate<Big>;
-  ltvToAmount: (ltv: Rate<Big>) => u<AxlUSDC<Big>>;
+  amountToLtv: (repayAmount: u<UST>) => Rate<Big>;
+  ltvToAmount: (ltv: Rate<Big>) => u<UST<Big>>;
   ltvStepFunction: (draftLtv: Rate<Big>) => Rate<Big>;
-  borrowLimit: u<AxlUSDC<Big>>;
+  borrowLimit: u<UST<Big>>;
   currentLtv: Rate<Big> | undefined;
   apr: Rate<Big>;
-  maxRepayingAmount: u<AxlUSDC<Big>>;
+  maxRepayingAmount: u<UST<Big>>;
   invalidTxFee: string | undefined;
   dangerLtv: Rate<Big>;
   nextLtv: Rate<Big> | undefined;
-  txFee: u<AxlUSDC<Big>> | undefined;
+  txFee: u<UST<Big>> | undefined;
   estimatedLiquidationPrice: string | null;
-  sendAmount: u<AxlUSDC<Big>> | undefined;
-  totalOutstandingLoan: u<AxlUSDC<Big>> | undefined;
+  sendAmount: u<UST<Big>> | undefined;
+  totalOutstandingLoan: u<UST<Big>> | undefined;
   invalidRepayAmount: string | undefined;
   availablePost: boolean;
 }
@@ -70,6 +71,7 @@ export const borrowRepayForm = ({
   target,
   fixedFee,
   userUSTBalance,
+  userLunaalance,
   marketBorrowerInfo,
   overseerCollaterals,
   oraclePrices,

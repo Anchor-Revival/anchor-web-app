@@ -28,7 +28,7 @@ function TransactionHistoryListBase({
         return (
           <li key={'txhistory' + tx_hash + '_' + i}>
             <a
-              href={getTransactionDetailUrl(network.chainID, tx_hash)}
+              href={getTransactionDetailUrl(network.name, tx_hash)}
               target="_blank"
               rel="noreferrer"
             >

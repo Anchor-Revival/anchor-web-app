@@ -1,6 +1,6 @@
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
 import { InfoTooltip } from '@libs/neumorphism-ui/components/InfoTooltip';
-import React from 'react';
+import React, { useMemo } from 'react';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,6 +9,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import { styled } from '@material-ui/core';
 import { PaddingSection } from './PaddingSection';
+import { useLiquidationHistoryQuery } from '@anchor-protocol/app-provider/queries/liquidate/history';
+import { LiquidationData } from '@anchor-protocol/app-fns/queries/liquidate/history';
 
 export interface LiquidationStatsSectionProps {
   className?: string;
@@ -59,13 +61,15 @@ export function LiquidationStatsSection({
     return { time, atom, axlUSDC, price };
   }
 
-  const liquidations = [
-    createData(new Date(Date.now()), 159, 6.0, 24),
-    createData(new Date(Date.now()), 237, 9.0, 37),
-    createData(new Date(Date.now()), 262, 16.0, 24),
-    createData(new Date(Date.now()), 305, 3.7, 67),
-    createData(new Date(Date.now()), 356, 16.0, 49),
-  ];
+  const { data: liquidationHistory } = useLiquidationHistoryQuery();
+
+  const liquidations = useMemo(() => liquidationHistory?.map((liquidation: LiquidationData) => ({
+    time: liquidation?.date,
+    collateral: liquidation?.amountLiquidated,
+    axlUSDC: liquidation?.amountPaid,
+    price: liquidation?.currentPrice
+  })) ?? [], [liquidationHistory]);
+
 
   const LowPaddingTableCell = styled(TableCell)({
     padding: '5px 10px',
@@ -106,14 +110,14 @@ export function LiquidationStatsSection({
           <TableBody>
             {liquidations.map((liquidation, index) => (
               <TableRow
-                key={`${liquidation.time.toISOString()}-̀${index}`}
+                key={`${liquidation.time}-${index}`}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <LowPaddingTableCell scope="row">
-                  {liquidation.time.toISOString()}
+                  {liquidation.time}
                 </LowPaddingTableCell>
                 <LowPaddingTableCell align="right">
-                  {liquidation.atom}
+                  {liquidation.collateral}
                 </LowPaddingTableCell>
                 <LowPaddingTableCell align="right">
                   {liquidation.axlUSDC}

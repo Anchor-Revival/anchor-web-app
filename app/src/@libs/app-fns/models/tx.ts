@@ -1,3 +1,6 @@
+import { Luna, u } from "@libs/types";
+import Big from "big.js";
+
 export enum TxStreamPhase {
   /** in progress post (wait allow from chrome extension or walletconnect) */
   POST = 'POST',
@@ -21,6 +24,8 @@ export interface TxReceipt {
   name: string | { html: string };
   value: string | { html: string };
 }
+
+export type TxFee = u<Luna<Big>>;
 
 export type TxReceiptLike = TxReceipt | undefined | null | false;
 

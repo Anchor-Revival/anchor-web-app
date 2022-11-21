@@ -3,19 +3,19 @@ import { IconOnlyWalletButton } from 'components/Header/desktop/IconOnlyWalletBu
 import { useMediaQuery } from 'react-responsive';
 import { ConnectedButton } from './ConnectedButton';
 import { NotConnectedButton } from './NotConnectedButton';
-import { AxlUSDC, u } from '@anchor-protocol/types';
+import { UST, u } from '@anchor-protocol/types';
 
 export interface ConnectWalletButtonProps {
   initializing?: boolean;
   walletAddress?: string;
-  totalAxlUSDC?: u<AxlUSDC>;
+  totalUST?: u<UST>;
   onClick: () => void;
 }
 
 export function ConnectWalletButton({
   initializing = false,
   walletAddress,
-  totalAxlUSDC = '0' as u<AxlUSDC>,
+  totalUST = '0' as u<UST>,
   onClick,
 }: ConnectWalletButtonProps) {
   // ---------------------------------------------
@@ -48,7 +48,7 @@ export function ConnectWalletButton({
   ) : (
     <ConnectedButton
       walletAddress={walletAddress}
-      totalAxlUSDC={totalAxlUSDC}
+      totalUST={totalUST}
       onClick={onClick}
     />
   );

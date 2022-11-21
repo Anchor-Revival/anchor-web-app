@@ -12,7 +12,7 @@ export function TxHashLink({ txHash }: TxHashProps) {
 
   return (
     <a
-      href={getTransactionDetailUrl(network.chainID, txHash)}
+      href={getTransactionDetailUrl(network.name, txHash)}
       target="_blank"
       rel="noreferrer"
     >

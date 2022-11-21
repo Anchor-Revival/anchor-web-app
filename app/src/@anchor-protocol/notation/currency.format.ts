@@ -11,7 +11,7 @@ import {
   UST,
 } from '@anchor-protocol/types';
 import { formatDemimal, formatInteger, MICRO } from '@libs/formatter';
-import { AxlUSDC, u } from '@libs/types';
+import { u } from '@libs/types';
 import big, { BigSource } from 'big.js';
 
 // ---------------------------------------------
@@ -114,19 +114,19 @@ export function formatANCWithPostfixUnits(n: ANC<BigSource>): string {
   return bn.gte(MILLION) ? d3Formatter(bn.div(MILLION)) + 'M' : formatANC(n);
 }
 
-export function formatUST(n: AxlUSDC<BigSource>): string {
+export function formatUST(n: UST<BigSource>): string {
   if (big(n).gt(0) && big(n).lt(0.001)) {
     return '<0.001';
   }
   return d3Formatter(n);
 }
 
-export function formatUSTWithPostfixUnits(n: AxlUSDC<BigSource>): string {
+export function formatUSTWithPostfixUnits(n: UST<BigSource>): string {
   const bn = big(n);
   return bn.gte(MILLION) ? d2Formatter(bn.div(MILLION)) + 'M' : formatUST(n);
 }
 
-export function formatAUST(n: AxlUSDC<BigSource>): string {
+export function formatAUST(n: UST<BigSource>): string {
   return d6Formatter(n);
 }
 

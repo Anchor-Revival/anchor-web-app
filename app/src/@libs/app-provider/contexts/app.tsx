@@ -148,6 +148,8 @@ export function AppProvider<
     queryErrorReporter,
   );
 
+  console.log(gasPrice, "gas-price", network)
+
   const states = useMemo<App<any, any>>(() => {
     return {
       ...networkBoundStates,

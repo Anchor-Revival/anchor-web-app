@@ -23,7 +23,7 @@ export function useBorrowRedeemCollateralForm(
 
   const fixedFee = useFixedFee();
 
-  const { uAxlUSDC } = useBalances();
+  const { uUST } = useBalances();
 
   const { data: { oraclePrices, bAssetLtvs } = fallbackBorrowMarket } =
     useBorrowMarketQuery();
@@ -37,7 +37,7 @@ export function useBorrowRedeemCollateralForm(
     {
       collateral,
       userBAssetBalance: balance,
-      userUSTBalance: uAxlUSDC,
+      userUSTBalance: uUST,
       connected,
       oraclePrices,
       overseerCollaterals,

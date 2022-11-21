@@ -6,7 +6,7 @@ import {
 } from '@anchor-protocol/app-provider';
 import { CW20Addr, HumanAddr } from '@anchor-protocol/types';
 import { TERRA_QUERY_KEY, TxRefetchMap } from '@libs/app-provider';
-import { Gas, Rate } from '@libs/types';
+import { Gas, NativeDenom, Rate } from '@libs/types';
 import { NetworkInfo } from '@terra-money/wallet-provider';
 
 // ---------------------------------------------
@@ -101,6 +101,7 @@ const PHOENIX_CONTRACT_ADDRESS = {
   astroportGenerator: 'terra1zgrx9jjqrfye8swykfgmd6hpde60j0nszzupp9',
   vesting: 'terra13v4ln23tmfs2zk4nh5dw5mzufckekp4fpafpcy',
   astroUstPair: 'terra1l7xu2rl3c7qmtx3r5sd2tz25glf6jh8ul7aag7',
+  usd: 'ibc/B3504E092456BA618CC28AC671A71FB08C6CA0FD0BE7C8A5B5A3E2DD933CC9E4'
 };
 
 const PISCO_CONTRACT_ADDRESS = {
@@ -119,7 +120,7 @@ const PISCO_CONTRACT_ADDRESS = {
   mmMarket: 'terra17xhgwkrk3pnlkkw0rdsv75qn0m0whgeaw4rd2muqmtgsdmgkutqqaa4a44',
   mmOverseer:
     'terra1qq3m9yn7h9gjgd6rs2t58qkjrqngl436sv6w3dak2svkc8lapx4qtxylsv',
-  mmCustody: '',
+  mmCustody: 'terra1mv0mhsdzhkf20jpja28u9xfa27esmdgcgs6c6enzx3dru5mqpu4qua9007',
   mmCustodyBEth: '',
   mmLiquidation:
     'terra1l34ampvph32lmsa086gdplc2g8y68r4du4pepjecf9wu0xfnt0eq3ur8dv',
@@ -144,6 +145,7 @@ const PISCO_CONTRACT_ADDRESS = {
   astroportGenerator: '',
   vesting: '',
   astroUstPair: '',
+  usd: "ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389"
 };
 
 export const ANCHOR_CONTRACT_ADDRESS = (
@@ -202,12 +204,17 @@ export const ANCHOR_CONTRACT_ADDRESS = (
     crossAnchor: {
       core: '' as HumanAddr,
     },
+    native: {
+      usd: addressMap.usd as NativeDenom
+    }
   };
 };
 
 export const ANCHOR_INDEXER_API_ENDPOINTS = (network: NetworkInfo): string => {
   if (network.chainID.startsWith('pisco')) {
-    return 'https://api.anchor-rebirth.com/api';
+    return 'https://api.anchor-rebirth.com/api/testnet';
+  } else if (network.chainID.startsWith('phoenix')) {
+    return 'https://api.anchor-rebirth.com/api/mainnet';
   } else {
     return 'https://anchor-services-anchor-protocol.vercel.app/api';
   }

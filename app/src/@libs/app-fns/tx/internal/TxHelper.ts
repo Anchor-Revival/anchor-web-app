@@ -32,7 +32,7 @@ export class TxHelper {
       return null;
     }
 
-    const chainID = this.$.network.chainID;
+    const chainID = this.$.network.name;
     const txhash = this._savedTxResult.result.txhash;
     const html = `<a href="${getTransactionDetailUrl(
       chainID,

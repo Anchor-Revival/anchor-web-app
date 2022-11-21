@@ -46,6 +46,14 @@ export const defaultDarkTheme = {
           opacity: 0.15,
         },
       },
+      
+      MuiTableRow: {
+            root: {
+                "&:last-child td": {
+                    borderBottom: 0,
+                },
+            }
+        }
     },
   }),
 

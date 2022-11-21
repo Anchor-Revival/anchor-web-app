@@ -1,12 +1,23 @@
 import { useMemo } from 'react';
-import { faker } from '@faker-js/faker';
+import { useAnchorWebapp, useBidByUserByCollateralQuery, useBidPoolsByCollateralQuery, useMarketBAssetQuery, useNetwork } from '@anchor-protocol/app-provider';
+import { ANCHOR_CONTRACT_ADDRESS } from 'env';
+import { UST, bLuna, liquidation, u } from '@anchor-protocol/types/';
+import { demicrofy } from '@libs/formatter';
+import { formatUST, formatBAsset } from '@anchor-protocol/notation';
+import { useTotalCollateralsQuery } from '@anchor-protocol/app-provider/queries/liquidate/totalLiquidations';
 
 export const useLiquidationGraph = () => {
   const labels = useMemo(() => [...Array(30).keys()], []);
-  faker.seed(123);
+
+  const network = useNetwork();
+  const {data: { bidPoolsByCollateral } = {}} = useBidPoolsByCollateralQuery(ANCHOR_CONTRACT_ADDRESS(network.network).cw20.bLuna, undefined, 31);
+
   const data = useMemo(
-    () => labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-    [labels],
+    () => labels.map((label) => {
+      const data = bidPoolsByCollateral?.bid_pools.find(element => parseFloat(element.premium_rate) === label/100)
+      return parseInt(data?.total_bid_amount ?? "0") / 1000000 // Decimals
+    }),
+    [labels, bidPoolsByCollateral?.bid_pools],
   );
 
   return useMemo(() => {
@@ -18,43 +29,55 @@ export const useLiquidationGraph = () => {
 };
 
 export const useMyLiquidationStats = () => {
-  const ratio = 0.121;
 
-  const lockedCollateralUSD = 746300;
+  const network = useNetwork();  
+  const { contractAddress } = useAnchorWebapp();
+  const {data: { bidPoolsByCollateral } = {}} = useBidPoolsByCollateralQuery(ANCHOR_CONTRACT_ADDRESS(network.network).cw20.bLuna, undefined, 31);
+  const {data: { bidByUser } = {}} = useBidByUserByCollateralQuery(contractAddress.cw20.bLuna);
 
-  const poolValue = 90500;
+  const {data: { oraclePrice } = {}} = useMarketBAssetQuery();
 
-  const lockedCollateralLUNA = 54500;
+  const poolValue = useMemo( () => bidPoolsByCollateral?.bid_pools.reduce((acc, b: liquidation.liquidationQueueContract.BidPoolResponse) => acc + parseInt(b.total_bid_amount), 0), [bidPoolsByCollateral])
 
-  const activeBids = 0;
+  const { data: lockedCollaterals} = useTotalCollateralsQuery();
 
-  const lunaPrice = 2.35;
+  const lockedCollateralLUNA = useMemo(() => lockedCollaterals?.find((col) => col.token === contractAddress.cw20.bLuna)?.computed_total_collateral, [lockedCollaterals])
+
+  const activeBids = useMemo( () => bidByUser?.bids.reduce((acc, b: liquidation.liquidationQueueContract.BidResponse) => acc + parseInt(b.amount), 0), [bidByUser])
+
+  const lunaPrice = useMemo( () => oraclePrice?.rate, [oraclePrice])
 
   return useMemo(() => {
+    let lockedCollateralUSD = (lockedCollateralLUNA ?? 1) * parseFloat(lunaPrice ?? "1");
+    if(lockedCollateralUSD === 0){
+      lockedCollateralUSD = 1;
+    }
+    let ratio = (poolValue ?? 0) / lockedCollateralUSD;
+
     return {
       ratio,
       otherStats: [
         {
           title: 'Total locked Collateral Value (axlUSDC)',
-          value: lockedCollateralUSD,
+          value: formatUST(demicrofy(lockedCollateralUSD.toString() as u<UST>))
         },
         {
           title: 'Total Pool Value (axlUSDC)',
-          value: poolValue,
+          value: formatUST(demicrofy((poolValue ?? 0).toString() as u<UST>)),
         },
         {
           title: 'Total locked Collateral (LUNA)',
-          value: lockedCollateralLUNA,
+          value: formatBAsset(demicrofy((lockedCollateralLUNA ?? 0).toString() as u<bLuna>)),
         },
         {
           title: 'My Total active Bids (axlUSDC)',
-          value: activeBids,
+          value: formatUST(demicrofy((activeBids ?? 0).toString() as u<UST>)),
         },
         {
           title: 'LUNA Price',
-          value: lunaPrice,
+          value: formatUST(demicrofy((lunaPrice ?? 0).toString() as u<UST>)),
         },
       ],
     };
-  }, []);
+  }, [poolValue, activeBids, lunaPrice, lockedCollateralLUNA]);
 };

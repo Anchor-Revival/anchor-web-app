@@ -1,5 +1,5 @@
-import { AxlUSDC, Luna, NoMicro, Token, u, UST } from '@libs/types';
-import { ANC, aUST, Native } from '@anchor-protocol/types';
+import { UST, Luna, NoMicro, Token, u, UST } from '@libs/types';
+import { ANC, aUST, bLuna, Native } from '@anchor-protocol/types';
 import { BigSource } from 'big.js';
 
 export interface FormatterOptions {
@@ -36,6 +36,7 @@ export interface Formatters {
   ust: Formatter<UST>;
   aUST: Formatter<aUST>;
   anc: Formatter<ANC>;
-  axlUSDC: Formatter<AxlUSDC>;
+  axlUSDC: Formatter<UST>;
+  bLuna: Formatter<bLuna>;
   luna: Formatter<Luna>;
 }

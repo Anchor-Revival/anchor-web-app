@@ -1,5 +1,5 @@
 import {
-  AxlUSDC,
+  UST,
   CW20Addr,
   HumanAddr,
   NativeDenom,
@@ -8,6 +8,7 @@ import {
   u,
   UST,
 } from '@libs/types';
+import { bLuna } from '../currencies';
 
 export namespace liquidation {
   export namespace liquidationContract {
@@ -138,16 +139,16 @@ export namespace liquidation {
     export interface BidResponse {
       collateral_token: HumanAddr;
       bidder: HumanAddr;
-      amount: u<AxlUSDC>;
+      amount: u<UST>;
       premium_rate: Rate;
-      idx: number;
+      idx: string;
       premium_slot: number;
-      product_snapshot: number;
-      sum_snapshot: number;
-      pending_liquidated_collateral: number;
+      product_snapshot: string;
+      sum_snapshot: string;
+      pending_liquidated_collateral: u<bLuna>;
       wait_end?: number;
-      epoch_snapshot: number;
-      scale_snapshot: number;
+      epoch_snapshot: string;
+      scale_snapshot: string;
     }
 
     /**
@@ -164,12 +165,12 @@ export namespace liquidation {
      * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidpoolresponse
      */
     export interface BidPoolResponse {
-      sum_snapshot: Number;
-      product_snapshot: Number;
-      total_bid_amount: Number;
-      premium_rate: Number;
-      current_epoch: Number;
-      current_scale: Number;
+      sum_snapshot: string;
+      product_snapshot: string;
+      total_bid_amount: string;
+      premium_rate: string;
+      current_epoch: string;
+      current_scale: string;
     }
 
     /**
@@ -177,14 +178,14 @@ export namespace liquidation {
      */
     export interface BidPoolsByCollateral {
       bid_pools_by_collateral: {
-        collateral_token: String;
+        collateral_token: CW20Addr;
         start_after?: HumanAddr;
         limit?: number;
       };
     }
 
     export interface BidsPoolsByCollateralResponse {
-      bid_pools: Array<BidResponse>;
+      bid_pools: Array<BidPoolResponse>;
     }
 
     /**
@@ -192,7 +193,7 @@ export namespace liquidation {
      */
     export interface BidsByUser {
       bids_by_user: {
-        collateral_token: HumanAddr;
+        collateral_token: CW20Addr;
         bidder?: HumanAddr;
         start_after?: HumanAddr;
         limit?: number;

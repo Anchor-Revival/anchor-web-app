@@ -3,13 +3,12 @@ import {
   computeBorrowLimit,
 } from '@anchor-protocol/app-fns';
 import {
-  AxlUSDC,
+  UST,
   bAsset,
   Luna,
   moneyMarket,
   Rate,
   u,
-  UST,
 } from '@anchor-protocol/types';
 import { FormReturn } from '@libs/use-form';
 import big, { Big } from 'big.js';
@@ -33,7 +32,8 @@ export interface BorrowProvideCollateralFormInput {
 export interface BorrowProvideCollateralFormDependency {
   collateral: WhitelistCollateral;
   fixedFee: u<Luna>;
-  userUSTBalance: u<AxlUSDC>;
+  userUSTBalance: u<UST>;
+  userLunaBalance: u<Luna>;
   userBAssetBalance: u<bAsset>;
   oraclePrices: moneyMarket.oracle.PricesResponse;
   bAssetLtvs: BAssetLtvs;
@@ -49,7 +49,7 @@ export interface BorrowProvideCollateralFormStates
   ltvStepFunction: (draftLtv: Rate<Big>) => Rate<Big>;
   dangerLtv: Rate<Big>;
   collateral: WhitelistCollateral;
-  txFee: u<UST>;
+  txFee: u<Luna>;
   currentLtv: Rate<Big> | undefined;
   nextLtv: Rate<Big> | undefined;
   borrowLimit: u<UST<Big>>;
@@ -65,6 +65,7 @@ export const borrowProvideCollateralForm = ({
   collateral,
   fixedFee,
   userUSTBalance,
+  userLunaBalance,
   userBAssetBalance,
   bAssetLtvs,
   overseerCollaterals,
@@ -110,7 +111,7 @@ export const borrowProvideCollateralForm = ({
   const dangerLtv = big(bAssetLtvsAvg.max).minus(0.1) as Rate<Big>;
 
   const invalidTxFee = connected
-    ? validateTxFee(userUSTBalance, fixedFee)
+    ? validateTxFee(userLunaBalance, fixedFee)
     : undefined;
 
   const ltvStepFunction = (draftLtv: Rate<Big>): Rate<Big> => {

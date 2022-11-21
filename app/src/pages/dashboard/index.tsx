@@ -90,7 +90,6 @@ function DashboardBase({ className }: DashboardProps) {
     if (!marketDepositAndBorrow?.now || !marketCollaterals?.now || !marketUST) {
       return undefined;
     }
-
     return {
       totalDeposit: marketDepositAndBorrow?.now.total_ust_deposits,
       totalCollaterals: marketCollaterals?.now.total_value,

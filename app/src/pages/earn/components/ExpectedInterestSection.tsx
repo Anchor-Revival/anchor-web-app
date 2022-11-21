@@ -1,5 +1,5 @@
 import { formatUSTWithPostfixUnits } from '@anchor-protocol/notation';
-import { aUST, AxlUSDC, u } from '@anchor-protocol/types';
+import { aUST, UST, u } from '@anchor-protocol/types';
 import { useEarnEpochStatesQuery } from '@anchor-protocol/app-provider';
 import { demicrofy } from '@libs/formatter';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
@@ -71,7 +71,7 @@ export function ExpectedInterestSection({
           : tab.value === 'day'
           ? 365
           : 1,
-      ) as u<AxlUSDC<Big>>;
+      ) as u<UST<Big>>;
   }, [moneyMarketEpochState, overseerEpochState, tab.value, uaUST, apy]);
 
   return (
@@ -90,7 +90,7 @@ export function ExpectedInterestSection({
           <AnimateNumber format={formatUSTWithPostfixUnits}>
             {expectedInterest
               ? demicrofy(expectedInterest)
-              : (0 as AxlUSDC<number>)}
+              : (0 as UST<number>)}
           </AnimateNumber>{' '}
           <span className="denom">axlUSDC</span>
         </span>

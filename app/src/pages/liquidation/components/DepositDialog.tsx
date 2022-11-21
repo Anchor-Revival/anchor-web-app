@@ -2,7 +2,7 @@ import {
   UST_INPUT_MAXIMUM_DECIMAL_POINTS,
   UST_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
-import { AxlUSDC } from '@anchor-protocol/types';
+import { UST } from '@anchor-protocol/types';
 import { EarnDepositFormReturn } from '@anchor-protocol/app-provider';
 import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
@@ -97,7 +97,7 @@ function DepositDialogBase(props: DepositDialogProps) {
           label="AMOUNT"
           error={!!invalidDepositAmount}
           onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
-            updateDepositAmount(target.value as AxlUSDC)
+            updateDepositAmount(target.value as UST)
           }
           InputProps={{
             endAdornment: (
@@ -134,10 +134,10 @@ function DepositDialogBase(props: DepositDialogProps) {
             <AmountSlider
               disabled={!account.connected}
               max={Number(demicrofy(maxAmount))}
-              txFee={Number(demicrofy(txFee ?? ('0' as AxlUSDC)))}
+              txFee={Number(demicrofy(txFee ?? ('0' as UST)))}
               value={Number(depositAmount)}
               onChange={(value) => {
-                updateDepositAmount(formatInput(value.toString() as AxlUSDC));
+                updateDepositAmount(formatInput(value.toString() as UST));
               }}
             />
           </figure>

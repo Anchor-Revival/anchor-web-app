@@ -44,7 +44,7 @@ interface TokenListProps extends UIElementProps {
 export function TokenListBase(props: TokenListProps) {
   const { className, onClose, onBuyUST, onAddToken } = props;
 
-  const { uUST, uaUST, uANC, uNative } = useBalances();
+  const { uUST, uaUST, uNative } = useBalances();
 
   const formatters = useFormatters();
 
@@ -87,17 +87,6 @@ export function TokenListBase(props: TokenListProps) {
           </span>
           <span>
             {formatters.aUST.formatOutput(formatters.aUST.demicrofy(uaUST))}
-          </span>
-        </li>
-      )}
-      {(big(uANC).gt(0) || onAddToken) && (
-        <li>
-          <span className="symbol">
-            {onAddToken && <AddButton onClick={() => onAddToken('ANC')} />}
-            {formatters.anc.symbol}
-          </span>
-          <span>
-            {formatters.anc.formatOutput(formatters.anc.demicrofy(uANC))}
           </span>
         </li>
       )}

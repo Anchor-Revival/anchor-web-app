@@ -1,6 +1,6 @@
 import { BidByUser, bidsByUserQuery } from '@anchor-protocol/app-fns';
 import { createQueryFn } from '@libs/react-query-utils';
-import { HumanAddr } from '@libs/types';
+import { CW20Addr, HumanAddr } from '@libs/types';
 import { useAccount } from 'contexts/account';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useAnchorWebapp } from '../../contexts/context';
@@ -9,7 +9,7 @@ import { ANCHOR_QUERY_KEY } from '../../env';
 const queryFn = createQueryFn(bidsByUserQuery);
 
 export function useBidByUserByCollateralQuery(
-  collateralToken: HumanAddr,
+  collateralToken: CW20Addr,
   startAfter?: HumanAddr,
   limit?: number,
 ): UseQueryResult<BidByUser | undefined> {

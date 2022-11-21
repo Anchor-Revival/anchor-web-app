@@ -10,7 +10,7 @@ export type u<T = string> = T & Micro;
 export type Gas<T = number> = T & NominalType<'gas'>;
 
 // Native currencies
-export type UST<T = string> = T & NominalType<'ust'>;
+export type UST<T = string> = T & NominalType<'luna'>;
 export type AUD<T = string> = T & NominalType<'aud'>;
 export type CAD<T = string> = T & NominalType<'cad'>;
 export type CHF<T = string> = T & NominalType<'chf'>;
@@ -32,7 +32,6 @@ export type SGD<T = string> = T & NominalType<'sgd'>;
 export type THB<T = string> = T & NominalType<'thb'>;
 export type KRT<T = string> = T & NominalType<'krt'>;
 export type Luna<T = string> = T & NominalType<'luna'>;
-export type AxlUSDC<T = string> = T & NominalType<'axlUSDC'>;
 
 // Astroport currencies
 export type Astro<T = string> = T & NominalType<'astro'>;
@@ -43,7 +42,7 @@ export type LP<T = string> = T & NominalType<'lp'>;
 // Union currencies
 export type NativeToken<T = string> = T &
   NominalType<
-    | 'ust'
+    | 'axlUSDC'
     | 'aud'
     | 'cad'
     | 'chf'
@@ -65,14 +64,12 @@ export type NativeToken<T = string> = T &
     | 'thb'
     | 'krt'
     | 'luna'
-    | 'axlUSDC'
   >;
 
 // All currencies
 export type Token<T = string> = T & NominalType<string>;
 
 export const NATIVE_TOKEN_DENOMS = [
-  'uusd',
   'uluna',
   'uaud',
   'ucad',
@@ -98,7 +95,7 @@ export const NATIVE_TOKEN_DENOMS = [
 
 // utility constants
 export const NATIVE_TOKEN_ASSET_INFOS: terraswap.AssetInfo[] = [
-  { native_token: { denom: 'uusd' } },
+  { native_token: { denom: 'uluna' } },
   { native_token: { denom: 'uluna' } },
   { native_token: { denom: 'uaud' } },
   { native_token: { denom: 'ucad' } },

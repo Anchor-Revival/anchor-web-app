@@ -1,4 +1,4 @@
-import { aUST, AxlUSDC, moneyMarket, u } from '@anchor-protocol/types';
+import { aUST, UST, moneyMarket, u } from '@anchor-protocol/types';
 import big, { Big } from 'big.js';
 
 export function computeTotalDeposit(
@@ -7,5 +7,5 @@ export function computeTotalDeposit(
 ) {
   return big(userAUSTBalance ?? '0').mul(
     moneyMarketEpochState?.exchange_rate ?? '1',
-  ) as u<AxlUSDC<Big>>;
+  ) as u<UST<Big>>;
 }

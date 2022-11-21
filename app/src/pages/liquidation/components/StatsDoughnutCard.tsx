@@ -14,7 +14,6 @@ function Component(props: StatsDoughnutCard) {
     labels: [],
     datasets: [
       {
-        label: '# of Votes',
         data: [1],
         backgroundColor: ['rgba(255, 159, 64, 0.2)'],
         borderColor: ['rgba(255, 159, 64, 0)'],
@@ -22,11 +21,10 @@ function Component(props: StatsDoughnutCard) {
         cutout: '85%',
       },
       {
-        label: '# of Votes',
         data: [1],
         backgroundColor: ['rgba(255, 159, 64, 1)'],
         borderColor: ['rgba(255, 255,255, 0)'],
-        circumference: 360 * props.value,
+        circumference: 360 * Math.max(Math.min(props.value,1),0),
         radius: '125%',
         cutout: '60%',
       },
@@ -48,7 +46,7 @@ function Component(props: StatsDoughnutCard) {
       <div className="text-inside-doughnut">
         {props.title}
         <Divider className="stats-figure-card-divider" />
-        <ValueContainer>
+        <ValueContainer className="doughnut-value">
           {props.value.toLocaleString(undefined, {
             style: 'percent',
             minimumFractionDigits: 1,
@@ -83,5 +81,11 @@ export const StatsDoughnutCard = styled(Component)`
     width: 100%;
     max-width: 60px;
     transform: translate(-50%, -50%);
+  }
+  .text-inside-doughnut .doughnut-value{
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
   }
 `;

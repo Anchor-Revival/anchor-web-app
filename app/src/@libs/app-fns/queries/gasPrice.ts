@@ -10,7 +10,6 @@ export async function gasPriceQuery(
   }
 
   const gasPrice = await fetch(gasPriceEndpoint).then((res) => res.json());
-
   cache = gasPrice;
 
   return gasPrice;

@@ -20,7 +20,7 @@ export function useEarnWithdrawForm(): EarnWithdrawFormReturn {
 
   const fixedFee = useFixedFee();
 
-  const { uAxlUSDC, uaUST } = useBalances();
+  const { uUST, uaUST } = useBalances();
 
   const { data } = useEarnEpochStatesQuery();
 
@@ -35,7 +35,7 @@ export function useEarnWithdrawForm(): EarnWithdrawFormReturn {
     {
       isConnected: connected,
       fixedGas: fixedFee,
-      userUUSTBalance: uAxlUSDC,
+      userUUSTBalance: uUST,
       totalDeposit: totalDeposit,
     },
     () => ({ withdrawAmount: '' as UST }),

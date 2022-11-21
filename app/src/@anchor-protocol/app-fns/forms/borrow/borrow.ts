@@ -11,7 +11,7 @@ import { validateCollateralAmount } from '@anchor-protocol/app-fns/logics/borrow
 import { DeploymentTarget } from '@anchor-protocol/app-provider';
 import { CollateralAmount, moneyMarket, Rate } from '@anchor-protocol/types';
 import { formatRate } from '@libs/formatter';
-import { AxlUSDC, CW20Addr, Luna, u } from '@libs/types';
+import { UST, CW20Addr, Luna, u } from '@libs/types';
 import { FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 import { WhitelistCollateral } from 'queries';
@@ -25,7 +25,7 @@ import { validateTxFee } from '../../logics/common/validateTxFee';
 import { BAssetLtvs } from '../../queries/borrow/market';
 
 export interface BorrowBorrowFormInput {
-  borrowAmount: AxlUSDC;
+  borrowAmount: UST;
   collateral?: WhitelistCollateral;
   collateralAmount?: u<CollateralAmount<Big>>;
   maxCollateralAmount?: u<CollateralAmount<Big>>;
@@ -34,7 +34,8 @@ export interface BorrowBorrowFormInput {
 export interface BorrowBorrowFormDependency {
   target: DeploymentTarget;
   fixedFee: u<Luna>;
-  userUSTBalance: u<AxlUSDC>;
+  userUSTBalance: u<UST>;
+  userLunaBalance: u<Luna>;
   marketBorrowerInfo: moneyMarket.market.BorrowerInfoResponse;
   overseerCollaterals: moneyMarket.overseer.CollateralsResponse;
   oraclePrices: moneyMarket.oracle.PricesResponse;
@@ -48,18 +49,18 @@ export interface BorrowBorrowFormDependency {
 }
 
 export interface BorrowBorrowFormStates extends BorrowBorrowFormInput {
-  borrowLimit: u<AxlUSDC<Big>>;
-  borrowedAmount: u<AxlUSDC<Big>>;
+  borrowLimit: u<UST<Big>>;
+  borrowedAmount: u<UST<Big>>;
   currentLtv: Rate<Big> | undefined;
   userMaxLtv: Rate<BigSource>;
   apr: Rate<Big>;
-  safeMax: u<AxlUSDC<Big>>;
-  max: u<AxlUSDC<Big>>;
+  safeMax: u<UST<Big>>;
+  max: u<UST<Big>>;
   invalidTxFee: string | undefined;
   nextLtv: Rate<Big> | undefined;
   txFee: u<Luna<Big>> | undefined;
   estimatedLiquidationPrice: string | null;
-  receiveAmount: u<AxlUSDC<Big>> | undefined;
+  receiveAmount: u<UST<Big>> | undefined;
   invalidBorrowAmount: string | undefined;
   invalidOverMaxLtv: string | undefined;
   warningOverSafeLtv: string | undefined;
@@ -73,6 +74,7 @@ export const borrowBorrowForm = ({
   target,
   fixedFee,
   userUSTBalance,
+  userLunaBalance,
   marketBorrowerInfo,
   overseerCollaterals,
   oraclePrices,
@@ -90,7 +92,7 @@ export const borrowBorrowForm = ({
 
   const invalidTxFee =
     connected && target.isNative
-      ? validateTxFee(userUSTBalance, fixedFee)
+      ? validateTxFee(userLunaBalance, fixedFee)
       : undefined;
 
   return ({
@@ -135,7 +137,7 @@ export const borrowBorrowForm = ({
 
     const txFee = target.isNative
       ? computeBorrowTxFee(borrowAmount, { taxRate, maxTaxUUSD })
-      : (Big(0) as u<AxlUSDC<Big>>);
+      : (Big(0) as u<UST<Big>>);
 
     const receiveAmount = computeBorrowReceiveAmount(borrowAmount, txFee);
 

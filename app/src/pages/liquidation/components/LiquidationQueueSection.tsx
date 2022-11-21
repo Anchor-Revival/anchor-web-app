@@ -71,6 +71,7 @@ function Component({ className }: LiquidationQueueProps) {
   // ---------------------------------------------
 
   const graphData = useLiquidationGraph();
+
   const chartRef = useRef(null);
 
   ChartJS.register(
@@ -117,7 +118,7 @@ function Component({ className }: LiquidationQueueProps) {
             display: false,
           },
           ticks: {
-            // Include a dollar sign in the ticks
+            // Include a % sign in the ticks
             callback: function (value, index, ticks) {
               if (value % 2 === 0) {
                 return value + '%';
@@ -128,6 +129,10 @@ function Component({ className }: LiquidationQueueProps) {
         y: {
           ticks: {
             display: !isSmallScreen,
+            // Include a dollar sign in the ticks
+            callback: function (value, index, ticks) {
+              return "$" + value;
+            },
           },
         },
       },
@@ -213,7 +218,6 @@ function Component({ className }: LiquidationQueueProps) {
       <FlexContainer>
         <StatsFigureCardContainer
           className="liquidation-stats-numbers"
-          elnb={liquidationStats.otherStats.length + 1}
         >
           <StatsDoughnutCard
             title="Pool Ratio"
@@ -226,7 +230,6 @@ function Component({ className }: LiquidationQueueProps) {
           elnb={liquidationStats.otherStats.length + 1}
         >
           {liquidationStats.otherStats.map((stat) => {
-            console.log('quid');
             return (
               <StatsFigureCard title={stat.title} key={stat.title}>
                 {stat.value}

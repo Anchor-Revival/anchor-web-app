@@ -1,4 +1,4 @@
-import { AxlUSDC, Luna, Rate, u, UST } from '@anchor-protocol/types';
+import { UST, Luna, Rate, u } from '@anchor-protocol/types';
 import { computeMaxUstBalanceForUstTransfer } from '@libs/app-fns';
 import { max, min } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
@@ -6,11 +6,11 @@ import { FormReturn } from '@libs/use-form';
 import big, { Big } from 'big.js';
 
 export interface EarnDepositFormInput {
-  depositAmount: AxlUSDC;
+  depositAmount: UST;
 }
 
 export interface EarnDepositFormDependency {
-  userUUSTBalance: u<AxlUSDC>;
+  userUUSTBalance: u<UST>;
   fixedGas: u<Luna>;
   taxRate: Rate;
   maxTaxUUSD: u<Luna>;

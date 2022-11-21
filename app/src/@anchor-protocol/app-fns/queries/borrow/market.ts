@@ -1,5 +1,5 @@
 import {
-  AxlUSDC,
+  UST,
   CW20Addr,
   HumanAddr,
   moneyMarket,
@@ -48,7 +48,7 @@ export interface BorrowMarketStateQueryVariables {
 
 export type BorrowMarket = WasmQueryData<BorrowMarketWasmQuery> & {
   marketBalances: {
-    uUST: u<AxlUSDC>;
+    uUST: u<UST>;
   };
   bAssetLtvs: BAssetLtvs;
 };
@@ -105,7 +105,7 @@ export async function borrowMarketQuery(
           (network.chainID !== 'pisco'
             ? 'ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389'
             : 'ibc/B3504E092456BA618CC28AC671A71FB08C6CA0FD0BE7C8A5B5A3E2DD933CC9E4'),
-      )?.balance ?? '0') as u<AxlUSDC>,
+      )?.balance ?? '0') as u<UST>,
     };
 
   const {

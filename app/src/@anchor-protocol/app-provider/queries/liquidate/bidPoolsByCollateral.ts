@@ -3,7 +3,7 @@ import {
   bidPoolsByCollateralQuery,
 } from '@anchor-protocol/app-fns';
 import { createQueryFn } from '@libs/react-query-utils';
-import { HumanAddr } from '@libs/types';
+import { CW20Addr, HumanAddr } from '@libs/types';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useAnchorWebapp } from '../../contexts/context';
 import { ANCHOR_QUERY_KEY } from '../../env';
@@ -11,7 +11,7 @@ import { ANCHOR_QUERY_KEY } from '../../env';
 const queryFn = createQueryFn(bidPoolsByCollateralQuery);
 
 export function useBidPoolsByCollateralQuery(
-  collateralToken: HumanAddr,
+  collateralToken: CW20Addr,
   startAfter?: HumanAddr,
   limit?: number,
 ): UseQueryResult<BidPoolsByCollateral | undefined> {

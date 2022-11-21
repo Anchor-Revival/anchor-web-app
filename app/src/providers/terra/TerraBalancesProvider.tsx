@@ -13,7 +13,7 @@ const TerraBalancesProvider = ({ children }: UIElementProps) => {
 
   const { terraWalletAddress } = useAccount();
 
-  const { uAxlUSDC, uLuna } = useTerraNativeBalances(terraWalletAddress);
+  const { uUST, uLuna } = useTerraNativeBalances(terraWalletAddress);
 
   const uaUST = useCW20Balance<aUST>(
     contractAddress.cw20.aUST,
@@ -33,12 +33,12 @@ const TerraBalancesProvider = ({ children }: UIElementProps) => {
 
   const balances = useMemo(() => {
     return {
-      uAxlUSDC,
+      uUST,
       uaUST,
       uNative: uLuna.toString() as u<Native>,
       fetchWalletBalance,
     };
-  }, [uAxlUSDC, uLuna, uaUST, fetchWalletBalance]);
+  }, [uUST, uLuna, uaUST, fetchWalletBalance]);
 
   return (
     <BalancesContext.Provider value={balances}>

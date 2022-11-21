@@ -4,7 +4,7 @@ import {
   computeLtv,
 } from '@anchor-protocol/app-fns';
 import {
-  AxlUSDC,
+  UST,
   bAsset,
   Luna,
   moneyMarket,
@@ -31,7 +31,8 @@ export interface BorrowRedeemCollateralFormInput {
 export interface BorrowRedeemCollateralFormDependency {
   collateral: WhitelistCollateral;
   fixedFee: u<Luna>;
-  userUSTBalance: u<AxlUSDC>;
+  userUSTBalance: u<UST>;
+  userLunaBalance: u<ULuna>;
   userBAssetBalance: u<bAsset>;
   oraclePrices: moneyMarket.oracle.PricesResponse;
   bAssetLtvs: BAssetLtvs;
@@ -52,7 +53,7 @@ export interface BorrowRedeemCollateralFormStates
   nextLtv: Rate<Big> | undefined;
   withdrawableAmount: u<bAsset<Big>>;
   withdrawableMaxAmount: u<bAsset<Big>>;
-  borrowLimit: u<AxlUSDC<Big>>;
+  borrowLimit: u<UST<Big>>;
   invalidTxFee: string | undefined;
   invalidRedeemAmount: string | undefined;
   userBAssetBalance: u<bAsset>;
@@ -65,6 +66,7 @@ export const borrowRedeemCollateralForm = ({
   collateral,
   fixedFee,
   userUSTBalance,
+  userLunaBalance,
   userBAssetBalance,
   oraclePrices,
   bAssetLtvs,
@@ -135,7 +137,7 @@ export const borrowRedeemCollateralForm = ({
     );
 
     const invalidTxFee = connected
-      ? validateTxFee(userUSTBalance, fixedFee)
+      ? validateTxFee(userLunaBalance, fixedFee)
       : undefined;
 
     const invalidRedeemAmount = validateRedeemAmount(

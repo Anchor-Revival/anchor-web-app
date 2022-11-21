@@ -4,12 +4,11 @@ import {
 } from '@anchor-protocol/notation';
 import {
   aUST,
-  AxlUSDC,
+  UST,
   Gas,
   HumanAddr,
   Rate,
   u,
-  UST,
 } from '@anchor-protocol/types';
 import {
   pickAttributeValue,
@@ -102,7 +101,7 @@ export function earnDepositTx($: {
       }
 
       try {
-        const depositAmount = pickAttributeValue<u<AxlUSDC>>(fromContract, 4);
+        const depositAmount = pickAttributeValue<u<UST>>(fromContract, 4);
 
         const receivedAmount = pickAttributeValue<u<aUST>>(fromContract, 3);
 

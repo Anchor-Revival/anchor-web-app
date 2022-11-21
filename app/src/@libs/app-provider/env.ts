@@ -37,11 +37,11 @@ export function DEFAULT_GAS_PRICE_ENDPOINTS(network: NetworkInfo): string {
 }
 
 const FALLBACK_GAS_PRICE_PHOENIX = {
-  uluna: '0.10',
+  uluna: '0.015',
 };
 
 const FALLBACK_GAS_PRICE_PISCO = {
-  uluna: '0.10',
+  uluna: '0.015',
 };
 
 export function DEFAULT_FALLBACK_GAS_PRICE(network: NetworkInfo): GasPrice {

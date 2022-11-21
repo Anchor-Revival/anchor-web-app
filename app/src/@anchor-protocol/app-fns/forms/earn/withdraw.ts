@@ -1,21 +1,21 @@
-import { AxlUSDC, Luna, u } from '@anchor-protocol/types';
+import { UST, Luna, u } from '@anchor-protocol/types';
 import { microfy } from '@libs/formatter';
 import { FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
 
 export interface EarnWithdrawFormInput {
-  withdrawAmount: AxlUSDC;
+  withdrawAmount: UST;
 }
 
 export interface EarnWithdrawFormDependency {
-  userUUSTBalance: u<AxlUSDC<BigSource>>;
+  userUUSTBalance: u<UST<BigSource>>;
   fixedGas: u<Luna<BigSource>>;
-  totalDeposit: u<AxlUSDC<BigSource>>;
+  totalDeposit: u<UST<BigSource>>;
   isConnected: boolean;
 }
 
 export interface EarnWithdrawFormStates extends EarnWithdrawFormInput {
-  receiveAmount?: u<AxlUSDC<BigSource>>;
+  receiveAmount?: u<UST<BigSource>>;
   txFee?: u<Luna<BigSource>>;
   invalidTxFee?: string;
   invalidWithdrawAmount?: string;
@@ -40,7 +40,7 @@ export const earnWithdrawForm =
     if (withdrawAmount.length === 0) {
       return [
         {
-          withdrawAmount: '' as AxlUSDC,
+          withdrawAmount: '' as UST,
           availablePost: false,
         },
         undefined,
@@ -51,7 +51,7 @@ export const earnWithdrawForm =
 
       // receiveAmount
       const receiveAmount = microfy(withdrawAmount).minus(txFee) as u<
-        AxlUSDC<Big>
+        UST<Big>
       >;
 
       // invalidTxFee

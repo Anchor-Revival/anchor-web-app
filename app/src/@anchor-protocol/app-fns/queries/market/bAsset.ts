@@ -27,6 +27,7 @@ export async function marketBAssetQuery(
   bLunaContract: CW20Addr,
   oracleContract: HumanAddr,
   custodyContract: HumanAddr,
+  nativeDenom: NativeDenom,
   queryClient: QueryClient,
 ): Promise<MarketBAsset> {
   return wasmFetch<MarketBAssetWasmQuery>({
@@ -46,7 +47,7 @@ export async function marketBAssetQuery(
         query: {
           price: {
             base: bLunaContract,
-            quote: 'uusd' as NativeDenom,
+            quote: nativeDenom,
           },
         },
       },

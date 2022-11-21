@@ -1,5 +1,5 @@
 import {
-  AxlUSDC,
+  UST,
   CW20Addr,
   HumanAddr,
   NativeDenom,
@@ -127,9 +127,9 @@ export namespace moneyMarket {
      */
     export interface BorrowRate {
       borrow_rate: {
-        market_balance: u<AxlUSDC>;
-        total_liabilities: u<AxlUSDC>;
-        total_reserves: u<AxlUSDC>;
+        market_balance: u<UST>;
+        total_liabilities: u<UST>;
+        total_reserves: u<UST>;
       };
     }
 
@@ -255,8 +255,8 @@ export namespace moneyMarket {
      * @see https://anchor-protocol.gitbook.io/anchor-2/smart-contracts/money-market/market#stateresponse
      */
     export interface StateResponse {
-      total_liabilities: u<AxlUSDC>;
-      total_reserves: u<AxlUSDC>;
+      total_liabilities: u<UST>;
+      total_reserves: u<UST>;
       last_interest_updated: number;
       last_reward_updated: number;
       global_interest_index: Num;
