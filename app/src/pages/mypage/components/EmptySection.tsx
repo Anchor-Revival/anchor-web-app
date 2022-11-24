@@ -1,4 +1,4 @@
-import { ChevronRightRounded } from '@material-ui/icons';
+import { ChevronRightRounded } from '@mui/icons-material';
 import { Section } from '@libs/neumorphism-ui/components/Section';
 import { fixHMR } from 'fix-hmr';
 import React, { ReactNode } from 'react';

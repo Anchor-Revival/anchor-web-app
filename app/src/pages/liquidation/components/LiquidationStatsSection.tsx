@@ -1,13 +1,13 @@
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
 import { InfoTooltip } from '@libs/neumorphism-ui/components/InfoTooltip';
 import React, { useMemo } from 'react';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import { styled } from '@material-ui/core';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import { styled } from '@mui/material';
 import { PaddingSection } from './PaddingSection';
 import { useLiquidationHistoryQuery } from '@anchor-protocol/app-provider/queries/liquidate/history';
 import { LiquidationData } from '@anchor-protocol/app-fns/queries/liquidate/history';
@@ -21,55 +21,18 @@ export type Period = 'total' | 'year' | 'month' | 'week' | 'day';
 export function LiquidationStatsSection({
   className,
 }: LiquidationStatsSectionProps) {
-  /*
-  const [tab, setTab] = useState<Item>(() => tabItems[0]);
-
-  const { uaUST = '0' as u<aUST> } = useBalances();
-
-  const { data: { moneyMarketEpochState, overseerEpochState } = {} } =
-    useEarnEpochStatesQuery();
-
-  const apy = useDepositApy();
-
-  const expectedInterest = useMemo(() => {
-    if (!moneyMarketEpochState || !overseerEpochState) {
-      return undefined;
-    }
-
-    const ustBalance = big(uaUST).mul(moneyMarketEpochState.exchange_rate);
-
-    return ustBalance
-      .mul(apy)
-      .div(
-        tab.value === 'month'
-          ? 12
-          : tab.value === 'week'
-          ? 52
-          : tab.value === 'day'
-          ? 365
-          : 1,
-      ) as u<UST<Big>>;
-  }, [moneyMarketEpochState, overseerEpochState, tab.value, uaUST, apy]);
-
-*/
-  function createData(
-    time: Date,
-    atom: number,
-    axlUSDC: number,
-    price: number,
-  ) {
-    return { time, atom, axlUSDC, price };
-  }
-
   const { data: liquidationHistory } = useLiquidationHistoryQuery();
 
-  const liquidations = useMemo(() => liquidationHistory?.map((liquidation: LiquidationData) => ({
-    time: liquidation?.date,
-    collateral: liquidation?.amountLiquidated,
-    axlUSDC: liquidation?.amountPaid,
-    price: liquidation?.currentPrice
-  })) ?? [], [liquidationHistory]);
-
+  const liquidations = useMemo(
+    () =>
+      liquidationHistory?.map((liquidation: LiquidationData) => ({
+        time: liquidation?.date,
+        collateral: liquidation?.amountLiquidated,
+        axlUSDC: liquidation?.amountPaid,
+        price: liquidation?.currentPrice,
+      })) ?? [],
+    [liquidationHistory],
+  );
 
   const LowPaddingTableCell = styled(TableCell)({
     padding: '5px 10px',
@@ -108,7 +71,7 @@ export function LiquidationStatsSection({
             </TableRow>
           </TableHead>
           <TableBody>
-            {liquidations.map((liquidation, index) => (
+            {liquidations.map((liquidation: any, index: number) => (
               <TableRow
                 key={`${liquidation.time}-${index}`}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

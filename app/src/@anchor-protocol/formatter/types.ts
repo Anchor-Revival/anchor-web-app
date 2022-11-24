@@ -1,4 +1,4 @@
-import { UST, Luna, NoMicro, Token, u, UST } from '@libs/types';
+import { UST, Luna, NoMicro, Token, u } from '@libs/types';
 import { ANC, aUST, bLuna, Native } from '@anchor-protocol/types';
 import { BigSource } from 'big.js';
 

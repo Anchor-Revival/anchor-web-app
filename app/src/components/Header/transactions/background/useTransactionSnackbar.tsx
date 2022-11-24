@@ -1,7 +1,7 @@
 import { truncateEvm } from '@libs/formatter';
 import { SnackbarContent } from '@libs/neumorphism-ui/components/Snackbar';
 import { Snackbar, useSnackbar } from '@libs/snackbar';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress } from '@mui/material';
 import { ReactComponent as CompleteIcon } from '../../../assets/Complete.svg';
 import { TxFeeList, TxFeeListItem } from 'components/TxFeeList';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -116,7 +116,7 @@ const TxMessageBase = (props: TxMessageProps) => {
     <div className={className}>
       <header>
         <figure className="icon">
-          <CompleteIcon width={49} height={49} />
+          <CompleteIcon />
         </figure>
         <CircularProgress
           className="progress"

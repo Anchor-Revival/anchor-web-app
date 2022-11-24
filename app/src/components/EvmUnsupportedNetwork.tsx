@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Modal } from '@material-ui/core';
+import { Modal } from '@mui/material';
 import {
   getDefaultEvmChainId,
   useEvmWallet,
@@ -47,7 +47,7 @@ function EvmUnsupportedNetworkBase({ className }: UIElementProps) {
   };
 
   return (
-    <Modal open disableBackdropClick disableEnforceFocus>
+    <Modal open disableEnforceFocus>
       <Dialog className={className}>
         <h3>You're connected to an unsupported network.</h3>
         <ButtonList title="Switch network">
@@ -78,7 +78,7 @@ export const EvmUnsupportedNetwork = styled(EvmUnsupportedNetworkBase)`
 
   .button {
     background-color: ${({ theme }) =>
-      theme.palette.type === 'light' ? '#f4f4f5' : '#2a2a46'};
+      theme.palette_type === 'light' ? '#f4f4f5' : '#2a2a46'};
     color: ${({ theme }) => theme.textColor};
   }
 `;

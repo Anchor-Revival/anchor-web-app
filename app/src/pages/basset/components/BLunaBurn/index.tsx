@@ -1,5 +1,4 @@
 import { bLuna, Luna } from '@anchor-protocol/types';
-import { useFixedFee } from '@libs/app-provider';
 import { Section } from '@libs/neumorphism-ui/components/Section';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { fixHMR } from 'fix-hmr';
@@ -18,8 +17,6 @@ function Component({ className }: BLunaBurnProps) {
   // ---------------------------------------------
   const connectedWallet = useConnectedWallet();
 
-  const fixedFee = useFixedFee();
-
   // ---------------------------------------------
   // states
   // ---------------------------------------------
@@ -37,7 +34,6 @@ function Component({ className }: BLunaBurnProps) {
           setBurnAmount={setBurnAmount}
           setGetAmount={setGetAmount}
           connectedWallet={connectedWallet}
-          fixedFee={fixedFee}
           setMode={setMode}
         />
       ) : (
@@ -47,7 +43,6 @@ function Component({ className }: BLunaBurnProps) {
           setBurnAmount={setBurnAmount}
           setGetAmount={setGetAmount}
           connectedWallet={connectedWallet}
-          fixedFee={fixedFee}
           setMode={setMode}
         />
       )}

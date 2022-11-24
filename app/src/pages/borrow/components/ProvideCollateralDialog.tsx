@@ -10,7 +10,7 @@ import { InfoTooltip } from '@libs/neumorphism-ui/components/InfoTooltip';
 import { NumberInput } from '@libs/neumorphism-ui/components/NumberInput';
 import { TextInput } from '@libs/neumorphism-ui/components/TextInput';
 import type { DialogProps } from '@libs/use-dialog';
-import { InputAdornment, Modal } from '@material-ui/core';
+import { InputAdornment, Modal } from '@mui/material';
 import { StreamResult, StreamStatus } from '@rx-stream/react';
 import big, { Big } from 'big.js';
 import { MessageBox } from 'components/MessageBox';
@@ -124,7 +124,7 @@ function ProvideCollateralDialogBase(props: ProvideCollateralDialogProps) {
     txResult?.status === StreamStatus.DONE
   ) {
     return (
-      <Modal open disableBackdropClick disableEnforceFocus>
+      <Modal open disableEnforceFocus>
         <Dialog className={className}>{renderBroadcastTx}</Dialog>
       </Modal>
     );

@@ -1,5 +1,5 @@
-import { Modal } from '@material-ui/core';
-import { Launch } from '@material-ui/icons';
+import { Modal } from '@mui/material';
+import { Launch } from '@mui/icons-material';
 import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
 import { EmbossButton } from '@libs/neumorphism-ui/components/EmbossButton';
 import { DialogProps, OpenDialog, useDialog } from '@libs/use-dialog';

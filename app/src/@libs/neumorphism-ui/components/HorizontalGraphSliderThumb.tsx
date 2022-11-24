@@ -17,6 +17,8 @@ const SvgThumb = withTheme(({ theme }: { theme: NeumorphismTheme }) => (
   </svg>
 ));
 
+export { SvgThumb };
+
 interface HorizontalGraphSliderThumbProps
   extends Omit<UIElementProps, 'children'> {
   position: number;

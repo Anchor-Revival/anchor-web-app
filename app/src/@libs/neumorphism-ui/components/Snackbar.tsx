@@ -1,13 +1,7 @@
-import {
-  SnackbarContent as MuiSnackbarContent,
-  SnackbarContentProps,
-} from '@material-ui/core';
-import { ComponentType } from 'react';
+import { SnackbarContent as MuiSnackbarContent } from '@mui/material';
 import styled from 'styled-components';
 
-export const SnackbarContent: ComponentType<SnackbarContentProps> = styled(
-  MuiSnackbarContent,
-)`
+export const SnackbarContent = styled(MuiSnackbarContent)`
   && {
     border-radius: 5px;
 
@@ -18,36 +12,28 @@ export const SnackbarContent: ComponentType<SnackbarContentProps> = styled(
   }
 `;
 
-export const NormalSnackbarContent: ComponentType<SnackbarContentProps> = styled(
-  SnackbarContent,
-)`
+export const NormalSnackbarContent = styled(SnackbarContent)`
   && {
     background-color: ${({ theme }) => theme.snackbar.normal.backgroundColor};
     color: ${({ theme }) => theme.snackbar.normal.textColor};
   }
 `;
 
-export const SuccessSnackbarContent: ComponentType<SnackbarContentProps> = styled(
-  SnackbarContent,
-)`
+export const SuccessSnackbarContent = styled(SnackbarContent)`
   && {
     background-color: ${({ theme }) => theme.snackbar.success.backgroundColor};
     color: ${({ theme }) => theme.snackbar.success.textColor};
   }
 `;
 
-export const WarningSnackbarContent: ComponentType<SnackbarContentProps> = styled(
-  SnackbarContent,
-)`
+export const WarningSnackbarContent = styled(SnackbarContent)`
   && {
     background-color: ${({ theme }) => theme.snackbar.warning.backgroundColor};
     color: ${({ theme }) => theme.snackbar.warning.textColor};
   }
 `;
 
-export const ErrorSnackbarContent: ComponentType<SnackbarContentProps> = styled(
-  SnackbarContent,
-)`
+export const ErrorSnackbarContent = styled(SnackbarContent)`
   && {
     background-color: ${({ theme }) => theme.snackbar.error.backgroundColor};
     color: ${({ theme }) => theme.snackbar.error.textColor};

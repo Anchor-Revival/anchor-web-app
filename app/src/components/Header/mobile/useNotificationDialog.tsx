@@ -1,4 +1,4 @@
-import { Modal } from '@material-ui/core';
+import { Modal } from '@mui/material';
 import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
 import { DialogProps, OpenDialog, useDialog } from '@libs/use-dialog';
 import React, { ReactNode } from 'react';

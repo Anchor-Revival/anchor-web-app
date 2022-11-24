@@ -90,11 +90,11 @@ export const WithdrawableAssets = styled(WithdrawableAssetsBase)`
 
     font-size: 12px;
     color: ${({ theme }) =>
-      theme.palette.type === 'light' ? '#666666' : 'rgba(255, 255, 255, 0.6)'};
+      theme.palette_type === 'light' ? '#666666' : 'rgba(255, 255, 255, 0.6)'};
 
     border-top: 1px solid
       ${({ theme }) =>
-        theme.palette.type === 'light'
+        theme.palette_type === 'light'
           ? '#e5e5e5'
           : 'rgba(255, 255, 255, 0.1)'};
 
@@ -107,7 +107,7 @@ export const WithdrawableAssets = styled(WithdrawableAssetsBase)`
       &:not(:last-child) {
         border-bottom: 1px dashed
           ${({ theme }) =>
-            theme.palette.type === 'light'
+            theme.palette_type === 'light'
               ? '#e5e5e5'
               : 'rgba(255, 255, 255, 0.1)'};
       }

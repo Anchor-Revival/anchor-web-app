@@ -16,7 +16,7 @@ export function computeHoldings(
     return '0' as u<UST>;
   }
 
-  const holdingsVector = [tokenBalances.uANC];
+  const holdingsVector = [0];
 
   const holdingsPriceVector = [ancPrice];
 

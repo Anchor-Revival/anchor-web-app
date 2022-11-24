@@ -1,7 +1,4 @@
-import {
-  formatAUSTWithPostfixUnits,
-  formatUSTWithPostfixUnits,
-} from '@anchor-protocol/notation';
+import { formatUSTWithPostfixUnits } from '@anchor-protocol/notation';
 import {
   aUST,
   UST,
@@ -10,6 +7,7 @@ import {
   Rate,
   u,
   CW20Addr,
+  Luna,
 } from '@anchor-protocol/types';
 import {
   pickAttributeValue,
@@ -25,20 +23,10 @@ import {
   _postTx,
   TxHelper,
 } from '@libs/app-fns/tx/internal';
-import { floor } from '@libs/big-math';
-import {
-  demicrofy,
-  formatTokenInput,
-} from '@libs/formatter';
+import { demicrofy } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
 import { pipe } from '@rx-stream/pipe';
-import {
-  Coin,
-  Coins,
-  CreateTxOptions,
-  Fee,
-  MsgExecuteContract,
-} from '@terra-money/terra.js';
+import { CreateTxOptions, MsgExecuteContract } from '@terra-money/terra.js';
 import { NetworkInfo, TxResult } from '@terra-money/wallet-provider';
 import { Observable } from 'rxjs';
 
@@ -48,6 +36,7 @@ export function withdrawLiquidationBidTx($: {
   bid_idx: string;
   bLunaAddr: CW20Addr;
 
+  txFee: u<Luna>;
   gasFee: Gas;
   gasAdjustment: Rate<number>;
   network: NetworkInfo;
@@ -56,23 +45,17 @@ export function withdrawLiquidationBidTx($: {
   txErrorReporter?: (error: unknown) => string;
   onTxSucceed?: () => void;
 }): Observable<TxResultRendering> {
-
-  
   const helper = new TxHelper($);
 
   return pipe(
     _createTxOptions({
       msgs: [
-        new MsgExecuteContract(
-          $.walletAddr,
-          $.liquidationQueueAddr,
-          {
-            // @see https://github.com/Anchor-Protocol/money-market-contracts/blob/master/contracts/market/src/msg.rs#L65
-            retract_bid: {
-              bid_idx: $.bid_idx,
-            },
-          },          
-        ),
+        new MsgExecuteContract($.walletAddr, $.liquidationQueueAddr, {
+          // @see https://github.com/Anchor-Protocol/money-market-contracts/blob/master/contracts/market/src/msg.rs#L65
+          retract_bid: {
+            bid_idx: $.bid_idx,
+          },
+        }),
       ],
       gasAdjustment: $.gasAdjustment,
     }),
@@ -109,7 +92,7 @@ export function withdrawLiquidationBidTx($: {
             },
             bidIdx && {
               name: 'Bid Id',
-              value: bidIdx
+              value: bidIdx,
             },
             helper.txHashReceipt(),
             helper.txFeeReceipt(),

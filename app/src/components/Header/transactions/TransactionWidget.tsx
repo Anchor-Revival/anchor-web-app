@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { UIElementProps } from '@libs/ui';
-import { ClickAwayListener } from '@material-ui/core';
+import { ClickAwayListener } from '@mui/material';
 import styled, { useTheme } from 'styled-components';
 import { TransactionButton } from './TransactionButton';
 import { DropdownBox, DropdownContainer } from '../desktop/DropdownContainer';

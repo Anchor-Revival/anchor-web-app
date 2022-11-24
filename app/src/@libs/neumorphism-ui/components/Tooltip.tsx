@@ -1,9 +1,9 @@
-import { makeStyles } from '@material-ui/core/styles';
 import MuiTooltip, {
   TooltipProps as MuiTooltipProps,
-} from '@material-ui/core/Tooltip';
+} from '@mui/material/Tooltip';
 import React from 'react';
-import { MessageColor, NeumorphismTheme } from '../themes/Theme';
+import styled from 'styled-components';
+import { MessageColor } from '../themes/Theme';
 
 export interface TooltipProps extends MuiTooltipProps {
   color?: MessageColor;
@@ -14,26 +14,35 @@ export interface TooltipProps extends MuiTooltipProps {
  *
  * @see https://material-ui.com/api/tooltip/
  */
-export function Tooltip({ arrow = true, ...props }: TooltipProps) {
-  const classes = useTooltipStyle(props);
+const TooltipBase: React.FC<TooltipProps> = ({
+  arrow = true,
+  ...props
+}: TooltipProps) => {
+  return (
+    <MuiTooltip
+      classes={{
+        tooltip: 'tooltip-default',
+        arrow: 'tooltip-arrow-default',
+      }}
+      arrow={arrow}
+      {...props}
+    />
+  );
+};
 
-  return <MuiTooltip classes={classes} arrow={arrow} {...props} />;
-}
-
-export const useTooltipStyle = makeStyles<NeumorphismTheme, TooltipProps>(
-  (theme) => ({
-    tooltip: ({ color = 'normal' }) => ({
-      position: 'relative',
-      borderRadius: 3,
-      color: theme.tooltip[color].textColor,
-      backgroundColor: theme.tooltip[color].backgroundColor,
-      fontSize: '0.9em',
-      fontWeight: 400,
-      padding: '10px 15px',
-      boxShadow: '1px 1px 6px 0px rgba(0,0,0,0.2)',
-    }),
-    arrow: ({ color = 'normal' }) => ({
-      color: theme.tooltip[color].backgroundColor,
-    }),
-  }),
-);
+export const Tooltip = styled(TooltipBase)`
+  .tooltip-default {
+    position: relative,
+    borderRadius: 3,
+    color: ${({ theme, color = 'normal' }) => theme.tooltip[color].textColor},
+    background-color: ${({ theme, color = 'normal' }) =>
+      theme.tooltip[color].backgroundColor},
+    font-size: 0.9em,
+    font-weight: 400,
+    padding: 10px 15px,
+    box-shadow: 1px 1px 6px 0px rgba(0,0,0,0.2),
+  }
+  .tooltip-arrow-default {
+    ${({ theme, color = 'normal' }) => theme.tooltip[color].backgroundColor}
+  }
+`;

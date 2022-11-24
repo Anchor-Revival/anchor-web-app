@@ -138,7 +138,7 @@ const StyledComponent = styled(Component)`
     right: 0;
 
     background-color: ${({ theme }) =>
-      theme.palette.type === 'dark'
+      theme.palette_type === 'dark'
         ? 'rgba(255, 255, 255, 0.1)'
         : 'rgba(255, 255, 255, 0.5)'};
     color: ${({ theme }) => theme.colors.positive};

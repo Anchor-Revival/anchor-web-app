@@ -32,7 +32,7 @@ export interface BorrowRedeemCollateralFormDependency {
   collateral: WhitelistCollateral;
   fixedFee: u<Luna>;
   userUSTBalance: u<UST>;
-  userLunaBalance: u<ULuna>;
+  userLunaBalance: u<Luna>;
   userBAssetBalance: u<bAsset>;
   oraclePrices: moneyMarket.oracle.PricesResponse;
   bAssetLtvs: BAssetLtvs;

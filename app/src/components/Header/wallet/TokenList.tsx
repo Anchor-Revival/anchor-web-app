@@ -1,7 +1,7 @@
 import { useFormatters } from '@anchor-protocol/formatter/useFormatters';
 import { UIElementProps } from '@libs/ui';
-import { Tooltip } from '@material-ui/core';
-import { Launch, AddCircle, CheckCircle } from '@material-ui/icons';
+import { Tooltip } from '@mui/material';
+import { Launch, AddCircle, CheckCircle } from '@mui/icons-material';
 import big from 'big.js';
 import { BuyButton } from 'components/BuyButton';
 import { useBalances } from 'contexts/balances';
@@ -103,11 +103,11 @@ export const TokenList = styled(TokenListBase)`
 
   font-size: 12px;
   color: ${({ theme }) =>
-    theme.palette.type === 'light' ? '#666666' : 'rgba(255, 255, 255, 0.6)'};
+    theme.palette_type === 'light' ? '#666666' : 'rgba(255, 255, 255, 0.6)'};
 
   border-top: 1px solid
     ${({ theme }) =>
-      theme.palette.type === 'light' ? '#e5e5e5' : 'rgba(255, 255, 255, 0.1)'};
+      theme.palette_type === 'light' ? '#e5e5e5' : 'rgba(255, 255, 255, 0.1)'};
 
   li {
     display: flex;
@@ -135,7 +135,7 @@ export const TokenList = styled(TokenListBase)`
     &:not(:last-child) {
       border-bottom: 1px dashed
         ${({ theme }) =>
-          theme.palette.type === 'light'
+          theme.palette_type === 'light'
             ? '#e5e5e5'
             : 'rgba(255, 255, 255, 0.1)'};
     }

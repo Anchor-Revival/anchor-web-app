@@ -1,8 +1,9 @@
 import React, {
-  Component,
   CSSProperties,
   ReactElement,
   ReactNode,
+  useEffect,
+  useState,
 } from 'react';
 import styled from 'styled-components';
 import { Rect } from './HorizontalGraphBar';
@@ -28,170 +29,165 @@ export interface HorizontalGraphSliderProps {
   label?: ReactNode;
 }
 
-interface HorizontalGraphSliderState {
-  isDragging: boolean;
-  isHovering: boolean;
+interface CoordinateProps {
+  coordinateSpace: Rect;
 }
 
-class HorizontalGraphSliderBase extends Component<
-  HorizontalGraphSliderProps,
-  HorizontalGraphSliderState
-> {
-  private thumb!: HTMLDivElement;
-  private slider!: HTMLDivElement;
+const HorizontalGraphSliderBase = (props: HorizontalGraphSliderProps) => {
+  const onMouseOver = () => {
+    setState({
+      isHovering: true,
+      isDragging: state.isDragging,
+    });
+  };
 
-  state = {
+  const onMouseLeave = () => {
+    setState({
+      isHovering: false,
+      isDragging: state.isDragging,
+    });
+  };
+
+  useEffect(() => {
+    thumb?.addEventListener('pointerdown', onDown);
+    return () => {
+      thumb?.removeEventListener('pointerdown', onDown);
+      window.removeEventListener('pointerup', onUp);
+      window.removeEventListener('pointermove', onMove);
+    };
+  });
+
+  const onDown = (event: PointerEvent) => {
+    setState({
+      isDragging: true,
+      isHovering: state.isHovering,
+    });
+
+    thumb?.removeEventListener('pointerdown', onDown);
+    window.addEventListener('pointerup', onUp);
+    window.addEventListener('pointermove', onMove);
+
+    if (typeof props.onEnter === 'function') {
+      props.onEnter();
+    }
+
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+  };
+
+  const onClick = (event: React.MouseEvent) => {
+    onMove(event);
+  };
+
+  const onUp = (event: PointerEvent) => {
+    setState({ isDragging: false, isHovering: state.isHovering });
+
+    window.removeEventListener('pointerup', onUp);
+    window.removeEventListener('pointermove', onMove);
+    thumb?.addEventListener('pointerdown', onDown);
+
+    if (typeof props.onLeave === 'function') {
+      props.onLeave();
+    }
+
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+  };
+
+  const onMove = (event: PointerEvent | React.MouseEvent) => {
+    const sliderPos =
+      event.clientX - (slider?.getBoundingClientRect()?.left ?? 0);
+    const sliderRatio = boundedRatio(sliderPos / props.coordinateSpace.width);
+
+    const newValue = boundedValue(stepForward(valueRange() * sliderRatio));
+
+    props.onChange(newValue);
+    event.stopPropagation();
+  };
+
+  const takeThumb = (thumb: HTMLDivElement) => {
+    setThumb(thumb);
+  };
+
+  const takeSlider = (slider: HTMLDivElement) => {
+    setSlider(slider);
+  };
+
+  const thumbLeft = () => {
+    return (
+      boundedRatio(props.value / valueRange()) * props.coordinateSpace.width
+    );
+  };
+
+  const valueRange = () => {
+    return props.max - props.min;
+  };
+
+  const startRatio = () => {
+    return props.start / valueRange();
+  };
+
+  const endRatio = () => {
+    return props.end / valueRange();
+  };
+
+  const boundedRatio = (ratio: number) => {
+    return Math.max(startRatio(), Math.min(ratio, endRatio()));
+  };
+
+  const stepForward = (prev: number) => {
+    return props.stepFunction?.(prev) ?? prev;
+  };
+
+  const boundedValue = (value: number) => {
+    return Math.max(props.start, Math.min(value, props.end));
+  };
+
+  const { className, style, disabled, label } = props;
+
+  const position = thumbLeft();
+
+  const [thumb, setThumb] = useState<HTMLDivElement | undefined>(undefined);
+  const [slider, setSlider] = useState<HTMLDivElement | undefined>(undefined);
+
+  const [state, setState] = useState({
     isDragging: false,
     isHovering: false,
-  };
+  });
 
-  onMouseOver = () => {
-    this.setState({
-      isHovering: true,
-    });
-  };
-
-  onMouseLeave = () => {
-    this.setState({
-      isHovering: false,
-    });
-  };
-
-  render() {
-    const { className, style, disabled, label } = this.props;
-
-    const position = this.thumbLeft();
-
-    return (
-      <div
-        ref={this.takeSlider}
-        className={className}
-        style={{
-          ...style,
-          pointerEvents: disabled ? 'none' : undefined,
-        }}
-        onClick={this.onClick}
-        onMouseOver={this.onMouseOver}
-        onMouseLeave={this.onMouseLeave}
-      >
-        <HorizontalGraphSliderThumb
-          ref={this.takeThumb}
-          className="thumb"
+  return (
+    <div
+      ref={takeSlider}
+      className={className}
+      style={{
+        ...style,
+        pointerEvents: disabled ? 'none' : undefined,
+      }}
+      onClick={onClick}
+      onMouseOver={onMouseOver}
+      onMouseLeave={onMouseLeave}
+    >
+      <HorizontalGraphSliderThumb
+        ref={takeThumb}
+        className="thumb"
+        position={position}
+      />
+      {label && (
+        <HorizontalGraphSliderThumbLabel
+          className={classNames('thumb-label', {
+            'thumb-label-visible': state.isHovering || state.isDragging,
+          })}
           position={position}
+          label={label}
         />
-        {label && (
-          <HorizontalGraphSliderThumbLabel
-            className={classNames('thumb-label', {
-              'thumb-label-visible':
-                this.state.isHovering || this.state.isDragging,
-            })}
-            position={position}
-            label={label}
-          />
-        )}
-      </div>
-    );
-  }
+      )}
+    </div>
+  );
+};
 
-  componentDidMount() {
-    this.thumb.addEventListener('pointerdown', this.onDown);
-  }
-
-  componentWillUnmount() {
-    this.thumb.removeEventListener('pointerdown', this.onDown);
-    window.removeEventListener('pointerup', this.onUp);
-    window.removeEventListener('pointermove', this.onMove);
-  }
-
-  onDown = (event: PointerEvent) => {
-    this.setState({ isDragging: true });
-
-    this.thumb.removeEventListener('pointerdown', this.onDown);
-    window.addEventListener('pointerup', this.onUp);
-    window.addEventListener('pointermove', this.onMove);
-
-    if (typeof this.props.onEnter === 'function') {
-      this.props.onEnter();
-    }
-
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-  };
-
-  onClick = (event: React.MouseEvent) => {
-    this.onMove(event);
-  };
-
-  onUp = (event: PointerEvent) => {
-    this.setState({ isDragging: false });
-
-    window.removeEventListener('pointerup', this.onUp);
-    window.removeEventListener('pointermove', this.onMove);
-    this.thumb.addEventListener('pointerdown', this.onDown);
-
-    if (typeof this.props.onLeave === 'function') {
-      this.props.onLeave();
-    }
-
-    event.stopPropagation();
-    event.stopImmediatePropagation();
-  };
-
-  onMove = (event: PointerEvent | React.MouseEvent) => {
-    const sliderPos = event.clientX - this.slider.getBoundingClientRect().left;
-    const sliderRatio = this.boundedRatio(
-      sliderPos / this.props.coordinateSpace.width,
-    );
-
-    const newValue = this.boundedValue(
-      this.stepForward(this.valueRange() * sliderRatio),
-    );
-
-    this.props.onChange(newValue);
-    event.stopPropagation();
-  };
-
-  takeThumb = (thumb: HTMLDivElement) => {
-    this.thumb = thumb;
-  };
-
-  takeSlider = (slider: HTMLDivElement) => {
-    this.slider = slider;
-  };
-
-  thumbLeft = () => {
-    return (
-      this.boundedRatio(this.props.value / this.valueRange()) *
-      this.props.coordinateSpace.width
-    );
-  };
-
-  valueRange = () => {
-    return this.props.max - this.props.min;
-  };
-
-  startRatio = () => {
-    return this.props.start / this.valueRange();
-  };
-
-  endRatio = () => {
-    return this.props.end / this.valueRange();
-  };
-
-  boundedRatio = (ratio: number) => {
-    return Math.max(this.startRatio(), Math.min(ratio, this.endRatio()));
-  };
-
-  stepForward = (prev: number) => {
-    return this.props.stepFunction?.(prev) ?? prev;
-  };
-
-  boundedValue = (value: number) => {
-    return Math.max(this.props.start, Math.min(value, this.props.end));
-  };
-}
-
-export const HorizontalGraphSlider = styled(HorizontalGraphSliderBase)`
+export const HorizontalGraphSlider: any = styled(
+  HorizontalGraphSliderBase,
+)<CoordinateProps>`
   position: absolute;
   cursor: pointer;
 

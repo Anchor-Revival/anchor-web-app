@@ -50,7 +50,7 @@ function ChainListBase(props: ChainListProps) {
 export const ChainList = styled(ChainListBase)`
   .button {
     background-color: ${({ theme }) =>
-      theme.palette.type === 'light' ? '#f4f4f5' : '#2a2a46'};
+      theme.palette_type === 'light' ? '#f4f4f5' : '#2a2a46'};
     color: ${({ theme }) => theme.textColor};
   }
 `;

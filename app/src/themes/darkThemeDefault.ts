@@ -1,5 +1,5 @@
 import { muiThemeBase } from '@libs/neumorphism-ui/themes/muiThemeBase';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 
 // TERRA THEME TO FILL IN VARIABLE THEME
 const GREEN_100 = '#15cc93';
@@ -35,27 +35,22 @@ export const BLACK = '#000000';
 export const WHITE = '#FFFFFF';
 
 export const defaultDarkTheme = {
-  ...createMuiTheme({
+  ...createTheme({
     ...muiThemeBase,
-    palette: {
-      type: 'dark',
-    },
-    overrides: {
-      MuiTouchRipple: {
-        root: {
-          opacity: 0.15,
-        },
-      },
-      
-      MuiTableRow: {
-            root: {
-                "&:last-child td": {
-                    borderBottom: 0,
-                },
-            }
-        }
-    },
   }),
+  MuiTouchRipple: {
+    root: {
+      opacity: 0.15,
+    },
+  },
+  palette_type: 'dark',
+  MuiTableRow: {
+    root: {
+      '&:last-child td': {
+        borderBottom: 0,
+      },
+    },
+  },
 
   // VARIABLES (SHOULD BE CHANGED)
   textColor: WHITE,

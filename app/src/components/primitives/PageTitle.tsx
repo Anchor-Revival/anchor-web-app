@@ -1,4 +1,4 @@
-import { Launch } from '@material-ui/icons';
+import { Launch } from '@mui/icons-material';
 import { screen } from 'env';
 import { fixHMR } from 'fix-hmr';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';

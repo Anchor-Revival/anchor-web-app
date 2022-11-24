@@ -5,11 +5,10 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from '@material-ui/core';
+} from '@mui/material';
 import React, { ReactNode } from 'react';
+import { useTheme } from 'styled-components';
 import { ActionButton } from './ActionButton';
-import { useAlertStyles } from './useAlert';
-
 export function useConfirm(): [OpenDialog<ConfirmParams, boolean>, ReactNode] {
   return useDialog(Component as any);
 }
@@ -28,12 +27,17 @@ export function Component({
   agree = 'Agree',
   disagree = 'Disagree',
 }: DialogProps<ConfirmParams, boolean>) {
-  const classes = useAlertStyles();
+  const theme = useTheme();
 
   return (
     <Dialog
       open
-      classes={classes}
+      PaperProps={{
+        style: {
+          backgroundColor: theme.sectionBackgroundColor,
+          padding: 10,
+        },
+      }}
       onClose={() => closeDialog(false)}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"

@@ -1,4 +1,4 @@
-import { Input, InputProps } from '@material-ui/core';
+import { Input, InputProps } from '@mui/material';
 import {
   RestrictedNumberInputParams,
   useRestrictedNumberInput,
@@ -14,7 +14,6 @@ export function NumberMuiInput({
   maxIntegerPoinsts,
   onChange,
   inputMode = type === 'decimal' ? 'decimal' : 'numeric',
-  pattern = '[0-9.]*',
   ...props
 }: NumberMuiInputProps) {
   const handlers = useRestrictedNumberInput({
@@ -29,7 +28,7 @@ export function NumberMuiInput({
       type="text"
       inputProps={{
         inputMode,
-        pattern,
+        pattern: '[0-9.]*',
       }}
       {...handlers}
     />

@@ -1,4 +1,4 @@
-import { ButtonBase } from '@material-ui/core';
+import { ButtonBase, ButtonBaseTypeMap, ExtendButtonBase } from '@mui/material';
 import { flat, pressed } from '@libs/styled-neumorphism';
 import styled from 'styled-components';
 import { buttonBaseStyle } from './ActionButton';
@@ -8,7 +8,9 @@ import { buttonBaseStyle } from './ActionButton';
  *
  * @see https://material-ui.com/api/button-base/
  */
-export const EmbossButton = styled(ButtonBase).attrs({ disableRipple: true })`
+export const EmbossButton: ExtendButtonBase<
+  ButtonBaseTypeMap<{}, 'a'>
+> = styled(ButtonBase)`
   ${buttonBaseStyle};
 
   border-radius: 5px;

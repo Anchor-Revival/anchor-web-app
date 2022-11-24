@@ -8,7 +8,7 @@ import {
   SelectAndTextInputContainerLabel,
 } from '@libs/neumorphism-ui/components/SelectAndTextInputContainer';
 import { UIElementProps } from '@libs/ui';
-import { MenuItem, NativeSelect, Select } from '@material-ui/core';
+import { MenuItem, NativeSelect, Select } from '@mui/material';
 import Big from 'big.js';
 import { LayoutSwitch } from 'components/layouts/LayoutSwitch';
 import { WhitelistCollateral } from 'queries';
@@ -57,7 +57,7 @@ const Component = (props: CollateralInputProps) => {
   } = props;
 
   const onCollateralChanged = useCallback(
-    (event: React.ChangeEvent<{ name?: string; value: unknown }>) => {
+    (event: any) => {
       const found = whitelist.find(
         (c) => c.collateral_token === event.target.value,
       );

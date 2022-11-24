@@ -1,11 +1,9 @@
-import { UST, Luna, u } from '@anchor-protocol/types';
+import { UST, u } from '@anchor-protocol/types';
 import { EstimatedFee } from '@libs/app-provider';
-import { max, min } from '@libs/big-math';
 import { FormReturn } from '@libs/use-form';
-import big, { Big } from 'big.js';
+import big from 'big.js';
 
-export interface LiquidationWithdrawCollateralFormInput {
-}
+export interface LiquidationWithdrawCollateralFormInput {}
 
 export interface LiquidationWithdrawCollateralFormDependency {
   userULunaBalance: u<UST>;
@@ -13,7 +11,8 @@ export interface LiquidationWithdrawCollateralFormDependency {
   isConnected: boolean;
 }
 
-export interface LiquidationWithdrawCollateralFormStates extends LiquidationWithdrawCollateralFormInput {
+export interface LiquidationWithdrawCollateralFormStates
+  extends LiquidationWithdrawCollateralFormInput {
   availablePost: boolean;
   txFee?: EstimatedFee;
   invalidTxFee?: string;
@@ -28,12 +27,10 @@ export const liquidationWithdrawCollateralForm =
     userULunaBalance,
     isConnected,
   }: LiquidationWithdrawCollateralFormDependency) =>
-  ({ }): FormReturn<
+  (): FormReturn<
     LiquidationWithdrawCollateralFormStates,
     LiquidationWithdrawCollateralFormAsyncStates
   > => {
-
-    console.log(fixedGas)
     // txFee
     const txFee = fixedGas.txFee;
 
@@ -46,7 +43,7 @@ export const liquidationWithdrawCollateralForm =
 
     // invalidDepositAmount
     const invalidDepositAmount = (() => {
-      if (!isConnected  || !txFee) {
+      if (!isConnected || !txFee) {
         return undefined;
       }
 
@@ -55,10 +52,7 @@ export const liquidationWithdrawCollateralForm =
 
     // invalidNextTxFee
     const invalidNextTxFee = (() => {
-      if (
-        !isConnected ||
-        !!invalidDepositAmount
-      ) {
+      if (!isConnected || !!invalidDepositAmount) {
         return undefined;
       }
       return big(userULunaBalance).lt(big(fixedGas.txFee).mul(2))
@@ -71,10 +65,7 @@ export const liquidationWithdrawCollateralForm =
         txFee: fixedGas,
         invalidTxFee,
         invalidNextTxFee,
-        availablePost:
-          isConnected &&
-          !invalidTxFee &&
-          !invalidDepositAmount,
+        availablePost: isConnected && !invalidTxFee && !invalidDepositAmount,
       },
       undefined,
     ];

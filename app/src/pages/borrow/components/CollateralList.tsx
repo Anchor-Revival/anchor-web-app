@@ -16,7 +16,7 @@ import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
 import { InfoTooltip } from '@libs/neumorphism-ui/components/InfoTooltip';
 import { Section } from '@libs/neumorphism-ui/components/Section';
 import { UIElementProps } from '@libs/ui';
-import { Launch } from '@material-ui/icons';
+import { Launch } from '@mui/icons-material';
 import big, { Big, BigSource } from 'big.js';
 import { BuyLink } from 'components/BuyButton';
 import { useAccount } from 'contexts/account';

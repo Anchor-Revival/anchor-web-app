@@ -1,4 +1,4 @@
-import { Info, KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons';
+import { Info, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import { fixHMR } from 'fix-hmr';
 import React, { CSSProperties } from 'react';
 import { useLocalStorage } from 'usehooks-ts';

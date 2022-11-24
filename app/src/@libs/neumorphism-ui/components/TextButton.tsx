@@ -1,5 +1,5 @@
 import { flat, pressed } from '@libs/styled-neumorphism';
-import { ButtonBase } from '@material-ui/core';
+import { ButtonBase } from '@mui/material';
 import c from 'color';
 import styled from 'styled-components';
 import { buttonBaseStyle } from './ActionButton';

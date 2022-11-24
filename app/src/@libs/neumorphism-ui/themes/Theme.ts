@@ -1,4 +1,4 @@
-import type { Theme } from '@material-ui/core';
+import type { Theme } from '@mui/material';
 
 export const messageColors = ['normal', 'warning', 'error', 'success'] as const;
 
@@ -36,6 +36,8 @@ export interface NeumorphismTheme extends Theme {
     backgroundColor: string;
     textColor: string;
   };
+
+  palette_type: string;
 
   // level
   colors: {

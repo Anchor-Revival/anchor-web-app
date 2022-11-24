@@ -1,3 +1,4 @@
+import { useFormatters } from '@anchor-protocol/formatter';
 import {
   BorrowAPR,
   BorrowValue,
@@ -40,6 +41,8 @@ function Component({ className }: OverviewProps) {
     // borrowerDistributionAPYs,
   } = useBorrowOverviewData();
 
+  const { ust } = useFormatters();
+
   // ---------------------------------------------
   // presentation
   // ---------------------------------------------
@@ -64,8 +67,8 @@ function Component({ className }: OverviewProps) {
           </h3>
           <div className="value">
             $
-            <AnimateNumber format={formatUSTWithPostfixUnits}>
-              {demicrofy(collateralValue)}
+            <AnimateNumber format={ust.formatInput}>
+              {ust.demicrofy(collateralValue)}
             </AnimateNumber>
             {collateralValue.gt(MILLION * MICRO) && (
               <SubAmount style={{ fontSize: '15px' }}>
@@ -161,7 +164,7 @@ function Component({ className }: OverviewProps) {
       </article>
 
       {currentLtv && borrowLimit ? (
-        <figure>
+        <figure style={{ marginBottom: 40 }}>
           <h3>
             <IconSpan>
               BORROW USAGE{' '}
@@ -283,7 +286,7 @@ const StyledComponent = styled(Component)`
 
   article > div {
     background: ${({ theme }) =>
-      theme.palette.type === 'light' ? '#fcfcfc' : '#262940'};
+      theme.palette_type === 'light' ? '#fcfcfc' : '#262940'};
     box-shadow: 0 8px 14px -8px rgba(0, 0, 0, 0.07);
     border-radius: 22px;
     padding: 35px 40px;

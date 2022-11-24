@@ -1,22 +1,24 @@
 import { pressed } from '@libs/styled-neumorphism';
-import { ButtonBase } from '@material-ui/core';
+import { ButtonBase } from '@mui/material';
 import styled, { css } from 'styled-components';
 
 export const buttonBaseStyle = css`
-  outline: none;
+  && {
+    outline: none;
 
-  border: 0;
-  height: 42px;
-  border-radius: 21px;
+    border: 0;
+    height: 42px;
+    border-radius: 21px;
 
-  cursor: pointer;
+    cursor: pointer;
 
-  user-select: none;
+    user-select: none;
 
-  font-size: 14px;
-  font-weight: 500;
-  text-align: center;
-  color: ${({ theme }) => theme.actionButton.textColor};
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    color: ${({ theme }) => theme.actionButton.textColor};
+  }
 `;
 
 /**
@@ -25,26 +27,29 @@ export const buttonBaseStyle = css`
  * @see https://material-ui.com/api/button-base/
  */
 export const ActionButton = styled(ButtonBase).attrs({ disableRipple: true })`
-  ${buttonBaseStyle};
+  && {
+    ${buttonBaseStyle};
 
-  background-color: ${({ theme }) => theme.actionButton.backgroundColor};
+    background-color: ${({ theme }) => theme.actionButton.backgroundColor};
 
-  &:hover {
-    background-color: ${({ theme }) => theme.actionButton.backgroundHoverColor};
-  }
+    &:hover {
+      background-color: ${({ theme }) =>
+        theme.actionButton.backgroundHoverColor};
+    }
 
-  &:active {
-    ${({ theme }) =>
-      pressed({
-        color: theme.actionButton.backgroundHoverColor,
-        backgroundColor: theme.actionButton.backgroundHoverColor,
-        distance: 1,
-        intensity: theme.intensity,
-      })};
-  }
+    &:active {
+      ${({ theme }) =>
+        pressed({
+          color: theme.actionButton.backgroundHoverColor,
+          backgroundColor: theme.actionButton.backgroundHoverColor,
+          distance: 1,
+          intensity: theme.intensity,
+        })};
+    }
 
-  &:disabled,
-  &[aria-disabled='true'] {
-    opacity: 0.3;
+    &:disabled,
+    &[aria-disabled='true'] {
+      opacity: 0.3;
+    }
   }
 `;

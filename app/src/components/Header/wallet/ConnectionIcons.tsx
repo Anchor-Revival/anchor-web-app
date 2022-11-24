@@ -66,7 +66,7 @@ const Icon = styled.div`
   width: 38px;
   height: 38px;
   background-color: ${({ theme }) =>
-    theme.palette.type === 'dark' ? 'black' : '#2c2c2c'};
+    theme.palette_type === 'dark' ? 'black' : '#2c2c2c'};
   border-radius: 50%;
   color: ${({ theme }) => theme.colors.positive};
 
@@ -113,7 +113,7 @@ const Line = styled(LineBase)`
 
   circle {
     fill: ${({ theme }) =>
-      theme.palette.type === 'light' ? '#ffffff' : '#363c5f'};
+      theme.palette_type === 'light' ? '#ffffff' : '#363c5f'};
     stroke: ${({ theme }) => theme.colors.positive};
     stroke-width: 1px;
   }

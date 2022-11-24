@@ -1,6 +1,6 @@
-import { Slider, Switch } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { NotificationsNone } from '@material-ui/icons';
+import { Slider, Switch } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { NotificationsNone } from '@mui/icons-material';
 import { ActionButton } from '@libs/neumorphism-ui/components/ActionButton';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
 import { InfoTooltip } from '@libs/neumorphism-ui/components/InfoTooltip';
@@ -74,11 +74,18 @@ function NotificationContentBase({ className }: NotificationContentProps) {
           value={liquidationAlert.ratio * 100}
           min={notificationMin}
           max={notificationMax}
-          onChange={(_: any, newValue: number) => {
-            updateLiquidationAlert({
-              ...liquidationAlert,
-              ratio: newValue / 100,
-            });
+          onChange={(_: any, newValue: number | number[]) => {
+            if (Array.isArray(newValue)) {
+              updateLiquidationAlert({
+                ...liquidationAlert,
+                ratio: newValue[0] / 100,
+              });
+            } else {
+              updateLiquidationAlert({
+                ...liquidationAlert,
+                ratio: newValue / 100,
+              });
+            }
           }}
         />
       )}

@@ -1,7 +1,7 @@
 import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
 import { pressed } from '@libs/styled-neumorphism';
 import { DialogProps, OpenDialog, useDialog } from '@libs/use-dialog';
-import { Modal } from '@material-ui/core';
+import { Modal } from '@mui/material';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 

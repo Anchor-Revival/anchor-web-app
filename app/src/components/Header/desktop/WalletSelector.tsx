@@ -1,4 +1,4 @@
-import { ClickAwayListener } from '@material-ui/core';
+import { ClickAwayListener } from '@mui/material';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { ConnectWalletButton } from './ConnectWalletButton';
@@ -57,7 +57,8 @@ function WalletSelectorBase(props: WalletSelectorProps) {
 }
 
 export const WalletSelector = styled(WalletSelectorBase)`
-  display: inline-block;
+  display: flex;
+  align-items: center;
   position: relative;
   text-align: left;
 `;

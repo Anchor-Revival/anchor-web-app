@@ -1,4 +1,4 @@
-import { ClickAwayListener } from '@material-ui/core';
+import { ClickAwayListener } from '@mui/material';
 import { isTouchDevice } from '@libs/is-touch-device';
 import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { Label } from './Label';

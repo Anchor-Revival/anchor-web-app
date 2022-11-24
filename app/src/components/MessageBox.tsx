@@ -1,4 +1,4 @@
-import { Close } from '@material-ui/icons';
+import { Close } from '@mui/icons-material';
 import React, { CSSProperties, ReactNode, useCallback, useState } from 'react';
 import styled from 'styled-components';
 

@@ -1,4 +1,4 @@
-import { ButtonBase } from '@material-ui/core';
+import { ButtonBase, ButtonBaseTypeMap, ExtendButtonBase } from '@mui/material';
 import styled from 'styled-components';
 import { buttonBaseStyle } from './ActionButton';
 
@@ -7,16 +7,20 @@ import { buttonBaseStyle } from './ActionButton';
  *
  * @see https://material-ui.com/api/button-base/
  */
-export const FlatButton = styled(ButtonBase).attrs({ disableRipple: true })`
+export const FlatButton: ExtendButtonBase<
+  ButtonBaseTypeMap<{}, 'button'>
+> = styled(ButtonBase).attrs({ disableRipple: true })`
   ${buttonBaseStyle};
+  && {
+    background-color: ${({ theme }) => theme.actionButton.backgroundColor};
 
-  background-color: ${({ theme }) => theme.actionButton.backgroundColor};
+    &:hover {
+      background-color: ${({ theme }) =>
+        theme.actionButton.backgroundHoverColor};
+    }
 
-  &:hover {
-    background-color: ${({ theme }) => theme.actionButton.backgroundHoverColor};
-  }
-
-  &:disabled {
-    opacity: 0.3;
+    &:disabled {
+      opacity: 0.3;
+    }
   }
 `;

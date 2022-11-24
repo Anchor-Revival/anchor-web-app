@@ -53,7 +53,7 @@ const SnackbarContainer = styled.div`
 3. You can your `addSnackbar()` function anywhere in the `<SnackbarProvider>`
 
 ```jsx
-import { SnackbarContent } from '@material-ui/core';
+import { SnackbarContent } from '@mui/material';
 
 function Component() {
   const { addSnackbar } = useSnackbar();
@@ -77,15 +77,15 @@ import {
   IconButton,
   SnackbarContent as MuiSnackbarContent,
   SnackbarContentProps,
-} from '@material-ui/core';
-import { Close } from '@material-ui/icons';
+} from '@mui/material';
+import { Close } from '@mui/icons-material';
 import {
   Snackbar,
   SnackbarControl,
   SnackbarProvider,
   useSnackbar,
 } from '@libs/snackbar';
-import React, { ComponentType, useRef } from 'react';
+import React, { ReactNode, useRef } from 'react';
 import styled from 'styled-components';
 
 let count: number = 0;
@@ -93,11 +93,7 @@ let count: number = 0;
 export default {
   title: 'core/Snackbar',
   decorators: [
-    (Story: ComponentType) => (
-      <SnackbarProvider>
-        <Story />
-      </SnackbarProvider>
-    ),
+    (Story: ReactNode) => <SnackbarProvider>{Story}</SnackbarProvider>,
   ],
 };
 

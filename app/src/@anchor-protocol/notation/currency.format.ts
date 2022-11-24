@@ -126,7 +126,7 @@ export function formatUSTWithPostfixUnits(n: UST<BigSource>): string {
   return bn.gte(MILLION) ? d2Formatter(bn.div(MILLION)) + 'M' : formatUST(n);
 }
 
-export function formatAUST(n: UST<BigSource>): string {
+export function formatAUST(n: aUST<BigSource>): string {
   return d6Formatter(n);
 }
 

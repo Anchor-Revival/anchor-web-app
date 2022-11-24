@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Modal } from '@material-ui/core';
+import { Modal } from '@mui/material';
 import { useEvmWallet, useWeb3React } from '@libs/evm-wallet';
 import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
 import { UIElementProps } from '@libs/ui';
@@ -31,7 +31,7 @@ const EvmWrongNetworkBase = (props: EvmWrongNetworkProps) => {
   };
 
   return (
-    <Modal open disableBackdropClick disableEnforceFocus>
+    <Modal open disableEnforceFocus>
       <Dialog className={className}>
         <ChainLogo className="anchor-logo" />
         <h3 className="title">Please connect to the {chain} network.</h3>
@@ -76,7 +76,7 @@ export const EvmWrongNetwork = styled(EvmWrongNetworkBase)`
   .primary,
   .secondary {
     background-color: ${({ theme }) =>
-      theme.palette.type === 'light' ? '#f4f4f5' : '#2a2a46'};
+      theme.palette_type === 'light' ? '#f4f4f5' : '#2a2a46'};
   }
 
   .secondary {
@@ -84,7 +84,7 @@ export const EvmWrongNetwork = styled(EvmWrongNetworkBase)`
     border-width: 2px;
     border-style: solid;
     border-color: ${({ theme }) =>
-      theme.palette.type === 'light' ? '#f4f4f5' : '#2a2a46'};
+      theme.palette_type === 'light' ? '#f4f4f5' : '#2a2a46'};
   }
 
   hr {
@@ -92,7 +92,7 @@ export const EvmWrongNetwork = styled(EvmWrongNetworkBase)`
     border: 0;
     border-bottom: 1px dashed
       ${({ theme }) =>
-        theme.palette.type === 'light'
+        theme.palette_type === 'light'
           ? '#e5e5e5'
           : 'rgba(255, 255, 255, 0.1)'};
   }

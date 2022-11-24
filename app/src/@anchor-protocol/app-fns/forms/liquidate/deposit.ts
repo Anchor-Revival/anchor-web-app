@@ -1,5 +1,4 @@
-import { UST, Luna, Rate, u } from '@anchor-protocol/types';
-import { computeMaxUstBalanceForUstTransfer } from '@libs/app-fns';
+import { UST, Luna, u } from '@anchor-protocol/types';
 import { max, min } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
 import { FormReturn } from '@libs/use-form';
@@ -7,7 +6,7 @@ import big, { Big } from 'big.js';
 
 export interface LiquidationDepositFormInput {
   depositAmount: UST;
-  premium: number
+  premium: number;
 }
 
 export interface LiquidationDepositFormDependency {
@@ -17,13 +16,15 @@ export interface LiquidationDepositFormDependency {
   isConnected: boolean;
 }
 
-export interface LiquidationDepositFormStates extends LiquidationDepositFormInput {
+export interface LiquidationDepositFormStates
+  extends LiquidationDepositFormInput {
   availablePost: boolean;
   maxAmount: u<UST>;
   sendAmount?: u<UST>;
   txFee?: u<Luna>;
   invalidTxFee?: string;
   invalidDepositAmount?: string;
+  invalidPremium?: string;
   invalidNextTxFee?: string;
 }
 
@@ -51,8 +52,8 @@ export const liquidationDepositForm =
         return undefined;
       }
 
-      const ratioTxFee = big("0");
-      const maxTax = big("0");
+      const ratioTxFee = big('0');
+      const maxTax = big('0');
       return max(min(ratioTxFee, maxTax), 0).plus(fixedGas) as u<Luna<Big>>;
     })();
 
@@ -78,8 +79,17 @@ export const liquidationDepositForm =
       }
 
       return microfy(depositAmount).gt(userUUSTBalance)
-        ? `Not enough UST`
+        ? `Not enough axlUSDC`
         : undefined;
+    })();
+
+    // invalid premium
+    const invalidPremium = (() => {
+      if (!isConnected) {
+        return undefined;
+      }
+
+      return premium < 0 || premium > 30 ? `Invalid premium` : undefined;
     })();
 
     // invalidNextTxFee
@@ -108,6 +118,7 @@ export const liquidationDepositForm =
         invalidTxFee,
         invalidDepositAmount,
         invalidNextTxFee,
+        invalidPremium,
         availablePost:
           isConnected &&
           depositAmountExists &&

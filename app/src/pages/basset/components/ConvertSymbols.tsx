@@ -143,7 +143,7 @@ function Component({ className, view, fromIcon, toIcon }: ConvertSymbolsProps) {
 }
 
 const colors = (theme: DefaultTheme) => {
-  if (theme.palette.type === 'light') {
+  if (theme.palette_type === 'light') {
     return css`
       --color-background: white;
       --color-primitive: #38d938;

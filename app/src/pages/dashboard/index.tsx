@@ -113,7 +113,6 @@ function DashboardBase({ className }: DashboardProps) {
     const last1DayBefore =
       marketDepositAndBorrow.history.find(findPrevDay(last.timestamp)) ??
       marketDepositAndBorrow.history[marketDepositAndBorrow.history.length - 2];
-
     return {
       totalDeposit: last.total_ust_deposits,
       totalBorrow: last.total_borrowed,
@@ -122,7 +121,11 @@ function DashboardBase({ className }: DashboardProps) {
       ).div(last1DayBefore.total_ust_deposits) as Rate<Big>,
       totalBorrowDiff: big(
         big(last.total_borrowed).minus(last1DayBefore.total_borrowed),
-      ).div(last1DayBefore.total_borrowed) as Rate<Big>,
+      ).div(
+        last1DayBefore.total_borrowed !== '0'
+          ? last1DayBefore.total_borrowed
+          : '1',
+      ) as Rate<Big>,
       borrowAPR: big(marketUST.borrow_rate).mul(blocksPerYear) as Rate<Big>,
       borrowAPRDiff: 'TODO: API not ready...',
     };
@@ -220,6 +223,7 @@ function DashboardBase({ className }: DashboardProps) {
                 </p>
               </section>
             </Section>
+            <CollateralMarket className="collaterals" />
           </div>
 
           <Section className="stablecoin">
@@ -383,8 +387,6 @@ function DashboardBase({ className }: DashboardProps) {
               </tbody>
             </HorizontalScrollTable>
           </Section>
-
-          <CollateralMarket className="collaterals" />
         </div>
 
         <Footer style={{ margin: '60px 0' }} />
@@ -773,14 +775,9 @@ const StyledDashboard = styled(DashboardBase)`
         }
       }
 
-      .anc-price {
+      .collaterals {
         grid-column: 2/4;
-        grid-row: 1/5;
-      }
-
-      .anc-buyback {
-        grid-column: 2/4;
-        grid-row: 5/6;
+        grid-row: 1/6;
       }
     }
   }

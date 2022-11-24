@@ -1,12 +1,12 @@
-import { ClickAwayListener } from '@material-ui/core';
-import { InfoOutlined } from '@material-ui/icons';
+import { ClickAwayListener } from '@mui/material';
+import { InfoOutlined } from '@mui/icons-material';
 import { isTouchDevice } from '@libs/is-touch-device';
 import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import { Tooltip, TooltipProps } from './Tooltip';
 
 export interface InfoTooltipProps
   extends Omit<TooltipProps, 'children' | 'title'> {
-  children: NonNullable<ReactNode>;
+  children: ReactNode;
 }
 
 export function InfoTooltip(props: InfoTooltipProps) {

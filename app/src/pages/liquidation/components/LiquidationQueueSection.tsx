@@ -19,9 +19,10 @@ import {
   Tooltip,
   Legend,
   TooltipItem,
+  ChartData,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
-import { useMediaQuery } from '@material-ui/core';
+import { useMediaQuery } from '@mui/material';
 
 export interface LiquidationQueueProps {
   className?: string;
@@ -72,7 +73,7 @@ function Component({ className }: LiquidationQueueProps) {
 
   const graphData = useLiquidationGraph();
 
-  const chartRef = useRef(null);
+  const chartRef = useRef<ChartJS<'bar', number[], number>>(null);
 
   ChartJS.register(
     CategoryScale,
@@ -103,7 +104,7 @@ function Component({ className }: LiquidationQueueProps) {
         },
         tooltip: {
           callbacks: {
-            title: (item: TooltipItem<any>) => 'Click to Bid',
+            title: () => 'Click to Bid',
             label: (item: TooltipItem<any>) => [
               `Premium : ${item.label}`,
               `Value : ${item.formattedValue} axlUSDC`,
@@ -119,7 +120,7 @@ function Component({ className }: LiquidationQueueProps) {
           },
           ticks: {
             // Include a % sign in the ticks
-            callback: function (value, index, ticks) {
+            callback: function (value: number) {
               if (value % 2 === 0) {
                 return value + '%';
               }
@@ -130,8 +131,8 @@ function Component({ className }: LiquidationQueueProps) {
           ticks: {
             display: !isSmallScreen,
             // Include a dollar sign in the ticks
-            callback: function (value, index, ticks) {
-              return "$" + value;
+            callback: function (value: number) {
+              return '$' + value;
             },
           },
         },
@@ -155,9 +156,9 @@ function Component({ className }: LiquidationQueueProps) {
     [graphData],
   );
 
-  const [chartData, setChartData] = useState({
-    datasets: [],
-  });
+  const [chartData, setChartData] = useState<
+    ChartData<'bar', number[], number>
+  >({ datasets: [] });
   const [chartOptions, setChartOptions] = useState({
     plugins: {},
   });
@@ -171,7 +172,7 @@ function Component({ className }: LiquidationQueueProps) {
     barGradient.addColorStop(0, '#4BDB4B');
     barGradient.addColorStop(1, 'rgb(45, 131, 45)');
 
-    const chartData = {
+    const chartDisplayData = {
       ...data,
       datasets: data.datasets.map((dataset) => ({
         ...dataset,
@@ -186,7 +187,7 @@ function Component({ className }: LiquidationQueueProps) {
           ...options.plugins.legend,
           labels: {
             ...options.plugins.legend.labels,
-            generateLabels: (label) => [
+            generateLabels: () => [
               {
                 text: 'axlUSDC Positions',
                 fillStyle: barGradient,
@@ -197,7 +198,7 @@ function Component({ className }: LiquidationQueueProps) {
         },
       },
     };
-    setChartData(chartData);
+    setChartData(chartDisplayData);
     setChartOptions(chartOptions);
   }, [data, options]);
 
@@ -216,19 +217,15 @@ function Component({ className }: LiquidationQueueProps) {
         <Bar ref={chartRef} options={chartOptions} data={chartData} />
       </div>
       <FlexContainer>
-        <StatsFigureCardContainer
-          className="liquidation-stats-numbers"
-        >
+        <StatsFigureCardContainer className="liquidation-stats-numbers">
           <StatsDoughnutCard
             title="Pool Ratio"
             value={liquidationStats.ratio}
+            className={'stats-doughtnut-card'}
           />
         </StatsFigureCardContainer>
 
-        <StatsFigureCardContainer
-          className="liquidation-stats-numbers"
-          elnb={liquidationStats.otherStats.length + 1}
-        >
+        <StatsFigureCardContainer className="liquidation-stats-numbers">
           {liquidationStats.otherStats.map((stat) => {
             return (
               <StatsFigureCard title={stat.title} key={stat.title}>

@@ -1,8 +1,8 @@
 import { ActionButton } from '@libs/neumorphism-ui/components/ActionButton';
 import { BorderButton } from '@libs/neumorphism-ui/components/BorderButton';
 import { TextButton } from '@libs/neumorphism-ui/components/TextButton';
-import { CircularProgress } from '@material-ui/core';
-import { Send } from '@material-ui/icons';
+import { CircularProgress } from '@mui/material';
+import { Send } from '@mui/icons-material';
 import styled from 'styled-components';
 import React from 'react';
 

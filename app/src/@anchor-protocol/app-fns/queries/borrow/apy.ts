@@ -1,5 +1,4 @@
 import { DateTime, Rate } from '@anchor-protocol/types';
-import { hiveFetch } from '@libs/query-client';
 
 export interface BorrowAPYData {
   borrowerDistributionAPYs: Array<{
@@ -22,32 +21,17 @@ type LPReward = {
   apy: Rate<number>;
 };
 
-type LpRewardsQueryResult = {
-  pool: {
-    total_rewards: {
-      apr: number;
-      apy: number;
-    };
-  };
-};
-
-// language=graphql
-const LP_REWARDS_QUERY = `
-  query LpRewardsQuery($address: String!) {
-    pool(address: $address) {
-      total_rewards {
-        apr
-        apy
-      }
-    }
-  }
-`;
-
 export async function borrowAPYQuery(
-  endpoint: string,
-  ancUstPair: string,
+  _endpoint: string,
+  _ancUstPair: string,
 ): Promise<BorrowAPYData> {
-  const borrowerDistributionAPYs = await fetch(
+  const borrowerDistributionAPYs = {
+    DistributionAPY: '0' as Rate<string>,
+    Timestamp: Date.now() as DateTime,
+    Height: 1,
+  };
+
+  /*await fetch(
     `${endpoint}/v2/distribution-apy`,
   )
     .then((res) => res.json())
@@ -68,8 +52,15 @@ export async function borrowAPYQuery(
         };
       },
     );
+    */
 
-  const govRewards = await fetch(`${endpoint}/v2/gov-reward`)
+  const govRewards = {
+    CurrentAPY: '0' as Rate<string>,
+    Timestamp: Date.now() as DateTime,
+    Height: 1,
+  };
+
+  /*await fetch(`${endpoint}/v2/gov-reward`)
     .then((res) => res.json())
     .then(
       ({
@@ -88,8 +79,14 @@ export async function borrowAPYQuery(
         };
       },
     );
+    */
 
-  const ancAstroLPRewards = await hiveFetch<any, {}, LpRewardsQueryResult>({
+  const ancAstroLPRewards = {
+    apr: 0 as Rate<number>,
+    apy: 0 as Rate<number>,
+  };
+
+  /*await hiveFetch<any, {}, LpRewardsQueryResult>({
     hiveEndpoint: 'https://api.astroport.fi/graphql',
     variables: {
       address: ancUstPair,
@@ -102,7 +99,8 @@ export async function borrowAPYQuery(
     }
     return res.pool.total_rewards;
   });
-
+  
+  */
   return {
     borrowerDistributionAPYs: [borrowerDistributionAPYs],
     govRewards: [govRewards],

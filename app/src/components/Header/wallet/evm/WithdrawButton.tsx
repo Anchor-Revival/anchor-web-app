@@ -1,6 +1,6 @@
 import React, { DOMAttributes } from 'react';
 import { UIElementProps } from '@libs/ui';
-import { Launch } from '@material-ui/icons';
+import { Launch } from '@mui/icons-material';
 import { ToolbarButtonStyle } from 'components/ToolbarButtonStyle';
 import styled from 'styled-components';
 

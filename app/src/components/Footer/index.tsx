@@ -2,8 +2,8 @@ import {
   useLastSyncedHeightQuery,
   useNetwork,
 } from '@anchor-protocol/app-provider';
-import { IconButton } from '@material-ui/core';
-import { Brightness3, Brightness5 } from '@material-ui/icons';
+import { IconButton } from '@mui/material';
+import { Brightness3, Brightness5 } from '@mui/icons-material';
 import { useTheme } from 'contexts/theme';
 import { screen } from 'env';
 import c from 'color';

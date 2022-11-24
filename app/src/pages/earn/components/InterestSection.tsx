@@ -39,7 +39,7 @@ export function InterestSection({ className }: InterestSectionProps) {
   const apyChartItems = useMemo<APYChartItem[] | undefined>(() => {
     const history = apyHistory
       ?.map(({ Timestamp, DepositRate }) => ({
-        date: new Date(Timestamp * 1000),
+        date: new Date(Timestamp),
         value: computeApy(
           DepositRate,
           constants.blocksPerYear,

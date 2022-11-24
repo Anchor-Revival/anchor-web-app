@@ -14,7 +14,7 @@ import {
 import { TokenIcon } from '@anchor-protocol/token-icons';
 import { bLuna } from '@anchor-protocol/types';
 import { createHookMsg } from '@libs/app-fns/tx/internal';
-import { useEstimateFee } from '@libs/app-provider';
+import { useFeeEstimationFor } from '@libs/app-provider';
 import { floor } from '@libs/big-math';
 import { demicrofy, MICRO } from '@libs/formatter';
 import { ActionButton } from '@libs/neumorphism-ui/components/ActionButton';
@@ -26,10 +26,10 @@ import {
   SelectAndTextInputContainerLabel,
 } from '@libs/neumorphism-ui/components/SelectAndTextInputContainer';
 import { useAlert } from '@libs/neumorphism-ui/components/useAlert';
-import { Gas, Luna, Rate, u, UST } from '@libs/types';
-import { InfoOutlined } from '@material-ui/icons';
+import { Luna, Rate } from '@libs/types';
+import { InfoOutlined } from '@mui/icons-material';
 import { StreamStatus } from '@rx-stream/react';
-import { Msg, MsgExecuteContract } from '@terra-money/terra.js';
+import { MsgExecuteContract } from '@terra-money/terra.js';
 import big, { Big } from 'big.js';
 import { MessageBox } from 'components/MessageBox';
 import { IconLineSeparator } from 'components/primitives/IconLineSeparator';
@@ -37,21 +37,15 @@ import { TxResultRenderer } from 'components/tx/TxResultRenderer';
 import { SwapListItem, TxFeeList, TxFeeListItem } from 'components/TxFeeList';
 import { ViewAddressWarning } from 'components/ViewAddressWarning';
 import { useAccount } from 'contexts/account';
-import debounce from 'lodash.debounce';
-import React, {
-  ChangeEvent,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import React, { ChangeEvent, useCallback, useEffect, useMemo } from 'react';
 import { pegRecovery } from '../../logics/pegRecovery';
 import { validateBurnAmount } from '../../logics/validateBurnAmount';
 import { BurnSwitch } from '../BurnSwitch';
 import { ConvertSymbols, ConvertSymbolsContainer } from '../ConvertSymbols';
 import { BurnComponent } from './types';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { fixHMR } from 'fix-hmr';
+import { CircleSpinner } from 'react-spinners-kit';
 
 export interface BurnProps extends BurnComponent {
   className?: string;
@@ -64,7 +58,6 @@ export function Component({
   setGetAmount,
   setBurnAmount,
   connectedWallet,
-  fixedFee,
   setMode,
 }: BurnProps) {
   // ---------------------------------------------
@@ -74,19 +67,11 @@ export function Component({
 
   const { contractAddress, gasPrice, constants } = useAnchorWebapp();
 
-  const estimateFee = useEstimateFee(terraWalletAddress);
+  const [estimatedFee, estimateFee] = useFeeEstimationFor(terraWalletAddress);
 
   const [burn, burnResult] = useBondBurnTx();
 
   const [openAlert, alertElement] = useAlert();
-
-  // ---------------------------------------------
-  // states
-  // ---------------------------------------------
-  const [estimatedGasWanted, setEstimatedGasWanted] = useState<Gas | null>(
-    null,
-  );
-  const [estimatedFee, setEstimatedFee] = useState<u<UST> | null>(null);
 
   // ---------------------------------------------
   // queries
@@ -105,36 +90,15 @@ export function Component({
   );
 
   const invalidTxFee = useMemo(
-    () => connected && validateTxFee(bank.tokenBalances.uLuna, fixedFee),
-    [bank, fixedFee, connected],
+    () =>
+      connected && validateTxFee(bank.tokenBalances.uLuna, estimatedFee?.txFee),
+    [bank, estimatedFee?.txFee, connected],
   );
 
   const invalidBurnAmount = useMemo(
     () => connected && validateBurnAmount(burnAmount, bank),
     [bank, burnAmount, connected],
   );
-
-  const estimate = useMemo(() => {
-    return debounce((msgs: Msg[] | null) => {
-      if (!msgs) {
-        setEstimatedGasWanted(null);
-        setEstimatedFee(null);
-        return;
-      }
-
-      estimateFee(msgs).then((estimated) => {
-        if (estimated) {
-          setEstimatedGasWanted(estimated.gasWanted);
-          setEstimatedFee(
-            big(estimated.txFee).mul(gasPrice.uluna).toFixed() as u<Luna>,
-          );
-        } else {
-          setEstimatedGasWanted(null);
-          setEstimatedFee(null);
-        }
-      });
-    }, 500);
-  }, [estimateFee, gasPrice.uluna]);
 
   // ---------------------------------------------
   // callbacks
@@ -186,26 +150,11 @@ export function Component({
         return;
       }
 
-      const estimated = await estimateFee([
-        new MsgExecuteContract(terraWalletAddress, contractAddress.cw20.bLuna, {
-          send: {
-            contract: contractAddress.bluna.hub,
-            amount: floor(big(burnAmount).mul(MICRO)).toFixed(),
-            msg: createHookMsg({
-              unbond: {},
-            }),
-          },
-        }),
-      ]);
-
-      if (estimated) {
+      if (estimatedFee) {
         burn({
           burnAmount,
-          gasWanted: estimated.gasWanted,
-          txFee: big(estimated.txFee)
-            .mul(gasPrice.uluna)
-            .mul(new Big(1.25))
-            .toFixed() as u<UST>,
+          gasWanted: estimatedFee.gasWanted,
+          txFee: estimatedFee.txFee,
           exchangeRate: exchangeRate?.exchange_rate ?? ('1' as Rate<string>),
           onTxSucceed: () => {
             init();
@@ -227,11 +176,8 @@ export function Component({
     [
       burn,
       connected,
-      contractAddress.bluna.hub,
-      contractAddress.cw20.bLuna,
       exchangeRate,
-      estimateFee,
-      gasPrice.uluna,
+      estimatedFee,
       init,
       openAlert,
       terraWalletAddress,
@@ -243,22 +189,18 @@ export function Component({
   // ---------------------------------------------
   useEffect(() => {
     if (!connectedWallet || burnAmount.length === 0) {
-      setEstimatedGasWanted(null);
-      setEstimatedFee(null);
-      estimate(null);
+      estimateFee(null);
       return;
     }
 
     const amount = floor(big(burnAmount).mul(MICRO));
 
     if (amount.lt(0) || amount.gt(bank.tokenBalances.ubLuna ?? 0)) {
-      setEstimatedGasWanted(null);
-      setEstimatedFee(null);
-      estimate(null);
+      estimateFee(null);
       return;
     }
 
-    estimate([
+    estimateFee([
       new MsgExecuteContract(
         connectedWallet.terraAddress,
         contractAddress.cw20.bLuna,
@@ -280,9 +222,7 @@ export function Component({
     constants.bondGasWanted,
     contractAddress.bluna.hub,
     contractAddress.cw20.bLuna,
-    estimate,
     estimateFee,
-    fixedFee,
     gasPrice.uluna,
   ]);
 
@@ -296,6 +236,8 @@ export function Component({
   // ---------------------------------------------
   // presentation
   // ---------------------------------------------
+  const theme = useTheme();
+
   if (
     burnResult?.status === StreamStatus.IN_PROGRESS ||
     burnResult?.status === StreamStatus.DONE
@@ -420,7 +362,7 @@ export function Component({
         className="switch"
         style={{ marginBottom: 40 }}
         mode="burn"
-        onChange={(mode) => mode === 'swap' && setMode('swap')}
+        onChange={(mode: any) => mode === 'swap' && setMode('swap')}
       />
 
       <div className="guide" style={{ marginBottom: 40 }}>
@@ -455,9 +397,16 @@ export function Component({
             {formatLuna(demicrofy(pegRecoveryFee(getAmount)))} LUNA
           </TxFeeListItem>
         )}
-        {burnAmount.length > 0 && estimatedFee && (
+        {burnAmount.length > 0 && (
           <TxFeeListItem label={<IconSpan>Estimated Tx Fee</IconSpan>}>
-            ≈ {formatLuna(demicrofy(estimatedFee))} Luna
+            {!estimatedFee && (
+              <span className="spinner">
+                <CircleSpinner size={14} color={theme.colors.positive} />
+              </span>
+            )}
+
+            {estimatedFee &&
+              `≈ ${formatLuna(demicrofy(estimatedFee.txFee))} Luna`}
           </TxFeeListItem>
         )}
       </TxFeeList>
@@ -474,7 +423,6 @@ export function Component({
             big(burnAmount).lte(0) ||
             !!invalidTxFee ||
             !!invalidBurnAmount ||
-            estimatedGasWanted === null ||
             estimatedFee === null
           }
           onClick={() => proceed(burnAmount)}

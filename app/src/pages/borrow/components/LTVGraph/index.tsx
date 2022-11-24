@@ -10,7 +10,7 @@ import { HorizontalGraphSlider } from '@libs/neumorphism-ui/components/Horizonta
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
 import { InfoTooltip } from '@libs/neumorphism-ui/components/InfoTooltip';
 import { Tooltip } from '@libs/neumorphism-ui/components/Tooltip';
-import { InfoOutlined } from '@material-ui/icons';
+import { InfoOutlined } from '@mui/icons-material';
 import big, { Big } from 'big.js';
 import { UIElementProps } from 'components/layouts/UIElementProps';
 import React, { useCallback } from 'react';

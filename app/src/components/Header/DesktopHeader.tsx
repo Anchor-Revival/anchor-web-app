@@ -44,7 +44,10 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
 
       <DesktopNotification className="notification" />
 
-      <section className="wallet">
+      <section
+        className="wallet"
+        style={{ display: 'flex', alignItems: 'center' }}
+      >
         <TransactionWidget className="transaction-widget" />
         <ChainSelector className="chain-selector" />
         <DeploymentSwitch

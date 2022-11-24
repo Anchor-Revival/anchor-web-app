@@ -1,6 +1,6 @@
 import { useDeploymentTarget, Chain } from '@anchor-protocol/app-provider';
 import { ANC, aUST, bLuna, Native, Token } from '@anchor-protocol/types';
-import { UST, Luna, NoMicro, u, UST } from '@libs/types';
+import { UST, Luna, NoMicro, u } from '@libs/types';
 import { BigSource } from 'big.js';
 import { useMemo } from 'react';
 import {
@@ -18,7 +18,7 @@ const createFormatter = <T>(symbol: string, decimals: number): Formatter<T> => {
     formatOutput: (amount: T & NoMicro, options?: FormatterOutputOptions) =>
       formatOutput(amount, options),
     formatInput: (amount: BigSource): T => formatInput(amount, decimals),
-    microfy: (amount: T): u<T> => microfy(amount, decimals),
+    microfy: (amount: T): u<T> => microfy(amount as T & NoMicro, decimals),
     demicrofy: (amount: u<T> | Token<BigSource>): T =>
       demicrofy(amount, decimals),
     symbol,

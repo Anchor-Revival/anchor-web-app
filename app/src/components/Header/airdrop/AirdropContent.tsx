@@ -1,8 +1,6 @@
-import { IconButton } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
-import { FlatButton } from '@libs/neumorphism-ui/components/FlatButton';
+import { IconButton } from '@mui/material';
+import { Close } from '@mui/icons-material';
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { AirdropImage } from './AirdropImage';
 
@@ -26,9 +24,6 @@ function AirdropBase({
       <div>
         <h2>Airdrop</h2>
         <p>Claim your ANC tokens</p>
-        <FlatButton component={Link} to="/airdrop">
-          Claim
-        </FlatButton>
         <IconButton className="close" size="small" onClick={onClose}>
           <Close />
         </IconButton>
@@ -86,7 +81,7 @@ export const AirdropContent = styled(AirdropBase)`
     align-items: center;
 
     background-color: ${({ theme }) =>
-      theme.palette.type === 'dark' ? '#363c5f' : '#ededed'};
+      theme.palette_type === 'dark' ? '#363c5f' : '#ededed'};
 
     img {
       width: 70px;

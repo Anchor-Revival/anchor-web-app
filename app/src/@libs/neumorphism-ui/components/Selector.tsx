@@ -4,7 +4,7 @@ import { useSelect } from 'downshift';
 import React, { ReactElement } from 'react';
 import styled from 'styled-components';
 import c from 'color';
-import { ArrowDropDown, ArrowDropUp } from '@material-ui/icons';
+import { ArrowDropDown, ArrowDropUp } from '@mui/icons-material';
 
 export interface SelectorProps<T> {
   className?: string;

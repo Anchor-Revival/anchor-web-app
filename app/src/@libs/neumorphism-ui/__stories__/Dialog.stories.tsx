@@ -1,7 +1,7 @@
 import { ActionButton } from '@libs/neumorphism-ui/components/ActionButton';
 import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
 import { MessageColor, messageColors } from '@libs/neumorphism-ui/themes/Theme';
-import { Modal } from '@material-ui/core';
+import { Modal } from '@mui/material';
 import { useCallback, useState } from 'react';
 import { Icons } from '@storybook/components';
 import React from 'react';
@@ -116,7 +116,7 @@ export const Prevent_Close = ({ color, width, height }: StoryProps) => {
       <ActionButton onClick={() => openDialog()} style={{ width: 300 }}>
         OPEN DIALOG
       </ActionButton>
-      <Modal open={open} disableBackdropClick>
+      <Modal open={open}>
         <Dialog color={color} style={{ width, height }}>
           <h1 style={{ textAlign: 'center', fontWeight: 300 }}>Title</h1>
           <p>

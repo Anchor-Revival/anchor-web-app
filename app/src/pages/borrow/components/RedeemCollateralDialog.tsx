@@ -14,7 +14,7 @@ import { NumberInput } from '@libs/neumorphism-ui/components/NumberInput';
 import { TextInput } from '@libs/neumorphism-ui/components/TextInput';
 import { UIElementProps } from '@libs/ui';
 import type { DialogProps } from '@libs/use-dialog';
-import { InputAdornment, Modal } from '@material-ui/core';
+import { InputAdornment, Modal } from '@mui/material';
 import { StreamResult, StreamStatus } from '@rx-stream/react';
 import { Big } from 'big.js';
 import { MessageBox } from 'components/MessageBox';
@@ -122,7 +122,7 @@ function RedeemCollateralDialogBase(props: RedeemCollateralDialogProps) {
     txResult?.status === StreamStatus.DONE
   ) {
     return (
-      <Modal open disableBackdropClick disableEnforceFocus>
+      <Modal open disableEnforceFocus>
         <Dialog className={className}>{renderBroadcastTx}</Dialog>
       </Modal>
     );

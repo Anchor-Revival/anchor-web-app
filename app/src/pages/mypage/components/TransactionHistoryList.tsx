@@ -3,7 +3,7 @@ import { rulerLightColor, rulerShadowColor } from '@libs/styled-neumorphism';
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import useResizeObserver from 'use-resize-observer/polyfilled';
-import { CallMade } from '@material-ui/icons';
+import { CallMade } from '@mui/icons-material';
 import { useNetwork } from '@anchor-protocol/app-provider';
 import { getTransactionDetailUrl } from 'utils/terrascope';
 

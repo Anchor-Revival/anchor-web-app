@@ -35,8 +35,8 @@ import { NumberMuiInput } from '@libs/neumorphism-ui/components/NumberMuiInput';
 import { SelectAndTextInputContainer } from '@libs/neumorphism-ui/components/SelectAndTextInputContainer';
 import { TextInput } from '@libs/neumorphism-ui/components/TextInput';
 import { DialogProps, OpenDialog, useDialog } from '@libs/use-dialog';
-import { Modal, NativeSelect as MuiNativeSelect } from '@material-ui/core';
-import { Warning } from '@material-ui/icons';
+import { Modal, NativeSelect as MuiNativeSelect } from '@mui/material';
+import { Warning } from '@mui/icons-material';
 import { StreamStatus } from '@rx-stream/react';
 import { AccAddress } from '@terra-money/terra.js';
 import big, { Big, BigSource } from 'big.js';
@@ -153,7 +153,7 @@ function ComponentBase({
           formatLunaInput(demicrofy(bank.tokenBalances.ubLuna)),
         cw20Address: cw20.bLuna,
       },
-      ...infoAndBalances.map(({ bAsset, balance, tokenDisplay }) => ({
+      ...infoAndBalances.map(({ bAsset, balance, tokenDisplay }: any) => ({
         label: tokenDisplay?.symbol ?? bAsset.symbol,
         value: bAsset.symbol,
         integerPoints: LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
@@ -289,7 +289,7 @@ function ComponentBase({
     sendResult?.status === StreamStatus.DONE
   ) {
     return (
-      <Modal open disableBackdropClick disableEnforceFocus>
+      <Modal open disableEnforceFocus>
         <Dialog className={className}>
           <TxResultRenderer
             resultRendering={sendResult.value}

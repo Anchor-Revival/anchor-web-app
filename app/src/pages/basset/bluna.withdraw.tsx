@@ -224,13 +224,13 @@ const StyledComponent = styled(Component)`
   }
 
   --pending-color: ${({ theme }) =>
-    theme.palette.type === 'dark' ? '#6bbd7e' : '#38D938'};
+    theme.palette_type === 'dark' ? '#6bbd7e' : '#38D938'};
 
   --unbonding-color: ${({ theme }) =>
-    theme.palette.type === 'dark' ? '#228323' : '#36A337'};
+    theme.palette_type === 'dark' ? '#228323' : '#36A337'};
 
   --withdrawable-color: ${({ theme }) =>
-    theme.palette.type === 'dark' ? '#d3d3d3' : '#1A1A1A'};
+    theme.palette_type === 'dark' ? '#d3d3d3' : '#1A1A1A'};
 `;
 
 export const BlunaWithdraw = fixHMR(StyledComponent);

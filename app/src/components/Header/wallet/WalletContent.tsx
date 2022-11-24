@@ -1,6 +1,6 @@
 import { truncate } from '@libs/formatter';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
-import { Check } from '@material-ui/icons';
+import { Check } from '@mui/icons-material';
 import React from 'react';
 import useClipboard from 'react-use-clipboard';
 import styled from 'styled-components';
@@ -74,12 +74,12 @@ export const WalletContent = styled(WalletContentBase)`
       padding: 5px 10px;
 
       background-color: ${({ theme }) =>
-        theme.palette.type === 'light' ? '#f1f1f1' : 'rgba(0, 0, 0, 0.15)'};
+        theme.palette_type === 'light' ? '#f1f1f1' : 'rgba(0, 0, 0, 0.15)'};
       color: ${({ theme }) => theme.dimTextColor};
 
       &:hover {
         background-color: ${({ theme }) =>
-          theme.palette.type === 'light' ? '#e1e1e1' : 'rgba(0, 0, 0, 0.2)'};
+          theme.palette_type === 'light' ? '#e1e1e1' : 'rgba(0, 0, 0, 0.2)'};
         color: ${({ theme }) => theme.textColor};
       }
     }
@@ -96,12 +96,12 @@ export const WalletContent = styled(WalletContentBase)`
     outline: none;
 
     background-color: ${({ theme }) =>
-      theme.palette.type === 'light' ? '#f1f1f1' : 'rgba(0, 0, 0, 0.15)'};
+      theme.palette_type === 'light' ? '#f1f1f1' : 'rgba(0, 0, 0, 0.15)'};
     color: ${({ theme }) => theme.dimTextColor};
 
     &:hover {
       background-color: ${({ theme }) =>
-        theme.palette.type === 'light' ? '#e1e1e1' : 'rgba(0, 0, 0, 0.2)'};
+        theme.palette_type === 'light' ? '#e1e1e1' : 'rgba(0, 0, 0, 0.2)'};
       color: ${({ theme }) => theme.textColor};
     }
 

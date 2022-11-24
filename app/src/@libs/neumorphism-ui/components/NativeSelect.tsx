@@ -1,6 +1,6 @@
 import { flat } from '@libs/styled-neumorphism';
 import styled from 'styled-components';
-import { NativeSelect as MuiNativeSelect } from '@material-ui/core';
+import { NativeSelect as MuiNativeSelect } from '@mui/material';
 
 /**
  * A styled component of the `<NativeSelect />` of the Material-UI

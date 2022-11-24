@@ -1,6 +1,6 @@
 import { DeploymentTarget } from '@anchor-protocol/app-provider';
 import { moneyMarket, Rate } from '@anchor-protocol/types';
-import { UST, u } from '@libs/types';
+import { UST, u, Luna } from '@libs/types';
 import { FormReturn } from '@libs/use-form';
 import big, { Big } from 'big.js';
 import { computeBorrowAPR } from '../../logics/borrow/computeBorrowAPR';
@@ -71,7 +71,7 @@ export const borrowRepayForm = ({
   target,
   fixedFee,
   userUSTBalance,
-  userLunaalance,
+  userLunaBalance,
   marketBorrowerInfo,
   overseerCollaterals,
   oraclePrices,

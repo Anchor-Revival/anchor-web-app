@@ -1,8 +1,7 @@
-import { IconButton } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
-import { FlatButton } from '@libs/neumorphism-ui/components/FlatButton';
+import { IconButton } from '@mui/material';
+import { Close } from '@mui/icons-material';
 import React, { useCallback, useState } from 'react';
-import { Link, useMatch } from 'react-router-dom';
+import { useMatch } from 'react-router-dom';
 import styled from 'styled-components';
 import { UIElementProps } from 'components/layouts/UIElementProps';
 import errorImage from '../assets/error.svg';
@@ -88,9 +87,6 @@ function VestingClaimNotificationBase(props: VestingClaimNotificationProps) {
           checked={ignore}
           onChange={() => setIgnore((value) => !value)}
         />
-        <FlatButton component={Link} to="/anc/vesting/claim">
-          Claim ANC
-        </FlatButton>
         <IconButton
           className="close"
           size="small"
@@ -240,7 +236,7 @@ export const VestingClaimNotification = styled(VestingClaimNotificationBase)`
     align-items: center;
 
     background-color: ${({ theme }) =>
-      theme.palette.type === 'dark' ? '#363c5f' : '#ededed'};
+      theme.palette_type === 'dark' ? '#363c5f' : '#ededed'};
 
     img {
       width: 70px;

@@ -1,25 +1,14 @@
 import {
-  createStyles,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+} from '@mui/material';
 import { DialogProps, OpenDialog, useDialog } from '@libs/use-dialog';
 import React, { ReactNode } from 'react';
-import { NeumorphismTheme } from '../themes/Theme';
 import { ActionButton } from './ActionButton';
-
-export const useAlertStyles = makeStyles((theme: NeumorphismTheme) =>
-  createStyles({
-    paper: {
-      backgroundColor: theme.sectionBackgroundColor,
-      padding: 10,
-    },
-  }),
-);
+import { useTheme } from 'styled-components';
 
 type FormReturn = void;
 
@@ -39,14 +28,18 @@ export function Component({
   description,
   agree = 'Agree',
 }: DialogProps<AlertParams, FormReturn>) {
-  const classes = useAlertStyles();
+  const theme = useTheme();
 
   return (
     <Dialog
       open
-      classes={classes}
+      PaperProps={{
+        style: {
+          backgroundColor: theme.sectionBackgroundColor,
+          padding: 10,
+        },
+      }}
       onClose={() => closeDialog()}
-      disableBackdropClick
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       style={{ padding: 100 }}

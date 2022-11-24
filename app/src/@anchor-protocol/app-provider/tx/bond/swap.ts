@@ -1,6 +1,6 @@
 import { bondSwapTx } from '@anchor-protocol/app-fns';
-import { bLuna, Rate } from '@anchor-protocol/types';
-import { useFixedFee, useRefetchQueries } from '@libs/app-provider';
+import { bLuna, Gas, Rate, u, UST } from '@anchor-protocol/types';
+import { useRefetchQueries } from '@libs/app-provider';
 import { useStream } from '@rx-stream/react';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
@@ -10,6 +10,8 @@ import { ANCHOR_TX_KEY } from '../../env';
 
 export interface BondSwapTxParams {
   burnAmount: bLuna;
+  gasWanted: Gas;
+  txFee: u<UST>;
   beliefPrice: Rate;
   maxSpread: number;
   onTxSucceed?: () => void;
@@ -25,12 +27,15 @@ export function useBondSwapTx() {
 
   const refetchQueries = useRefetchQueries();
 
-  const fixedFee = useFixedFee();
-
-  // TODO remove
-
   const stream = useCallback(
-    ({ burnAmount, beliefPrice, maxSpread, onTxSucceed }: BondSwapTxParams) => {
+    ({
+      burnAmount,
+      beliefPrice,
+      maxSpread,
+      onTxSucceed,
+      txFee,
+      gasWanted,
+    }: BondSwapTxParams) => {
       if (
         !availablePost ||
         !connected ||
@@ -51,8 +56,8 @@ export function useBondSwapTx() {
         // post
         network: connectedWallet.network,
         post: connectedWallet.post,
-        fixedGas: fixedFee,
-        gasFee: constants.gasWanted,
+        fixedGas: txFee,
+        gasFee: gasWanted,
         gasAdjustment: constants.gasAdjustment,
         // query
         queryClient,
@@ -72,8 +77,6 @@ export function useBondSwapTx() {
       contractAddress.cw20.bLuna,
       contractAddress.terraswap.blunaLunaPair,
       terraWalletAddress,
-      fixedFee,
-      constants.gasWanted,
       constants.gasAdjustment,
       queryClient,
       txErrorReporter,

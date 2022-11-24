@@ -12,7 +12,7 @@ import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
 import { NumberInput } from '@libs/neumorphism-ui/components/NumberInput';
 import type { DialogProps } from '@libs/use-dialog';
-import { InputAdornment, Modal } from '@material-ui/core';
+import { InputAdornment, Modal } from '@mui/material';
 import { StreamResult, StreamStatus } from '@rx-stream/react';
 import { MessageBox } from 'components/MessageBox';
 import { TxFeeList, TxFeeListItem } from 'components/TxFeeList';
@@ -91,7 +91,7 @@ function WithdrawDialogBase(props: WithdrawDialogProps) {
     txResult?.status === StreamStatus.DONE
   ) {
     return (
-      <Modal open disableBackdropClick disableEnforceFocus>
+      <Modal open disableEnforceFocus>
         <Dialog className={className}>{renderBroadcastTx}</Dialog>
       </Modal>
     );

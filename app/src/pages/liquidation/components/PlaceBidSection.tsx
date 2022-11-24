@@ -1,20 +1,24 @@
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
 import { InfoTooltip } from '@libs/neumorphism-ui/components/InfoTooltip';
 
-import React, { ChangeEvent, ReactNode, useCallback, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, {
+  ChangeEvent,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 import {
   FormControlLabel,
   Radio,
-  Grid,
   Slider,
   InputAdornment,
-  OutlinedInput,  
-  FormHelperText,
+  OutlinedInput,
   Button,
   Modal,
-} from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+} from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
+import Typography from '@mui/material/Typography';
 import { useAccount } from 'contexts/account';
 import { PaddingSection } from './PaddingSection';
 import { useLiquidationDepositForm } from '@anchor-protocol/app-provider/forms/liquidate/deposit';
@@ -22,7 +26,10 @@ import { useFormatters } from '@anchor-protocol/formatter';
 import { Luna, u, UST } from '@libs/types';
 import { AmountSlider } from './AmountSlider';
 import big, { Big, BigSource } from 'big.js';
-import { UST_INPUT_MAXIMUM_DECIMAL_POINTS, UST_INPUT_MAXIMUM_INTEGER_POINTS } from '@anchor-protocol/notation';
+import {
+  UST_INPUT_MAXIMUM_DECIMAL_POINTS,
+  UST_INPUT_MAXIMUM_INTEGER_POINTS,
+} from '@anchor-protocol/notation';
 import { NumberInput } from '@libs/neumorphism-ui/components/NumberInput';
 import styled from 'styled-components';
 import { usePlaceLiquidationBidTx } from '@anchor-protocol/app-provider/tx/liquidate/deposit';
@@ -32,12 +39,15 @@ import { StreamStatus } from '@rx-stream/react';
 import { TxResultRenderer } from 'components/tx/TxResultRenderer';
 import { BroadcastTxStreamResult } from './types';
 import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
-import { useAnchorWebapp, useBidByUserByCollateralQuery } from '@anchor-protocol/app-provider';
-import { formatUToken } from '@libs/formatter';
+import {
+  useAnchorWebapp,
+  useBidByUserByCollateralQuery,
+} from '@anchor-protocol/app-provider';
 import { bLuna } from '@anchor-protocol/types';
 import { useLiquidationWithdrawCollateralForm } from '@anchor-protocol/app-provider/forms/liquidate/collateral';
 import { useLiquidationWithdrawCollateralTx } from '@anchor-protocol/app-provider/tx/liquidate/collateral';
 import { defaultFee, EstimatedFee } from '@libs/app-provider';
+import { pressed } from '@libs/styled-neumorphism';
 
 export interface PlaceBidSectionProps {
   className?: string;
@@ -47,44 +57,46 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
   const { connected } = useAccount();
   const { contractAddress } = useAnchorWebapp();
 
-
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
-  const {data: { bidByUser } = {}} = useBidByUserByCollateralQuery(contractAddress.cw20.bLuna);
- const {
-    axlUSDC: { formatInput, demicrofy },
+  const { data: { bidByUser } = {} } = useBidByUserByCollateralQuery(
+    contractAddress.cw20.bLuna,
+  );
+  const {
+    axlUSDC: { formatInput, formatOutput, demicrofy, symbol },
     luna,
-    bLuna : bluna
+    bLuna: bluna,
   } = useFormatters();
 
-  const [withdrawable_number, withdrawable_balance]= useMemo(
-    () =>  {
-        const withdrawable_number = (bidByUser?.bids ?? [])
-            .reduce((filledSum, bid) => filledSum.plus(big(bid.pending_liquidated_collateral)), big(0)) as u<bLuna<Big>>
-        let parsedWithdrawal = bluna?.formatOutput(bluna.demicrofy(withdrawable_number));
-        if(parsedWithdrawal === "0"){
-          parsedWithdrawal = "0.000000"
-        }
-        const withdrawable = `${parsedWithdrawal } aLuna`;
-        return [withdrawable_number, withdrawable]
-      }
-      , [bidByUser, bluna])
-
+  const [withdrawable_number, withdrawable_balance] = useMemo(() => {
+    const withdrawable_number = (bidByUser?.bids ?? []).reduce(
+      (filledSum, bid) =>
+        filledSum.plus(big(bid.pending_liquidated_collateral)),
+      big(0),
+    ) as u<bLuna<Big>>;
+    let parsedWithdrawal = bluna?.formatOutput(
+      bluna.demicrofy(withdrawable_number),
+    );
+    if (parsedWithdrawal === '0') {
+      parsedWithdrawal = '0.000000';
+    }
+    const withdrawable = `${parsedWithdrawal} aLuna`;
+    return [withdrawable_number, withdrawable];
+  }, [bidByUser, bluna]);
 
   const handleSliderChange = (event: any, newValue: any) => {
     state.updatePremiumValue(newValue);
-  }; 
+  };
   const handleInputChange = (event: any) => {
     state.updatePremiumValue(
-      event.target.value === '' ? undefined : (Number(event.target.value)),
+      event.target.value === '' ? undefined : Number(event.target.value),
     );
   };
 
-
   /*******************************
-   * 
+   *
    * Place Bid Submit Section
-   * 
+   *
    * *****************************/
 
   const state = useLiquidationDepositForm();
@@ -134,23 +146,20 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
     );
   }, [placeBidTxResult]);
 
-
-
   /*******************************
-   * 
+   *
    * Withdraw liquidated Collateral Submit Section
-   * 
+   *
    * *****************************/
 
   const collateralState = useLiquidationWithdrawCollateralForm();
-  const [withdrawCollateralTx, withdrawCollateralTxResult] = useLiquidationWithdrawCollateralTx();
-  const [isSubmittingCollateralTx, setIsSubmittingCollateralTx] = useState(false);
+  const [withdrawCollateralTx, withdrawCollateralTxResult] =
+    useLiquidationWithdrawCollateralTx();
+  const [isSubmittingCollateralTx, setIsSubmittingCollateralTx] =
+    useState(false);
 
   const proceedWithdrawCollateral = useCallback(
-    async (
-      txFee: EstimatedFee | undefined,
-      confirm: ReactNode,
-    ) => {
+    async (txFee: EstimatedFee | undefined, confirm: ReactNode) => {
       setIsSubmittingCollateralTx(true);
       if (!connected || !withdrawCollateralTx) {
         return;
@@ -169,21 +178,22 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
       }
 
       withdrawCollateralTx({
-        txFee: txFee ?? defaultFee()
+        txFee: txFee ?? defaultFee(),
       });
     },
     [connected, withdrawCollateralTx, openConfirm],
   );
 
   useMemo(() => {
-    collateralState.updateTxFee()
+    collateralState.updateTxFee();
   }, [collateralState]);
-
 
   const renderBroadcastCollateralTx = useMemo(() => {
     return (
       <TxResultRenderer
-        resultRendering={(withdrawCollateralTxResult as BroadcastTxStreamResult)?.value}
+        resultRendering={
+          (withdrawCollateralTxResult as BroadcastTxStreamResult)?.value
+        }
         onExit={() => setIsSubmittingCollateralTx(false)}
       />
     );
@@ -199,29 +209,49 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
           </InfoTooltip>
         </IconSpan>
       </h2>
-      { (isSubmittingBidTx && (placeBidTxResult?.status === StreamStatus.IN_PROGRESS || placeBidTxResult?.status === StreamStatus.DONE)) && 
-        <Modal open disableBackdropClick disableEnforceFocus>
-          <Dialog className={className} style={{width:720, touchAction: "none"}}>{renderBroadcastBidTx}</Dialog>
-        </Modal>
-      }
-      { (isSubmittingCollateralTx && (withdrawCollateralTxResult ?.status === StreamStatus.IN_PROGRESS || withdrawCollateralTxResult ?.status === StreamStatus.DONE)) && 
-        <Modal open disableBackdropClick disableEnforceFocus>
-          <Dialog className={className} style={{width:720, touchAction: "none"}}>{renderBroadcastCollateralTx}</Dialog>
-        </Modal>
-      }
-      <form onSubmit={(e) => {
-        e.preventDefault();
-        proceedBid(state.depositAmount, state.premium ?? 0, state.txFee, state.invalidNextTxFee)
-      }}>
-        {/* register your input into the hook by invoking the "register" function */}
+      {isSubmittingBidTx &&
+        (placeBidTxResult?.status === StreamStatus.IN_PROGRESS ||
+          placeBidTxResult?.status === StreamStatus.DONE) && (
+          <Modal open disableEnforceFocus>
+            <Dialog
+              className={className}
+              style={{ width: 720, touchAction: 'none' }}
+            >
+              {renderBroadcastBidTx}
+            </Dialog>
+          </Modal>
+        )}
+      {isSubmittingCollateralTx &&
+        (withdrawCollateralTxResult?.status === StreamStatus.IN_PROGRESS ||
+          withdrawCollateralTxResult?.status === StreamStatus.DONE) && (
+          <Modal open disableEnforceFocus>
+            <Dialog
+              className={className}
+              style={{ width: 720, touchAction: 'none' }}
+            >
+              {renderBroadcastCollateralTx}
+            </Dialog>
+          </Modal>
+        )}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          proceedBid(
+            state.depositAmount,
+            state.premium ?? 0,
+            state.txFee,
+            state.invalidNextTxFee,
+          );
+        }}
+      >
         <Grid container spacing={3}>
-          <Grid item xs={12}>
+          <Grid xs={12}>
             <Typography id="input-slider" gutterBottom>
               Premium (Luna discount)
             </Typography>
             <Grid container spacing={2} alignItems="center">
-              <Grid item xs>
-                <Slider
+              <Grid xs={12} sm={9}>
+                <CavernSlider
                   value={state.premium || 0}
                   defaultValue={5}
                   step={1}
@@ -230,20 +260,25 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
                   max={30}
                   aria-labelledby="discrete-slider"
                   valueLabelDisplay="auto"
-                  label=""
-                  onChange={({ target }: ChangeEvent<HTMLInputElement>, newValue: number) => {
+                  onChange={(
+                    { target }: Event,
+                    newValue: number | number[],
+                  ) => {
                     handleSliderChange(target, newValue);
                   }}
+                  valueLabelFormat={(value) => `${value}%`}
                 />
               </Grid>
-              <Grid item>
+              <Grid xs={12} sm={3}>
                 <OutlinedInput
                   endAdornment={
                     <InputAdornment position="end">%</InputAdornment>
                   }
+                  fullWidth
                   value={state.premium ?? ''}
                   margin="dense"
-                  onChange = {handleInputChange}
+                  onChange={handleInputChange}
+                  error={!!state.invalidPremium}
                   inputProps={{
                     'step': 1,
                     'min': 0,
@@ -254,37 +289,32 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
                 />
               </Grid>
             </Grid>
+            <div
+              className="premium-error"
+              aria-invalid={!!state.invalidPremium}
+            >
+              <span>
+                {' '}
+                {state.invalidPremium}
+              </span>
+            </div>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid xs={12}>
             <Grid container spacing={1}>
-              <Grid item xs={12}>
+              <Grid xs={12}>
                 <Typography id="input-slider" gutterBottom>
                   Bid amount
                 </Typography>
-                {/*<Input
-                  {...register('bid_amount', { required: true })}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <strong>axlUSDC</strong>
-                    </InputAdornment>
-                  }
-                  error={errors.bid_amount && true}
-                  inputProps={{
-                    type: 'number',
-                  }}
-                  fullWidth
-                  aria-describedby="bid-amount-helper-text"
-                />*/}
                 <NumberInput
-                  //{...register('bid_amount', { required: true })}
                   className="amount"
                   value={state.depositAmount}
                   maxIntegerPoinsts={UST_INPUT_MAXIMUM_INTEGER_POINTS}
                   maxDecimalPoints={UST_INPUT_MAXIMUM_DECIMAL_POINTS}
+                  error={!!state.invalidDepositAmount}
                   label="AMOUNT"
-                  onChange={({ target }: ChangeEvent<HTMLInputElement>) =>{
-                    state.updateDepositAmount(target.value as UST)
+                  onChange={({ target }: ChangeEvent<HTMLInputElement>) => {
+                    state.updateDepositAmount(target.value as UST);
                   }}
                   InputProps={{
                     endAdornment: (
@@ -292,9 +322,39 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
                     ),
                   }}
                 />
+                <div
+                  className="wallet"
+                  aria-invalid={!!state.invalidDepositAmount}
+                >
+                  <span>{state.invalidDepositAmount}</span>
+                  <span>
+                    Max:{' '}
+                    <span
+                      style={
+                        state.maxAmount
+                          ? {
+                              textDecoration: 'underline',
+                              cursor: 'pointer',
+                            }
+                          : undefined
+                      }
+                      onClick={() =>
+                        state.maxAmount &&
+                        state.updateDepositAmount(
+                          formatInput(demicrofy(state.maxAmount)),
+                        )
+                      }
+                    >
+                      {state.maxAmount
+                        ? formatOutput(demicrofy(state.maxAmount))
+                        : 0}{' '}
+                      {symbol}
+                    </span>
+                  </span>
+                </div>
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid xs={12}>
                 {big(state.maxAmount).gt(0) && (
                   <figure className="graph">
                     <AmountSlider
@@ -303,7 +363,9 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
                       txFee={Number(demicrofy(state.txFee ?? ('0' as UST)))}
                       value={Number(state.depositAmount)}
                       onChange={(value) => {
-                        state.updateDepositAmount(formatInput(value.toString() as UST));
+                        state.updateDepositAmount(
+                          formatInput(value.toString() as UST),
+                        );
                       }}
                     />
                   </figure>
@@ -312,11 +374,9 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
             </Grid>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid xs={12}>
             <FormControlLabel
-              control={
-                <Radio color="default" value="accept-terms" fullwidth="true" />
-              }
+              control={<Radio color="default" value="accept-terms" />}
               onChange={() => setAcceptedTerms(true)}
               label={
                 <Typography variant="body2">
@@ -326,42 +386,47 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
               labelPlacement="end"
               aria-describedby="bid-terms-helper-text"
             />
-          </Grid>
-          {state.txFee && (
-          <TxFeeList className="receipt" >
-            {big(state.txFee).gt(0) && (
-              <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-                {`${luna.formatOutput(luna.demicrofy(state.txFee))} ${luna.symbol}`}
-              </TxFeeListItem>
+            {state.txFee && (
+              <TxFeeList className="receipt">
+                {big(state.txFee).gt(0) && (
+                  <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
+                    {`${luna.formatOutput(luna.demicrofy(state.txFee))} ${
+                      luna.symbol
+                    }`}
+                  </TxFeeListItem>
+                )}
+              </TxFeeList>
             )}
-          </TxFeeList>
-        )}
-          <Button
-            variant="contained"
-            fullWidth
-            type="submit"
-            color="primary"
-            disabled={
-              !connected || 
-              !state.depositAmount || 
-              !acceptedTerms ||
-              !proceedBid
-            }
-            className="place-bid-button"
-          >
-            Place My Bid
-          </Button>
-          <Grid item xs={12} style={{padding: "12px 0px", marginTop: 20}}>
+            <Button
+              variant="contained"
+              fullWidth
+              type="submit"
+              color="primary"
+              disabled={
+                !connected ||
+                !state.depositAmount ||
+                !acceptedTerms ||
+                !proceedBid ||
+                !!state.invalidPremium ||
+                !!state.invalidDepositAmount
+              }
+              className="place-bid-button"
+            >
+              Place My Bid
+            </Button>
+          </Grid>
+          <Grid xs={12} style={{ padding: '12px 0px', marginTop: 20 }}>
             <h2>
               <IconSpan>
                 Withdraw defaulted Collateral{' '}
                 <InfoTooltip>
-                  Use the following form to withdraw collateral that was defaulted thanks to your deposit in the pool
+                  Use the following form to withdraw collateral that was
+                  defaulted thanks to your deposit in the pool
                 </InfoTooltip>
               </IconSpan>
             </h2>
             <Grid container spacing={1}>
-              <Grid item xs={12}>
+              <Grid xs={12}>
                 <OutlinedInput
                   disabled
                   fullWidth
@@ -369,16 +434,18 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
                   style={{ fontSize: '3em' }}
                 />
               </Grid>
-              {/*!withdrawable_number.eq(0) &&*/ collateralState.txFee?.txFee && (
-                <TxFeeList className="receipt" >
+              {collateralState.txFee?.txFee && (
+                <TxFeeList className="receipt">
                   {big(collateralState.txFee?.txFee).gt(0) && (
                     <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-                      {`${luna.formatOutput(luna.demicrofy(collateralState.txFee?.txFee))} ${luna.symbol}`}
+                      {`${luna.formatOutput(
+                        luna.demicrofy(collateralState.txFee?.txFee),
+                      )} ${luna.symbol}`}
                     </TxFeeListItem>
                   )}
                 </TxFeeList>
               )}
-              <Grid item xs={12}>
+              <Grid xs={12}>
                 <Button
                   variant="contained"
                   fullWidth
@@ -386,14 +453,16 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
                   disabled={
                     !connected ||
                     !withdrawable_number ||
-                    !collateralState.txFee || 
-                    /*withdrawable_number.eq(big(0)) || */
+                    !collateralState.txFee ||
+                    withdrawable_number.eq(big(0)) ||
                     !proceedWithdrawCollateral
                   }
-                  onClick={
-                    () => proceedWithdrawCollateral(
-                      collateralState.txFee, collateralState.invalidNextTxFee
-                    )}
+                  onClick={() =>
+                    proceedWithdrawCollateral(
+                      collateralState.txFee,
+                      collateralState.invalidNextTxFee,
+                    )
+                  }
                 >
                   Withdraw
                 </Button>
@@ -402,12 +471,58 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
           </Grid>
         </Grid>
       </form>
+      {confirmElement}
     </PaddingSection>
   );
 }
 
+export const CavernSlider = styled(Slider)`
+  & {
+    height: 12px !important;
+    color: ${({ theme }) => theme.colors.positive} !important;
+    padding: 1px !important;
+    ${({ theme }) =>
+      pressed({
+        color: theme.textInput.backgroundColor,
+        backgroundColor: theme.backgroundColor,
+        intensity: theme.intensity,
+        distance: 1,
+      })};
+
+    & .MuiSlider-thumb {
+      box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.18);
+      background-color: ${({ theme }) => theme.slider.thumb.thumbColor};
+    }
+
+    & .MuiSlider-valueLabel {
+      background-color: ${({ theme }) => theme.colors.positive};
+      border-radius: 3px;
+      padding-left: 10px;
+      padding-right: 10px;
+      z-index: 1;
+    }
+
+    & .MuiSlider-thumb:after {
+      background-color: darkgray;
+      position: absolute;
+      height: 4px;
+      width: 4px;
+      left: 50%;
+      border-radius: 50%;
+    }
+
+    & .MuiSlider-thumb:hover,
+    .MuiSlider-thumb.Mui-focusVisible {
+      box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.18) !important;
+    }
+
+    & .MuiSlider-rail {
+      color: rgba(0, 0, 0, 0);
+    }
+  }
+`;
+
 export const PlaceBidSection = styled(PlaceBidSectionBase)`
-  
   .amount {
     width: 100%;
     margin-bottom: 5px;
@@ -418,16 +533,37 @@ export const PlaceBidSection = styled(PlaceBidSectionBase)`
   }
   .graph {
     margin-top: 80px;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
   }
 
-
   .receipt {
-    width: 100%
+    width: 100%;
   }
 
   .place-bid-button {
-    margin-top: 30px
+    margin-top: 30px;
   }
 
-`
+  .wallet {
+    display: flex;
+    justify-content: space-between;
+
+    font-size: 12px;
+    color: ${({ theme }) => theme.dimTextColor};
+
+    &[aria-invalid='true'] {
+      color: ${({ theme }) => theme.colors.negative};
+    }
+  }
+  .premium-error {
+    display: flex;
+    justify-content: flex-end;
+
+    font-size: 12px;
+    color: ${({ theme }) => theme.dimTextColor};
+
+    &[aria-invalid='true'] {
+      color: ${({ theme }) => theme.colors.negative};
+    }
+  }
+`;

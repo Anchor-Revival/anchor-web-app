@@ -7,7 +7,7 @@ import { HorizontalGraphSlider } from '@libs/neumorphism-ui/components/Horizonta
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
 import { Tooltip } from '@libs/neumorphism-ui/components/Tooltip';
 import { Rate } from '@libs/types';
-import { InfoOutlined } from '@material-ui/icons';
+import { InfoOutlined } from '@mui/icons-material';
 import React, { useCallback } from 'react';
 import { useTheme } from 'styled-components';
 import { Marker } from './Marker';

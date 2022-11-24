@@ -1,13 +1,14 @@
-import { Divider } from '@material-ui/core';
-import React from 'react';
+import { Divider } from '@mui/material';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 export interface StatsCardProps {
-  className: string;
+  className?: string;
   title: string;
+  children: ReactNode;
 }
 
-function Component(props: StatsCardProps) {
+const Component: React.FC<StatsCardProps> = (props: StatsCardProps) => {
   return (
     <div className={props.className}>
       {props.title}
@@ -15,7 +16,7 @@ function Component(props: StatsCardProps) {
       <ValueContainer>{props.children}</ValueContainer>
     </div>
   );
-}
+};
 
 const ValueContainer = styled.div`
   font-size: 24px;

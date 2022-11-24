@@ -1,5 +1,5 @@
 import { SelectAndTextInputContainer } from '@libs/neumorphism-ui/components/SelectAndTextInputContainer';
-import { Input, NativeSelect as MuiNativeSelect } from '@material-ui/core';
+import { Input, NativeSelect as MuiNativeSelect } from '@mui/material';
 import React, { useState } from 'react';
 
 export default {

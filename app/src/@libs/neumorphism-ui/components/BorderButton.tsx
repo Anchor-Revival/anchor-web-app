@@ -1,4 +1,4 @@
-import { ButtonBase } from '@material-ui/core';
+import { ButtonBase, ButtonBaseTypeMap, ExtendButtonBase } from '@mui/material';
 import styled from 'styled-components';
 import { buttonBaseStyle } from './ActionButton';
 
@@ -7,19 +7,22 @@ import { buttonBaseStyle } from './ActionButton';
  *
  * @see https://material-ui.com/api/button-base/
  */
-export const BorderButton = styled(ButtonBase).attrs({ disableRipple: true })`
+export const BorderButton: ExtendButtonBase<ButtonBaseTypeMap> = styled(
+  ButtonBase,
+)`
   ${buttonBaseStyle};
+  && {
+    color: ${({ theme }) => theme.borderButton.textColor};
+    border: 1px solid ${({ theme }) => theme.borderButton.borderColor};
 
-  color: ${({ theme }) => theme.borderButton.textColor};
-  border: 1px solid ${({ theme }) => theme.borderButton.borderColor};
+    &:hover {
+      border: 1px solid ${({ theme }) => theme.borderButton.borderHoverColor};
+      background-color: ${({ theme }) => theme.hoverBackgroundColor};
+      color: ${({ theme }) => theme.borderButton.hoverTextColor};
+    }
 
-  &:hover {
-    border: 1px solid ${({ theme }) => theme.borderButton.borderHoverColor};
-    background-color: ${({ theme }) => theme.hoverBackgroundColor};
-    color: ${({ theme }) => theme.borderButton.hoverTextColor};
-  }
-
-  &:disabled {
-    opacity: 0.3;
+    &:disabled {
+      opacity: 0.3;
+    }
   }
 `;

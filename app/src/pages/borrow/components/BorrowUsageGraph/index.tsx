@@ -74,6 +74,7 @@ export function BorrowUsageGraph(props: BorrowUsageGraphProps) {
       colorFunction={colorFunction}
       valueFunction={valueFunction}
       labelRenderer={labelRenderer}
+      style={{ marginTop: 60 }}
     >
       <Footnote style={{ right: 0 }}>
         <IconSpan>

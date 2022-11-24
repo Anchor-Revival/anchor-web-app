@@ -1,5 +1,5 @@
 import { DollarCoin } from '@anchor-protocol/icons';
-import { ButtonBaseProps } from '@material-ui/core';
+import { ButtonBaseProps } from '@mui/material';
 import { BorderButton } from '@libs/neumorphism-ui/components/BorderButton';
 import { useBuyUstDialog } from 'pages/earn/components/useBuyUstDialog';
 import React from 'react';

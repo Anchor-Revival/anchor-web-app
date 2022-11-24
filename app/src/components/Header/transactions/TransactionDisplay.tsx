@@ -7,7 +7,7 @@ import { Transaction } from 'tx/evm/storage/useTransactions';
 import { formatTxKind, TxKind } from 'tx/evm/utils';
 import useClipboard from 'react-use-clipboard';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
-import { Check } from '@material-ui/icons';
+import { Check } from '@mui/icons-material';
 import { CrossChainEventKind } from '@anchor-protocol/crossanchor-sdk';
 import { useCountdown } from 'usehooks-ts';
 import { TransactionProgress } from './TransactionProgress';
@@ -110,7 +110,7 @@ export const TransactionDisplay = styled(TransactionDisplayBase)`
       border-radius: 12px;
 
       background-color: ${({ theme }) =>
-        theme.palette.type === 'light' ? '#f1f1f1' : 'rgba(0, 0, 0, 0.15)'};
+        theme.palette_type === 'light' ? '#f1f1f1' : 'rgba(0, 0, 0, 0.15)'};
       color: ${({ theme }) => theme.dimTextColor};
     }
 
@@ -136,7 +136,7 @@ export const TransactionDisplay = styled(TransactionDisplayBase)`
 
   .button {
     background-color: ${({ theme }) =>
-      theme.palette.type === 'light' ? '#f4f4f5' : '#2a2a46'};
+      theme.palette_type === 'light' ? '#f4f4f5' : '#2a2a46'};
     color: ${({ theme }) => theme.textColor};
   }
 

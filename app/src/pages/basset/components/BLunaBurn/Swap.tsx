@@ -19,6 +19,7 @@ import {
   formatExecuteMsgNumber,
   formatFluidDecimalPoints,
   microfy,
+  MICRO,
 } from '@libs/formatter';
 import { isZero } from '@libs/is-zero';
 import { ActionButton } from '@libs/neumorphism-ui/components/ActionButton';
@@ -30,9 +31,9 @@ import {
 } from '@libs/neumorphism-ui/components/SelectAndTextInputContainer';
 import { Luna } from '@libs/types';
 import { useResolveLast } from '@libs/use-resolve-last';
-import { InfoOutlined } from '@material-ui/icons';
+import { InfoOutlined } from '@mui/icons-material';
 import { StreamStatus } from '@rx-stream/react';
-import big from 'big.js';
+import big, { Big } from 'big.js';
 import { DiscloseSlippageSelector } from 'components/DiscloseSlippageSelector';
 import { MessageBox } from 'components/MessageBox';
 import { IconLineSeparator } from 'components/primitives/IconLineSeparator';
@@ -57,6 +58,11 @@ import { ConvertSymbols, ConvertSymbolsContainer } from '../ConvertSymbols';
 import { BurnComponent } from './types';
 import styled from 'styled-components';
 import { fixHMR } from 'fix-hmr';
+import { useFeeEstimationFor } from '@libs/app-provider';
+import { useAlert } from '@libs/neumorphism-ui/components/useAlert';
+import { floor } from '@libs/big-math';
+import { MsgExecuteContract } from '@terra-money/terra.js';
+import { createHookMsg } from '@libs/app-fns/tx/internal';
 
 export interface SwapProps extends BurnComponent {
   className?: string;
@@ -72,17 +78,24 @@ export function Component({
   getAmount,
   setGetAmount,
   setBurnAmount,
-  fixedFee,
   setMode,
 }: SwapProps) {
   // ---------------------------------------------
   // dependencies
   // ---------------------------------------------
-  const { availablePost, connected } = useAccount();
+  const { availablePost, connected, terraWalletAddress } = useAccount();
 
-  const { queryClient, contractAddress: address } = useAnchorWebapp();
+  const {
+    queryClient,
+    contractAddress: address,
+    contractAddress,
+  } = useAnchorWebapp();
+
+  const [estimatedFee, estimateFee] = useFeeEstimationFor(terraWalletAddress);
 
   const [swap, swapResult] = useBondSwapTx();
+
+  const [openAlert, alertElement] = useAlert();
 
   // ---------------------------------------------
   // states
@@ -102,8 +115,9 @@ export function Component({
   // logics
   // ---------------------------------------------
   const invalidTxFee = useMemo(
-    () => connected && validateTxFee(bank.tokenBalances.uUST, fixedFee),
-    [bank, fixedFee, connected],
+    () =>
+      connected && validateTxFee(bank.tokenBalances.uUST, estimatedFee?.txFee),
+    [bank, estimatedFee?.txFee, connected],
   );
 
   const invalidBurnAmount = useMemo(
@@ -250,26 +264,86 @@ export function Component({
   }, [setGetAmount, setBurnAmount]);
 
   const proceed = useCallback(
-    (burnAmount: bLuna, beliefPrice: Rate, maxSpread: number) => {
-      if (!connected || !swap) {
+    async (burnAmount: bLuna, beliefPrice: Rate, maxSpread: number) => {
+      if (!connected || !swap || !terraWalletAddress) {
         return;
       }
 
-      swap({
-        burnAmount,
-        beliefPrice: formatExecuteMsgNumber(big(1).div(beliefPrice)) as Rate,
-        maxSpread,
-        onTxSucceed: () => {
-          init();
-        },
-      });
+      if (estimatedFee) {
+        swap({
+          burnAmount,
+          gasWanted: estimatedFee.gasWanted,
+          txFee: estimatedFee.txFee,
+          beliefPrice: formatExecuteMsgNumber(big(1).div(beliefPrice)) as Rate,
+          maxSpread,
+          onTxSucceed: () => {
+            init();
+          },
+        });
+      } else {
+        await openAlert({
+          description: (
+            <>
+              Broadcasting failed,
+              <br />
+              please retry after some time.
+            </>
+          ),
+          agree: 'OK',
+        });
+      }
     },
-    [connected, swap, init],
+    [connected, swap, init, estimatedFee, openAlert, terraWalletAddress],
   );
 
   // ---------------------------------------------
   // effects
   // ---------------------------------------------
+
+  useEffect(() => {
+    if (!connected || burnAmount.length === 0) {
+      estimateFee(null);
+      return;
+    }
+
+    const amount = floor(big(burnAmount).mul(MICRO));
+
+    if (amount.lt(0) || amount.gt(bank.tokenBalances.ubLuna ?? 0)) {
+      estimateFee(null);
+      return;
+    }
+
+    estimateFee([
+      new MsgExecuteContract(
+        terraWalletAddress as string,
+        contractAddress.cw20.bLuna,
+        {
+          send: {
+            contract: contractAddress.terraswap.blunaLunaPair,
+            amount,
+            msg: createHookMsg({
+              swap: {
+                belief_price: simulation?.beliefPrice,
+                max_spread: slippage,
+              },
+            }),
+          },
+        },
+      ),
+    ]);
+  }, [
+    terraWalletAddress,
+    bank.tokenBalances.ubLuna,
+    burnAmount,
+    connected,
+    simulation?.beliefPrice,
+    contractAddress.bluna.hub,
+    contractAddress.cw20.bLuna,
+    contractAddress.terraswap.blunaLunaPair,
+    estimateFee,
+    slippage,
+  ]);
+
   useEffect(() => {
     if (burnAmount.length > 0) {
       updateBurnAmount(burnAmount, slippage);
@@ -394,7 +468,7 @@ export function Component({
         className="switch"
         style={{ marginBottom: 20 }}
         mode="swap"
-        onChange={(mode) => mode === 'burn' && setMode('burn')}
+        onChange={(mode: any) => mode === 'burn' && setMode('burn')}
       />
 
       <DiscloseSlippageSelector
@@ -450,7 +524,10 @@ export function Component({
             {formatLuna(demicrofy(simulation.swapFee))} LUNA
           </TxFeeListItem>
           <TxFeeListItem label="Tx Fee">
-            {formatUST(demicrofy(fixedFee))} UST
+            {formatUST(
+              demicrofy(big(estimatedFee?.txFee ?? '0') as u<Luna<Big>>),
+            )}{' '}
+            UST
           </TxFeeListItem>
         </TxFeeList>
       )}
@@ -477,6 +554,7 @@ export function Component({
           Burn
         </ActionButton>
       </ViewAddressWarning>
+      {alertElement}
     </div>
   );
 }

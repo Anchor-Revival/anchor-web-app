@@ -21,7 +21,6 @@ interface Item {
 
 const TAB_ITEMS: Item[] = [
   { label: 'All', value: 'all' },
-  { label: 'Rewards', value: 'rewards' },
   { label: 'Earn', value: 'earn' },
   { label: 'Borrow', value: 'borrow' },
   { label: 'History', value: 'history' },

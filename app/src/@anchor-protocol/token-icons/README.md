@@ -3,7 +3,7 @@
 These icons are compatible with material-ui's icon.
 
 ```tsx
-import { IconButton } from '@material-ui/core';
+import { IconButton } from '@mui/material';
 import { TokenIcon } from '@anchor-protocol/icons';
 
 function App() {

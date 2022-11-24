@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Modal } from '@material-ui/core';
+import { Modal } from '@mui/material';
 import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
 import { UIElementProps } from '@libs/ui';
 
 function TerraUnsupportedNetworkBase({ className }: UIElementProps) {
   return (
-    <Modal open disableBackdropClick disableEnforceFocus>
+    <Modal open disableEnforceFocus>
       <Dialog className={className}>
         <h3>You're connected to an unsupported network.</h3>
         <p>Please connect to the Terra Mainnet network and reload.</p>

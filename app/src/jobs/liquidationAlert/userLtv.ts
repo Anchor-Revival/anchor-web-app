@@ -27,6 +27,7 @@ export async function userLtvQuery({
       address.moneyMarket.interestModel,
       address.moneyMarket.oracle,
       address.moneyMarket.overseer,
+      address.native.usd,
       hiveQueryClient,
     ),
     borrowBorrowerQuery(

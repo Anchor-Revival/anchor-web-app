@@ -2,7 +2,7 @@ import { useNetwork } from '@anchor-protocol/app-provider/contexts/network';
 import { CW20TokenDisplayInfo } from '@libs/app-fns';
 import { useCW20TokenDisplayInfosQuery } from '@libs/app-provider';
 import { createQueryFn } from '@libs/react-query-utils';
-import { HumanAddr } from '@anchor-protocol/types';
+import { CW20Addr, HumanAddr } from '@anchor-protocol/types';
 import {
   bridgeAssetsQuery,
   useAnchorQuery,
@@ -44,8 +44,10 @@ const mapTokenInformation = (
   tokenInformation: Record<string, CW20TokenDisplayInfo>,
 ): WhitelistCollateral[] => {
   return whitelist.map((collateral) => {
+    console.log('collatearl', collateral, tokenInformation);
     if (collateral && tokenInformation[collateral.collateral_token]) {
       const token = tokenInformation[collateral.collateral_token];
+      console.log(token, 't');
       return {
         ...token,
         ...collateral,
@@ -76,6 +78,17 @@ const mapBridgedAssets = async (
   });
 };
 
+const bLunaInformation = {
+  terra1qplftykc0sehm2632zd0n5swdxc3k24sjtsf9lm8em50fqyyt8aq2k6u26: {
+    protocol: 'Anchor',
+    symbol: 'bLuna',
+    token:
+      'terra1qplftykc0sehm2632zd0n5swdxc3k24sjtsf9lm8em50fqyyt8aq2k6u26' as CW20Addr,
+    icon: 'https://whitelist.anchorprotocol.com/logo/bLUNA.png',
+    name: 'aLuna',
+  },
+};
+
 async function whitelistCollateralQuery(
   overseerContract: HumanAddr,
   target: DeploymentTarget,
@@ -89,7 +102,10 @@ async function whitelistCollateralQuery(
   );
 
   return await mapBridgedAssets(
-    mapTokenInformation(whitelist, tokenInformation ?? {}),
+    mapTokenInformation(
+      whitelist,
+      { ...tokenInformation, ...bLunaInformation } ?? bLunaInformation,
+    ),
     target,
     network,
   );

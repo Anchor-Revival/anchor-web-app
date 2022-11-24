@@ -1,4 +1,4 @@
-import { createSvgIcon, SvgIcon } from '@material-ui/core';
+import { createSvgIcon, SvgIcon } from '@mui/material';
 import { ComponentType, createElement } from 'react';
 
 export function createMaterialIcon(Icon: ComponentType): typeof SvgIcon {

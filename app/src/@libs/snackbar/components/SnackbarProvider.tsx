@@ -150,7 +150,7 @@ export function SnackbarProvider({
 
   return (
     <SnackbarContext.Provider value={state}>
-      {typeof children === 'function'
+      {children instanceof Function
         ? children({ snackbarContainerRef })
         : children}
       {contents.length > 0 &&

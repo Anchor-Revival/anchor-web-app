@@ -1,5 +1,6 @@
 import { TEST_ADDRESSES } from '@anchor-protocol/app-fns/test-env';
 import { TEST_HIVE_CLIENT } from '@libs/app-fns/test-env';
+import { NativeDenom } from '@libs/types';
 import { borrowMarketQuery } from '../market';
 
 describe('queries/market', () => {
@@ -10,6 +11,7 @@ describe('queries/market', () => {
         TEST_ADDRESSES.moneyMarket.interestModel,
         TEST_ADDRESSES.moneyMarket.oracle,
         TEST_ADDRESSES.moneyMarket.overseer,
+        TEST_ADDRESSES.native.usd as NativeDenom,
         TEST_HIVE_CLIENT,
       );
 

@@ -23,14 +23,14 @@ function ConnectionTypeListBase({
 export const ConnectionTypeList = styled(ConnectionTypeListBase)`
   .connect {
     background-color: ${({ theme }) =>
-      theme.palette.type === 'light' ? '#f4f4f5' : '#2a2a46'};
+      theme.palette_type === 'light' ? '#f4f4f5' : '#2a2a46'};
     color: ${({ theme }) => theme.textColor};
   }
 
   .install {
     border: 1px solid
       ${({ theme }) =>
-        theme.palette.type === 'light' ? '#e7e7e7' : 'rgba(231,231,231, 0.3)'};
+        theme.palette_type === 'light' ? '#e7e7e7' : 'rgba(231,231,231, 0.3)'};
     color: ${({ theme }) => theme.textColor};
   }
 

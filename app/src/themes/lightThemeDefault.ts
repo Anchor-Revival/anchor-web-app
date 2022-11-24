@@ -1,5 +1,5 @@
 import { muiThemeBase } from '@libs/neumorphism-ui/themes/muiThemeBase';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@mui/material/styles';
 
 // AVAX THEME TO FILL IN VARIABLE THEME
 const PRIMARY_500 = '#F4A81A';
@@ -42,21 +42,17 @@ export const LIGHT_ORANGE_100 = '#dd8f5c';
 export const LIGHT_YELLOW_100 = '#FF9A63';
 
 export const defaultLightTheme = {
-  ...createMuiTheme({
+  ...createTheme({
     ...muiThemeBase,
-    palette: {
-      type: 'light',
-    },
-    overrides: {
-      MuiTableRow: {
-        root: {
-          '&:last-child td': {
-            borderBottom: 0,
-          },
-        },
+  }),
+  MuiTableRow: {
+    root: {
+      '&:last-child td': {
+        borderBottom: 0,
       },
     },
-  }),
+  },
+  palette_type: 'light',
   // VARIABLES (SHOULD BE CHANGED)
   textColor: GRAY_700,
   dimTextColor: GRAY_500,

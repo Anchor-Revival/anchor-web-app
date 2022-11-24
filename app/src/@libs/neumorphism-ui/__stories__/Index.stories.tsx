@@ -18,8 +18,8 @@ import {
   InputAdornment,
   Modal,
   NativeSelect as MuiNativeSelect,
-} from '@material-ui/core';
-import { Warning } from '@material-ui/icons';
+} from '@mui/material';
+import { Warning } from '@mui/icons-material';
 import React, { ChangeEvent, Fragment, useState } from 'react';
 import styled from 'styled-components';
 

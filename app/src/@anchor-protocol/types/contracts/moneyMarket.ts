@@ -6,7 +6,6 @@ import {
   Num,
   Rate,
   u,
-  UST,
 } from '@libs/types';
 import { ANC, aToken, bAsset } from '../currencies';
 

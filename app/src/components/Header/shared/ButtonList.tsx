@@ -44,7 +44,7 @@ export const ButtonList = styled(ButtonListBase)`
 
       &:hover {
         background-color: ${({ theme }) =>
-          theme.palette.type === 'light' ? '#f4f4f5' : '#2a2a46'};
+          theme.palette_type === 'light' ? '#f4f4f5' : '#2a2a46'};
         color: ${({ theme }) => theme.textColor};
       }
 
@@ -71,7 +71,7 @@ export const ButtonList = styled(ButtonListBase)`
     border: 0;
     border-bottom: 1px dashed
       ${({ theme }) =>
-        theme.palette.type === 'light'
+        theme.palette_type === 'light'
           ? '#e5e5e5'
           : 'rgba(255, 255, 255, 0.1)'};
   }

@@ -14,7 +14,6 @@ export function NumberInput({
   maxIntegerPoinsts,
   onChange,
   inputMode = type === 'decimal' ? 'decimal' : 'numeric',
-  pattern = '[0-9.]*',
   disableBorder,
   ...props
 }: NumberInputProps) {
@@ -31,7 +30,7 @@ export function NumberInput({
       type="text"
       inputProps={{
         inputMode,
-        pattern,
+        pattern: '[0-9.]*',
       }}
       {...handlers}
     />

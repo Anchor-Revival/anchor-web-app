@@ -6,18 +6,21 @@ export const TESTNET: NetworkInfo = {
   name: 'testnet',
   chainID: 'pisco-1',
   lcd: 'https://pisco-lcd.terra.dev',
+  walletconnectID: 0,
 };
 
 export const CLASSIC: NetworkInfo = {
   name: 'classic',
   chainID: 'columbus-5',
   lcd: 'https://columbus-lcd.terra.dev',
+  walletconnectID: 0,
 };
 
 export const MAINNET: NetworkInfo = {
   name: 'mainnet',
   chainID: 'phoenix-1',
   lcd: 'https://phoenix-lcd.terra.dev',
+  walletconnectID: 0,
 };
 
 const LCDClients: Record<string, LCDClient> = {
@@ -35,7 +38,7 @@ const LCDClients: Record<string, LCDClient> = {
   }),
 };
 
-export const NetworkContext = createContext<NetworkInfo>(MAINNET);
+export const NetworkContext = createContext<NetworkInfo>(TESTNET);
 
 type UseNetworkReturn = {
   network: NetworkInfo;

@@ -64,7 +64,7 @@ export const StyledTermsOfService = styled(TermsOfServiceBase)`
 
   .header {
     background-color: ${({ theme }) =>
-      theme.palette.type === 'light' ? '#f4f4f5' : '#181c2d'};
+      theme.palette_type === 'light' ? '#f4f4f5' : '#181c2d'};
 
     > h1:nth-child(1) {
       margin-bottom: 12px;

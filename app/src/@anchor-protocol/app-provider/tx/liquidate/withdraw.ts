@@ -1,7 +1,5 @@
-import { earnDepositTx } from '@anchor-protocol/app-fns';
-import { placeLiquidationBidTx } from '@anchor-protocol/app-fns/tx/liquidate/deposit';
 import { withdrawLiquidationBidTx } from '@anchor-protocol/app-fns/tx/liquidate/withdraw';
-import { UST, Luna, u } from '@anchor-protocol/types';
+import { Luna, u } from '@anchor-protocol/types';
 import { useRefetchQueries } from '@libs/app-provider';
 import { useStream } from '@rx-stream/react';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
@@ -31,12 +29,14 @@ export function useWithdrawLiquidationBidTx() {
       return withdrawLiquidationBidTx({
         // fabricateMarketDepositStableCoin
         walletAddr: connectedWallet.walletAddress,
-        liquidationQueueAddr: contractAddress.liquidation.liquidationQueueContract,
+        liquidationQueueAddr:
+          contractAddress.liquidation.liquidationQueueContract,
         bLunaAddr: contractAddress.cw20.bLuna,
         bid_idx,
         // post
         network: connectedWallet.network,
         post: connectedWallet.post,
+        txFee: '0' as u<Luna>,
         gasFee: constants.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         // query

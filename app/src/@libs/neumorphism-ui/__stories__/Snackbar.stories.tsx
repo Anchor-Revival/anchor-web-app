@@ -7,19 +7,15 @@ import {
   WarningSnackbarContent,
 } from '@libs/neumorphism-ui/components/Snackbar';
 import { Snackbar, SnackbarProvider, useSnackbar } from '@libs/snackbar';
-import { Button, IconButton } from '@material-ui/core';
-import { Close } from '@material-ui/icons';
-import React, { ComponentType } from 'react';
+import { Button, IconButton } from '@mui/material';
+import { Close } from '@mui/icons-material';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 export default {
   title: 'components/Snackbar',
   decorators: [
-    (Story: ComponentType) => (
-      <SnackbarProvider>
-        <Story />
-      </SnackbarProvider>
-    ),
+    (Story: ReactNode) => <SnackbarProvider>{Story}</SnackbarProvider>,
   ],
 };
 

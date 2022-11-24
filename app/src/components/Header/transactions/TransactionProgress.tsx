@@ -1,7 +1,7 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import classNames from 'classnames';
-import { lighten } from '@material-ui/core';
+import { lighten } from '@mui/material';
 
 type TransactionProgressProps = {
   className?: string;

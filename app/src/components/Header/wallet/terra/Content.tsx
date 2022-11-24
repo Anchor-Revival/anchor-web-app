@@ -4,7 +4,7 @@ import { Tooltip } from '@libs/neumorphism-ui/components/Tooltip';
 import { ConnectType, Connection } from '@terra-money/wallet-provider';
 import { useAccount } from 'contexts/account';
 import { WalletContent } from '../WalletContent';
-import { KeyboardArrowRight, Launch } from '@material-ui/icons';
+import { KeyboardArrowRight, Launch } from '@mui/icons-material';
 import { UIElementProps } from '@libs/ui';
 import { HumanAddr } from '@libs/types';
 import styled from 'styled-components';
@@ -189,17 +189,17 @@ export const Content = styled(ContentBase)`
         }
 
         background-color: ${({ theme }) =>
-          theme.palette.type === 'light' ? '#f1f1f1' : 'rgba(0, 0, 0, 0.15)'};
+          theme.palette_type === 'light' ? '#f1f1f1' : 'rgba(0, 0, 0, 0.15)'};
         color: ${({ theme }) =>
-          theme.palette.type === 'light'
+          theme.palette_type === 'light'
             ? '#666666'
             : 'rgba(255, 255, 255, 0.6)'};
 
         &:hover {
           background-color: ${({ theme }) =>
-            theme.palette.type === 'light' ? '#e1e1e1' : 'rgba(0, 0, 0, 0.2)'};
+            theme.palette_type === 'light' ? '#e1e1e1' : 'rgba(0, 0, 0, 0.2)'};
           color: ${({ theme }) =>
-            theme.palette.type === 'light'
+            theme.palette_type === 'light'
               ? '#666666'
               : 'rgba(255, 255, 255, 0.6)'};
         }

@@ -1,5 +1,5 @@
 import { Tooltip } from '@libs/neumorphism-ui/components/Tooltip';
-import React, { Children, ComponentType, ReactElement } from 'react';
+import React, { Children, ReactElement } from 'react';
 import styled from 'styled-components';
 import * as icons from '../';
 
@@ -12,10 +12,10 @@ export const Icons = () => {
     <Grid size={60}>
       {Object.keys(icons).map((iconName) => {
         //@ts-ignore
-        const Icon: ComponentType = icons[iconName];
+        const Icon: OverridableComponent = icons[iconName];
         return (
           <Tooltip title={iconName} placement="right">
-            <Icon />
+            {Icon}
           </Tooltip>
         );
       })}

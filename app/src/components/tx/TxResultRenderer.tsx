@@ -2,7 +2,7 @@ import { PollingTimeout } from '@libs/app-fns';
 import { ActionButton } from '@libs/neumorphism-ui/components/ActionButton';
 import { HorizontalHeavyRuler } from '@libs/neumorphism-ui/components/HorizontalHeavyRuler';
 import { TxReceipt, TxResultRendering, TxStreamPhase } from '@libs/app-fns';
-import { AccessTime, Close, Done as DoneIcon } from '@material-ui/icons';
+import { AccessTime, Close, Done as DoneIcon } from '@mui/icons-material';
 import { TxFeeList, TxFeeListItem } from 'components/TxFeeList';
 import React, { useCallback } from 'react';
 import { GuardSpinner, PushSpinner } from 'react-spinners-kit';
@@ -164,7 +164,7 @@ function Receipts({ resultRendering }: { resultRendering: TxResultRendering }) {
 const SubmitButton = styled(ActionButton)`
   height: 4.1em;
   width: 100%;
-  margin-top: 2em;
+  margin-top: 2em !important;
 `;
 
 const Layout = styled.section`

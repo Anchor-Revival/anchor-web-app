@@ -25,7 +25,7 @@ import { NumberInput } from '@libs/neumorphism-ui/components/NumberInput';
 import { useConfirm } from '@libs/neumorphism-ui/components/useConfirm';
 import { UIElementProps } from '@libs/ui';
 import type { DialogProps } from '@libs/use-dialog';
-import { InputAdornment, Modal } from '@material-ui/core';
+import { InputAdornment, Modal } from '@mui/material';
 import {
   StreamDone,
   StreamInProgress,
@@ -192,7 +192,7 @@ function BorrowDialogBase(props: BorrowDialogProps) {
     txResult?.status === StreamStatus.DONE
   ) {
     return (
-      <Modal open disableBackdropClick disableEnforceFocus>
+      <Modal open disableEnforceFocus>
         <Dialog className={className}>
           {renderTxResult ? (
             renderTxResult({ txResult, closeDialog })

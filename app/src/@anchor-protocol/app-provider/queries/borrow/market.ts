@@ -7,7 +7,6 @@ import {
   BorrowMarketWithDisplay,
   withBorrowMarketTokenDisplay,
 } from './utils/tokenDisplay';
-import { useNetwork } from '@anchor-protocol/app-provider';
 
 import { useQueryWithTokenDisplay } from '../utils/tokenDisplay';
 
@@ -19,8 +18,6 @@ export function useBorrowMarketQuery(): UseQueryResult<
   const { contractAddress, queryClient, queryErrorReporter } =
     useAnchorWebapp();
 
-  const { network } = useNetwork();
-
   const borrowMarket = useQuery(
     [
       ANCHOR_QUERY_KEY.BORROW_MARKET,
@@ -28,8 +25,8 @@ export function useBorrowMarketQuery(): UseQueryResult<
       contractAddress.moneyMarket.interestModel,
       contractAddress.moneyMarket.oracle,
       contractAddress.moneyMarket.overseer,
+      contractAddress.native.usd,
       queryClient,
-      network,
     ],
     queryFn,
     {

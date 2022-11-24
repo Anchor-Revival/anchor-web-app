@@ -1,7 +1,7 @@
 import { TextInput } from '@libs/neumorphism-ui/components/TextInput';
 import { Tooltip } from '@libs/neumorphism-ui/components/Tooltip';
-import { CircularProgress, InputAdornment } from '@material-ui/core';
-import { Warning, Error } from '@material-ui/icons';
+import { CircularProgress, InputAdornment } from '@mui/material';
+import { Warning, Error } from '@mui/icons-material';
 import styled from 'styled-components';
 import React from 'react';
 

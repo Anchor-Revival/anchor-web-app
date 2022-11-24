@@ -12,8 +12,8 @@ import {
   LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
 import { TokenIcon } from '@anchor-protocol/token-icons';
-import { bLuna, Gas, u, UST } from '@anchor-protocol/types';
-import { useEstimateFee, useFixedFee } from '@libs/app-provider';
+import { bLuna } from '@anchor-protocol/types';
+import { useFeeEstimationFor } from '@libs/app-provider';
 import { floor } from '@libs/big-math';
 import { demicrofy, MICRO } from '@libs/formatter';
 import { ActionButton } from '@libs/neumorphism-ui/components/ActionButton';
@@ -27,7 +27,7 @@ import {
 import { useAlert } from '@libs/neumorphism-ui/components/useAlert';
 import { Luna, Rate } from '@libs/types';
 import { StreamStatus } from '@rx-stream/react';
-import { Msg, MsgExecuteContract } from '@terra-money/terra.js';
+import { MsgExecuteContract } from '@terra-money/terra.js';
 import big, { Big } from 'big.js';
 import { MessageBox } from 'components/MessageBox';
 import { IconLineSeparator } from 'components/primitives/IconLineSeparator';
@@ -36,7 +36,6 @@ import { SwapListItem, TxFeeList, TxFeeListItem } from 'components/TxFeeList';
 import { ViewAddressWarning } from 'components/ViewAddressWarning';
 import { fixHMR } from 'fix-hmr';
 import { useAccount } from 'contexts/account';
-import debounce from 'lodash.debounce';
 import React, {
   ChangeEvent,
   useCallback,
@@ -44,10 +43,11 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { pegRecovery } from '../logics/pegRecovery';
 import { validateBondAmount } from '../logics/validateBondAmount';
 import { ConvertSymbols, ConvertSymbolsContainer } from './ConvertSymbols';
+import { CircleSpinner } from 'react-spinners-kit';
 
 export interface BLunaMintProps {
   className?: string;
@@ -61,9 +61,7 @@ function Component({ className }: BLunaMintProps) {
 
   const { contractAddress, gasPrice, constants } = useAnchorWebapp();
 
-  const fixedFee = useFixedFee();
-
-  const estimateFee = useEstimateFee(terraWalletAddress);
+  const [estimatedFee, estimateFee] = useFeeEstimationFor(terraWalletAddress);
 
   const [mint, mintResult] = useBondMintTx();
 
@@ -74,11 +72,6 @@ function Component({ className }: BLunaMintProps) {
   // ---------------------------------------------
   const [bondAmount, setBondAmount] = useState<Luna>('' as Luna);
   const [mintAmount, setMintAmount] = useState<bLuna>('' as bLuna);
-
-  const [estimatedGasWanted, setEstimatedGasWanted] = useState<Gas | null>(
-    null,
-  );
-  const [estimatedFee, setEstimatedFee] = useState<u<UST> | null>(null);
 
   // ---------------------------------------------
   // queries
@@ -97,8 +90,9 @@ function Component({ className }: BLunaMintProps) {
   );
 
   const invalidTxFee = useMemo(
-    () => connected && validateTxFee(bank.tokenBalances.uLuna, fixedFee),
-    [bank, fixedFee, connected],
+    () =>
+      connected && validateTxFee(bank.tokenBalances.uLuna, estimatedFee?.txFee),
+    [bank, estimatedFee?.txFee, connected],
   );
 
   const invalidBondAmount = useMemo(
@@ -109,46 +103,20 @@ function Component({ className }: BLunaMintProps) {
   // ---------------------------------------------
   // effects
   // ---------------------------------------------
-  const estimate = useMemo(() => {
-    return debounce((msgs: Msg[] | null) => {
-      if (!msgs) {
-        setEstimatedGasWanted(null);
-        setEstimatedFee(null);
-        return;
-      }
-
-      estimateFee(msgs).then((estimated) => {
-        if (estimated) {
-          setEstimatedGasWanted(estimated.gasWanted);
-          setEstimatedFee(
-            big(estimated.txFee).mul(gasPrice.uluna).toFixed() as u<Luna>,
-          );
-        } else {
-          setEstimatedGasWanted(null);
-          setEstimatedFee(null);
-        }
-      });
-    }, 500);
-  }, [estimateFee, gasPrice.uluna]);
 
   useEffect(() => {
     if (!connected || !terraWalletAddress || bondAmount.length === 0) {
-      setEstimatedGasWanted(null);
-      setEstimatedFee(null);
-      estimate(null);
+      estimateFee(null);
       return;
     }
 
     const amount = floor(big(bondAmount).mul(MICRO));
 
     if (amount.lt(0) || amount.gt(bank.tokenBalances.uLuna ?? 0)) {
-      setEstimatedGasWanted(null);
-      setEstimatedFee(null);
-      estimate(null);
+      estimateFee(null);
       return;
     }
-
-    estimate([
+    estimateFee([
       new MsgExecuteContract(
         terraWalletAddress,
         contractAddress.bluna.hub,
@@ -168,15 +136,10 @@ function Component({ className }: BLunaMintProps) {
     connected,
     constants.bondGasWanted,
     contractAddress.bluna.hub,
-    estimate,
     estimateFee,
-    fixedFee,
     gasPrice.uluna,
     terraWalletAddress,
   ]);
-
-  console.log('estimatedGasWanted', estimatedGasWanted);
-  console.log('estimatedFee', estimatedFee);
 
   // ---------------------------------------------
   // callbacks
@@ -228,29 +191,11 @@ function Component({ className }: BLunaMintProps) {
         return;
       }
 
-      const estimated = await estimateFee([
-        new MsgExecuteContract(
-          terraWalletAddress,
-          contractAddress.bluna.hub,
-          {
-            bond: {
-              validator: 'terravaloper1zdpgj8am5nqqvht927k3etljyl6a52kwqndjz2',
-            },
-          },
-          {
-            uluna: floor(big(bondAmount).mul(MICRO)).toFixed(),
-          },
-        ),
-      ]);
-
-      if (estimated) {
+      if (estimatedFee) {
         mint({
           bondAmount,
-          gasWanted: estimated.gasWanted,
-          txFee: big(estimated.txFee)
-            .mul(gasPrice.uluna)
-            .mul(new Big(1.25))
-            .toFixed() as u<Luna>,
+          gasWanted: estimatedFee.gasWanted,
+          txFee: estimatedFee.txFee,
           exchangeRate: big(1)
             .div(exchangeRate?.exchange_rate ?? '1')
             .toString() as Rate<string>,
@@ -273,10 +218,8 @@ function Component({ className }: BLunaMintProps) {
     },
     [
       connected,
-      contractAddress.bluna.hub,
-      estimateFee,
+      estimatedFee,
       exchangeRate,
-      gasPrice.uluna,
       init,
       mint,
       openAlert,
@@ -287,6 +230,8 @@ function Component({ className }: BLunaMintProps) {
   // ---------------------------------------------
   // presentation
   // ---------------------------------------------
+  const theme = useTheme();
+
   if (
     mintResult?.status === StreamStatus.IN_PROGRESS ||
     mintResult?.status === StreamStatus.DONE
@@ -422,9 +367,16 @@ function Component({ className }: BLunaMintProps) {
             {formatLuna(demicrofy(pegRecoveryFee(mintAmount)))} bLUNA
           </TxFeeListItem>
         )}
-        {bondAmount.length > 0 && estimatedFee && (
+        {bondAmount.length > 0 && (
           <TxFeeListItem label={<IconSpan>Estimated Tx Fee</IconSpan>}>
-            ≈ {formatLuna(demicrofy(estimatedFee))} Luna
+            {!estimatedFee && (
+              <span className="spinner">
+                <CircleSpinner size={14} color={theme.colors.positive} />
+              </span>
+            )}
+
+            {estimatedFee &&
+              `≈ ${formatLuna(demicrofy(estimatedFee.txFee))} Luna`}
           </TxFeeListItem>
         )}
       </TxFeeList>
@@ -441,7 +393,6 @@ function Component({ className }: BLunaMintProps) {
             big(bondAmount).lte(0) ||
             !!invalidBondAmount ||
             !!invalidTxFee ||
-            estimatedGasWanted === null ||
             estimatedFee === null
           }
           onClick={() => proceed(bondAmount)}

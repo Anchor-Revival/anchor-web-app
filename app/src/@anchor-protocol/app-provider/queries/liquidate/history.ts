@@ -1,5 +1,7 @@
-
-import { LiquidationData, liquidationHistoryQuery } from '@anchor-protocol/app-fns/queries/liquidate/history';
+import {
+  LiquidationData,
+  liquidationHistoryQuery,
+} from '@anchor-protocol/app-fns/queries/liquidate/history';
 import { createQueryFn } from '@libs/react-query-utils';
 import { useQuery, UseQueryResult } from 'react-query';
 import { useAnchorWebapp } from '../../contexts/context';
@@ -10,7 +12,7 @@ const queryFn = createQueryFn((endpoint: string) => {
 });
 
 export function useLiquidationHistoryQuery(): UseQueryResult<
-  number | undefined
+  LiquidationData[] | undefined
 > {
   const { queryErrorReporter, indexerApiEndpoint } = useAnchorWebapp();
 

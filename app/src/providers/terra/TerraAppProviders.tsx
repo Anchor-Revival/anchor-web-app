@@ -42,7 +42,7 @@ export function TerraAppProviders({
     >
       <TerraNetworkProvider>
         <ThemeProvider
-          initialTheme="light"
+          initialTheme="dark"
           lightTheme={lightTheme}
           darkTheme={darkTheme}
         >

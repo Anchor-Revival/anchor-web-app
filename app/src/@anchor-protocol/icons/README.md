@@ -1,7 +1,7 @@
 # Anchor Token Icon Library
 
 ```tsx
-import { IconButton } from '@material-ui/core';
+import { IconButton } from '@mui/material';
 import { Wallet } from '@anchor-protocol/token-icons';
 
 function App() {
