@@ -24,14 +24,13 @@ function useTxFee() {
 
   const { queryErrorReporter } = useAnchorWebapp();
 
-  const defFee = useMemo(() => defaultFee(), []);
-
+  const initialFee = useMemo(() => defaultFee(), []);
   const { data: txFee } = useQuery(
     ['liquidation-withdraw-collateral-tx-fee', terraWalletAddress],
     async (args): Promise<EstimatedFee | void> => {
       const [, terraWalletAddress] = args.queryKey;
       if (!terraWalletAddress) {
-        return defaultFee();
+        return undefined;
       }
 
       return txFeeEstimator(
@@ -44,7 +43,7 @@ function useTxFee() {
       )
         .then((fee: EstimatedFee | undefined) => {
           if (!fee) {
-            return defFee;
+            return undefined;
           }
           return fee;
         })
@@ -56,7 +55,7 @@ function useTxFee() {
       onError: queryErrorReporter,
     },
   );
-  return txFee;
+  return txFee ?? initialFee;
 }
 
 export function useLiquidationWithdrawCollateralForm(): LiquidationWithdrawCollateralFormReturn {
@@ -72,7 +71,7 @@ export function useLiquidationWithdrawCollateralForm(): LiquidationWithdrawColla
     liquidationWithdrawCollateralForm,
     {
       isConnected: connected,
-      fixedGas: txFee ?? defaultFee(),
+      fixedGas: txFee,
       userULunaBalance: uLuna,
     },
     () => ({}),
