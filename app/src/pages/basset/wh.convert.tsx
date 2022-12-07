@@ -17,7 +17,7 @@ interface Item {
 function Component({ className }: UIElementProps) {
   const navigate = useNavigate();
 
-  const match = useMatch({ path: '/basset/wh/:tokenSymbol/:page', end: true });
+  const match = useMatch({ path: '/aasset/wh/:tokenSymbol/:page', end: true });
 
   const { data: bAssetInfo } = useBAssetInfoByTokenSymbolQuery(
     match?.params.tokenSymbol,
@@ -52,7 +52,7 @@ function Component({ className }: UIElementProps) {
 
   const tabChange = useCallback(
     (nextTab: Item) => {
-      navigate(`/basset/wh/${match?.params.tokenSymbol}/${nextTab.value}`);
+      navigate(`/aasset/wh/${match?.params.tokenSymbol}/${nextTab.value}`);
     },
     [navigate, match?.params.tokenSymbol],
   );

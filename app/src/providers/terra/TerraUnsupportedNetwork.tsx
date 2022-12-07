@@ -18,7 +18,7 @@ function TerraUnsupportedNetworkBase({ className }: UIElementProps) {
 export const TerraUnsupportedNetwork = styled(TerraUnsupportedNetworkBase)`
   font-family: Gotham, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
     Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  background-color: white;
+  background-color: ${({ theme }) => theme.backgroundColor};
 
   text-align: center;
 

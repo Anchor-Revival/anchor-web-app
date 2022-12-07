@@ -18,7 +18,7 @@ function Component({ className, style }: BLunaBurnProcessProps) {
   return (
     <div className={className} style={style}>
       <h4 onClick={() => setShow(show === 'on' ? 'off' : 'on')}>
-        <Info /> bLuna Burn Process{' '}
+        <Info /> aLuna Burn Process{' '}
         {show === 'on' ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
       </h4>
 
@@ -218,12 +218,12 @@ function Content() {
 
       <ul>
         <li>
-          The bond request has been made, and bLuna withdrawable time is
+          The bond request has been made, and aLuna withdrawable time is
           calculable.
         </li>
         <li>Requested time : The time the bonding request has been made.</li>
         <li>
-          Withdrawable time : The time the unbonded bLuna will become
+          Withdrawable time : The time the unbonded aLuna will become
           withdrawable as Luna.
         </li>
       </ul>
@@ -232,7 +232,7 @@ function Content() {
 
       <ul>
         <li>
-          bLuna has completed the unbonding process, and is now withdrawable.
+          aLuna has completed the unbonding process, and is now withdrawable.
         </li>
       </ul>
     </article>

@@ -1,4 +1,6 @@
 import { DateTime, Rate } from '@anchor-protocol/types';
+import big from 'big.js';
+import { MarketState } from '../market/state';
 
 export interface BorrowAPYData {
   borrowerDistributionAPYs: Array<{
@@ -22,14 +24,31 @@ type LPReward = {
 };
 
 export async function borrowAPYQuery(
-  _endpoint: string,
-  _ancUstPair: string,
+  marketState: MarketState | undefined,
+  blocksPerYear: number,
+  lastSyncedHeight: () => Promise<number>,
 ): Promise<BorrowAPYData> {
-  const borrowerDistributionAPYs = {
-    DistributionAPY: '0' as Rate<string>,
-    Timestamp: Date.now() as DateTime,
-    Height: 1,
-  };
+  const blockHeight = await lastSyncedHeight();
+
+  // We simply need to query the chain to get the borrower rewards that were just distributed
+  // And compare that to the total liabilities
+  // Those informations are located in the state variable of the market function
+
+  // We compute the rewards percentage for this block
+  let blockRewards = big('0');
+  if (
+    marketState?.marketState?.total_liabilities &&
+    marketState?.marketState?.prev_borrower_incentives
+  ) {
+    blockRewards = big(marketState?.marketState?.prev_borrower_incentives).div(
+      marketState?.marketState.total_liabilities,
+    );
+  }
+  console.log('market state while computing', marketState);
+  // Now we convert to an APY (block to year)
+  const rewardsAPY = blockRewards.mul(blocksPerYear);
+
+  console.log(rewardsAPY.toString());
 
   /*await fetch(
     `${endpoint}/v2/distribution-apy`,
@@ -102,7 +121,13 @@ export async function borrowAPYQuery(
   
   */
   return {
-    borrowerDistributionAPYs: [borrowerDistributionAPYs],
+    borrowerDistributionAPYs: [
+      {
+        DistributionAPY: rewardsAPY.toString() as Rate,
+        Timestamp: Date.now() as DateTime,
+        Height: blockHeight,
+      },
+    ],
     govRewards: [govRewards],
     lpRewards: [ancAstroLPRewards as LPReward],
   };

@@ -48,7 +48,7 @@ export function ThemeProvider(props: ThemeProviderProps) {
     () => ({
       themeColor,
       theme: themeColor === 'dark' && darkTheme ? darkTheme : lightTheme,
-      switchable: darkTheme !== undefined,
+      switchable: false, //darkTheme !== undefined,
       updateTheme,
     }),
     [themeColor, updateTheme, lightTheme, darkTheme],

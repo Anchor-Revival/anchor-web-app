@@ -1,7 +1,7 @@
-import { HumanAddr, moneyMarket, u, UST } from '@anchor-protocol/types';
+import { HumanAddr, moneyMarket } from '@anchor-protocol/types';
 import {
-  hiveFetch,
-  HiveQueryClient,
+  QueryClient,
+  wasmFetch,
   WasmQuery,
   WasmQueryData,
 } from '@libs/query-client';
@@ -17,17 +17,7 @@ export interface MarketStateQueryVariables {
   marketContract: string;
 }
 
-interface MarketStateQueryResult {
-  marketBalances: {
-    Result: { Denom: string; Amount: string }[];
-  };
-}
-
-export type MarketState = WasmQueryData<MarketStateWasmQuery> & {
-  marketBalances: {
-    uUST: u<UST>;
-  };
-};
+export type MarketState = WasmQueryData<MarketStateWasmQuery>;
 
 // language=graphql
 export const MARKET_STATE_QUERY = `
@@ -45,14 +35,10 @@ export const MARKET_STATE_QUERY = `
 
 export async function marketStateQuery(
   marketContract: HumanAddr,
-  hiveQueryClient: HiveQueryClient,
+  queryClient: QueryClient,
 ): Promise<MarketState> {
-  const { marketState, marketBalances: _marketBalances } = await hiveFetch<
-    MarketStateWasmQuery,
-    MarketStateQueryVariables,
-    MarketStateQueryResult
-  >({
-    ...hiveQueryClient,
+  const marketState = await wasmFetch<MarketStateWasmQuery>({
+    ...queryClient,
     id: `market--state`,
     wasmQuery: {
       marketState: {
@@ -62,20 +48,9 @@ export async function marketStateQuery(
         },
       },
     },
-    variables: {
-      marketContract: marketContract,
-    },
-    query: MARKET_STATE_QUERY,
   });
 
-  const marketBalances: Pick<MarketState, 'marketBalances'>['marketBalances'] =
-    {
-      uUST: (_marketBalances.Result.find(({ Denom }) => Denom === 'uusd')
-        ?.Amount ?? '0') as u<UST>,
-    };
-
   return {
-    marketState,
-    marketBalances,
+    ...marketState,
   };
 }

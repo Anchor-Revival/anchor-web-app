@@ -54,10 +54,10 @@ function Component({ className }: ClaimableProps) {
             <AnimateNumber format={formatUTokenDecimal2}>
               {totalRewardsUST}
             </AnimateNumber>{' '}
-            <Sub>UST</Sub>
+            <Sub>axlUSDC</Sub>
           </p>
         </div>
-        <FlatButton component={Link} to="/basset/claim">
+        <FlatButton component={Link} to="/aasset/claim">
           Claim Rewards
         </FlatButton>
       </div>
@@ -75,7 +75,7 @@ function Component({ className }: ClaimableProps) {
             <Sub>LUNA</Sub>
           </p>
         </div>
-        <FlatButton component={Link} to="/basset/withdraw">
+        <FlatButton component={Link} to="/aasset/withdraw">
           Withdraw
         </FlatButton>
       </div>

@@ -40,24 +40,24 @@ export function TerraApp({ chainOptions }: TerraAppProps) {
 
             <Route path="/borrow" element={<Borrow />} />
 
-            <Route path="/basset" element={<BAssetMain />} />
+            <Route path="/aasset" element={<BAssetMain />} />
 
-            <Route path="/basset/bluna" element={<BlunaConvert />}>
+            <Route path="/aasset/aluna" element={<BlunaConvert />}>
               <Route path="" element={<Navigate to="mint" />} />
               <Route path="mint" element={<BLunaMint />} />
               <Route path="burn" element={<BLunaBurn />} />
               <Route path="*" element={<Navigate to="mint" />} />
             </Route>
 
-            <Route path="/basset/withdraw" element={<BlunaWithdraw />} />
+            <Route path="/aasset/withdraw" element={<BlunaWithdraw />} />
 
-            <Route path="/basset/claim" element={<BAssetClaim />} />
+            <Route path="/aasset/claim" element={<BAssetClaim />} />
 
-            <Route path="/basset/wh/:tokenSymbol" element={<WormholeConvert />}>
-              <Route path="" element={<Navigate to="to-basset" />} />
-              <Route path="to-basset" element={<WormholeConvertToBAsset />} />
-              <Route path="to-wbasset" element={<WormholeConvertToWBAsset />} />
-              <Route path="*" element={<Navigate to="to-basset" />} />
+            <Route path="/aasset/wh/:tokenSymbol" element={<WormholeConvert />}>
+              <Route path="" element={<Navigate to="to-aasset" />} />
+              <Route path="to-aasset" element={<WormholeConvertToBAsset />} />
+              <Route path="to-waasset" element={<WormholeConvertToWBAsset />} />
+              <Route path="*" element={<Navigate to="to-aasset" />} />
             </Route>
 
             <Route path={`/anc/vesting/claim`} element={<AncVestingClaim />} />

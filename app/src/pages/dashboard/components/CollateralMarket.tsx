@@ -60,7 +60,7 @@ function CollateralMarketBase(props: UIElementProps) {
                 ? collaterals.mainTotalCollateralValue
                 : (0 as u<UST<number>>)}
             </AnimateNumber>
-            <span> UST</span>
+            <span>axlUSDC</span>
           </p>
         </div>
       </header>

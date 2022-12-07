@@ -235,7 +235,7 @@ function Component({ className, bAssetInfo }: WhExportProps) {
             formatExchangeRate={() => '1'}
           />
           <TxFeeListItem label="Tx Fee">
-            {formatUST(demicrofy(fixedFee))} UST
+            {formatUST(demicrofy(fixedFee))} Luna
           </TxFeeListItem>
         </TxFeeList>
       )}

@@ -138,13 +138,13 @@ function TotalValueBase({ className }: TotalValueProps) {
       totalValue,
       data: [
         {
-          label: 'UST',
-          tooltip: 'Total amount of UST held',
+          label: 'axlUSDC',
+          tooltip: 'Total amount of axlUSDC held',
           amount: ust,
         },
         {
           label: 'Deposit',
-          tooltip: 'Total amount of UST deposited and interest generated',
+          tooltip: 'Total amount of axlUSDC deposited and interest generated',
           amount: deposit,
         },
         {
@@ -190,7 +190,7 @@ function TotalValueBase({ className }: TotalValueProps) {
               TOTAL VALUE{' '}
               <InfoTooltip>
                 Total value of deposits, borrowing, holdings, withdrawable
-                liquidity, rewards, staked ANC, and UST held
+                liquidity, rewards and axlUSDC held
               </InfoTooltip>
             </IconSpan>
           </h4>
@@ -198,7 +198,7 @@ function TotalValueBase({ className }: TotalValueProps) {
             <AnimateNumber format={formatOutput}>
               {demicrofy(totalValue)}
             </AnimateNumber>
-            <Sub> UST</Sub>
+            <Sub>axlUSDC</Sub>
           </p>
         </div>
         {isNative && (

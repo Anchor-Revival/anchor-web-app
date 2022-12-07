@@ -27,7 +27,7 @@ const borrow: RouteMenu = {
 };
 
 const bAsset: RouteMenu = {
-  to: '/basset',
+  to: '/aasset',
   title: 'aASSET',
 };
 

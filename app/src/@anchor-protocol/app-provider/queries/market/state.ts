@@ -7,14 +7,14 @@ import { ANCHOR_QUERY_KEY } from '../../env';
 const queryFn = createQueryFn(marketStateQuery);
 
 export function useMarketStateQuery(): UseQueryResult<MarketState | undefined> {
-  const { hiveQueryClient, contractAddress, queryErrorReporter } =
+  const { queryClient, contractAddress, queryErrorReporter } =
     useAnchorWebapp();
 
   const result = useQuery(
     [
       ANCHOR_QUERY_KEY.MARKET_STATE,
       contractAddress.moneyMarket.market,
-      hiveQueryClient,
+      queryClient,
     ],
     queryFn,
     {

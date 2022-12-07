@@ -67,7 +67,8 @@ export function Component({
 
   const { contractAddress, gasPrice, constants } = useAnchorWebapp();
 
-  const [estimatedFee, estimateFee] = useFeeEstimationFor(terraWalletAddress);
+  const [estimatedFee, estimatedFeeError, estimateFee] =
+    useFeeEstimationFor(terraWalletAddress);
 
   const [burn, burnResult] = useBondBurnTx();
 
@@ -307,14 +308,14 @@ export function Component({
                   )
                 }
               >
-                {formatLuna(demicrofy(bank.tokenBalances.ubLuna))} bLuna
+                {formatLuna(demicrofy(bank.tokenBalances.ubLuna))} aLuna
               </span>
             </span>
           )
         }
       >
         <SelectAndTextInputContainerLabel>
-          <TokenIcon token="bluna" /> bLuna
+          <TokenIcon token="bluna" /> aLuna
         </SelectAndTextInputContainerLabel>
         <NumberMuiInput
           placeholder="0.00"
@@ -371,7 +372,7 @@ export function Component({
         </h4>
         <ul>
           <li>
-            Default bLuna redemptions take at least 21 days to process. Slashing
+            Default aLuna redemptions take at least 21 days to process. Slashing
             events during the 21 days may affect the final amount withdrawn.
           </li>
           <li>
@@ -386,7 +387,7 @@ export function Component({
           <SwapListItem
             label="Price"
             currencyA="Luna"
-            currencyB="bLuna"
+            currencyB="aLuna"
             initialDirection="a/b"
             exchangeRateAB={exchangeRate.exchange_rate}
             formatExchangeRate={(ratio) => formatLuna(ratio as Luna<Big>)}
@@ -399,7 +400,7 @@ export function Component({
         )}
         {burnAmount.length > 0 && (
           <TxFeeListItem label={<IconSpan>Estimated Tx Fee</IconSpan>}>
-            {!estimatedFee && (
+            {!estimatedFeeError && !estimatedFee && (
               <span className="spinner">
                 <CircleSpinner size={14} color={theme.colors.positive} />
               </span>
@@ -407,6 +408,8 @@ export function Component({
 
             {estimatedFee &&
               `≈ ${formatLuna(demicrofy(estimatedFee.txFee))} Luna`}
+
+            {estimatedFeeError}
           </TxFeeListItem>
         )}
       </TxFeeList>

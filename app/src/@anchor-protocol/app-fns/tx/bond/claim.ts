@@ -83,7 +83,7 @@ export function bondClaimTx($: {
               name: 'Claimed Reward',
               value:
                 formatUSTWithPostfixUnits(demicrofy(stripUUSD(claimedReward))) +
-                ' UST',
+                ' axlUSDC',
             },
             helper.txHashReceipt(),
             {
@@ -95,7 +95,7 @@ export function bondClaimTx($: {
                       UST<Big>
                     >,
                   ),
-                ) + ' UST',
+                ) + ' Luna',
             },
           ],
         } as TxResultRendering;

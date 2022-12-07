@@ -44,10 +44,8 @@ const mapTokenInformation = (
   tokenInformation: Record<string, CW20TokenDisplayInfo>,
 ): WhitelistCollateral[] => {
   return whitelist.map((collateral) => {
-    console.log('collatearl', collateral, tokenInformation);
     if (collateral && tokenInformation[collateral.collateral_token]) {
       const token = tokenInformation[collateral.collateral_token];
-      console.log(token, 't');
       return {
         ...token,
         ...collateral,
@@ -81,11 +79,11 @@ const mapBridgedAssets = async (
 const bLunaInformation = {
   terra1qplftykc0sehm2632zd0n5swdxc3k24sjtsf9lm8em50fqyyt8aq2k6u26: {
     protocol: 'Anchor',
-    symbol: 'bLuna',
+    symbol: 'aLuna',
     token:
       'terra1qplftykc0sehm2632zd0n5swdxc3k24sjtsf9lm8em50fqyyt8aq2k6u26' as CW20Addr,
-    icon: 'https://whitelist.anchorprotocol.com/logo/bLUNA.png',
-    name: 'aLuna',
+    icon: 'assets/tokens/bluna.svg',
+    name: 'Cavern Bonded Luna',
   },
 };
 

@@ -142,7 +142,7 @@ function DashboardBase({ className }: DashboardProps) {
                 1 <small>aUST</small> <TokenIcon token="aust" />{' '}
                 <small>≈</small>{' '}
                 {formatUST(moneyMarketEpochState.exchange_rate)}{' '}
-                <small>UST</small> <TokenIcon token="ust" />
+                <small>axlUSDC</small> <TokenIcon token="ust" />
               </div>
             )}
           </TitleContainerAndExchangeRate>
@@ -159,7 +159,7 @@ function DashboardBase({ className }: DashboardProps) {
                       ? totalValueLocked.totalValueLocked
                       : (0 as u<UST<number>>)}
                   </AnimateNumber>
-                  <span>UST</span>
+                  <span>axlUSDC</span>
                 </p>
                 <figure>
                   <div className="chart">
@@ -219,7 +219,7 @@ function DashboardBase({ className }: DashboardProps) {
                       ? totalValueLocked.yieldReserve
                       : (0 as u<UST<number>>)}
                   </AnimateNumber>
-                  <span>UST</span>
+                  <span>axlUSDC</span>
                 </p>
               </section>
             </Section>
@@ -249,7 +249,7 @@ function DashboardBase({ className }: DashboardProps) {
                       ? stableCoin.totalDeposit
                       : (0 as u<UST<number>>)}
                   </AnimateNumber>
-                  <span>UST</span>
+                  <span>axlUSDC</span>
                 </p>
               </div>
               <div>
@@ -271,7 +271,7 @@ function DashboardBase({ className }: DashboardProps) {
                       ? stableCoin.totalBorrow
                       : (0 as u<UST<number>>)}
                   </AnimateNumber>
-                  <span>UST</span>
+                  <span>axlUSDC</span>
                 </p>
               </div>
               <div />
@@ -338,8 +338,8 @@ function DashboardBase({ className }: DashboardProps) {
                         <TokenIcon token="ust" />
                       </i>
                       <div>
-                        <div className="coin">UST</div>
-                        <p className="name">Terra USD</p>
+                        <div className="coin">axlUSDC</div>
+                        <p className="name">Axelar USDC</p>
                       </div>
                     </div>
                   </td>

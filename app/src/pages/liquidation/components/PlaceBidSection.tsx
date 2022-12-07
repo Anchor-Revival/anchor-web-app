@@ -3,8 +3,11 @@ import { InfoTooltip } from '@libs/neumorphism-ui/components/InfoTooltip';
 
 import React, {
   ChangeEvent,
+  Dispatch,
   ReactNode,
+  SetStateAction,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
@@ -23,7 +26,7 @@ import { useAccount } from 'contexts/account';
 import { PaddingSection } from './PaddingSection';
 import { useLiquidationDepositForm } from '@anchor-protocol/app-provider/forms/liquidate/deposit';
 import { useFormatters } from '@anchor-protocol/formatter';
-import { Luna, u, UST } from '@libs/types';
+import { Luna, Token, u, UST } from '@libs/types';
 import { AmountSlider } from './AmountSlider';
 import big, { Big, BigSource } from 'big.js';
 import {
@@ -31,7 +34,7 @@ import {
   UST_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
 import { NumberInput } from '@libs/neumorphism-ui/components/NumberInput';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { usePlaceLiquidationBidTx } from '@anchor-protocol/app-provider/tx/liquidate/deposit';
 import { useConfirm } from '@libs/neumorphism-ui/components/useConfirm';
 import { TxFeeList, TxFeeListItem } from 'components/TxFeeList';
@@ -46,15 +49,30 @@ import {
 import { bLuna } from '@anchor-protocol/types';
 import { useLiquidationWithdrawCollateralForm } from '@anchor-protocol/app-provider/forms/liquidate/collateral';
 import { useLiquidationWithdrawCollateralTx } from '@anchor-protocol/app-provider/tx/liquidate/collateral';
-import { defaultFee, EstimatedFee } from '@libs/app-provider';
+import {
+  defaultFee,
+  EstimatedFee,
+  useFeeEstimationFor,
+} from '@libs/app-provider';
 import { pressed } from '@libs/styled-neumorphism';
+import { TextInput } from '@libs/neumorphism-ui/components/TextInput';
+import { Coin, Coins, MsgExecuteContract } from '@terra-money/terra.js';
+import { formatTokenInput } from '@libs/formatter';
+import { CircleSpinner } from 'react-spinners-kit';
 
 export interface PlaceBidSectionProps {
   className?: string;
+  clickedBarState: [
+    number | undefined,
+    Dispatch<SetStateAction<number | undefined>>,
+  ];
 }
 
-export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
-  const { connected } = useAccount();
+export function PlaceBidSectionBase({
+  className,
+  clickedBarState: [clickedBar, setClickedBar],
+}: PlaceBidSectionProps) {
+  const { connected, terraWalletAddress } = useAccount();
   const { contractAddress } = useAnchorWebapp();
 
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -84,15 +102,6 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
     return [withdrawable_number, withdrawable];
   }, [bidByUser, bluna]);
 
-  const handleSliderChange = (event: any, newValue: any) => {
-    state.updatePremiumValue(newValue);
-  };
-  const handleInputChange = (event: any) => {
-    state.updatePremiumValue(
-      event.target.value === '' ? undefined : Number(event.target.value),
-    );
-  };
-
   /*******************************
    *
    * Place Bid Submit Section
@@ -102,13 +111,16 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
   const state = useLiquidationDepositForm();
   const [openConfirm, confirmElement] = useConfirm();
   const [placeBid, placeBidTxResult] = usePlaceLiquidationBidTx();
+  const [estimatedFee, estimatedFeeError, estimateFee] =
+    useFeeEstimationFor(terraWalletAddress);
   const [isSubmittingBidTx, setIsSubmittingBidTx] = useState(false);
 
+  // Proceed callback --> Submit transaction
   const proceedBid = useCallback(
     async (
       depositAmount: UST,
       premium: number,
-      txFee: u<Luna<BigSource>> | undefined,
+      txFee: EstimatedFee | undefined,
       confirm: ReactNode,
     ) => {
       setIsSubmittingBidTx(true);
@@ -131,11 +143,50 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
       placeBid({
         depositAmount,
         premium,
-        txFee: (txFee ?? 0).toString() as u<Luna>,
+        txFee: txFee ?? defaultFee(),
       });
     },
     [connected, placeBid, openConfirm],
   );
+
+  // Update form with fee estimate Effect
+  useEffect(() => {
+    state.updateEstimatedFee(estimatedFee);
+  }, [estimatedFee, state]);
+
+  // Update fee estimate Effect
+  useEffect(() => {
+    if (!connected || !state.depositAmount) {
+      return;
+    }
+    estimateFee([
+      new MsgExecuteContract(
+        terraWalletAddress as string,
+        contractAddress.liquidation.liquidationQueueContract,
+        {
+          submit_bid: {
+            collateral_token: contractAddress.cw20.bLuna,
+            premium_slot: state.premium,
+          },
+        },
+
+        // coins
+        new Coins([
+          new Coin(
+            contractAddress.native.usd,
+            formatTokenInput(big(state.depositAmount) as Token<BigSource>),
+          ),
+        ]),
+      ),
+    ]);
+  }, [
+    terraWalletAddress,
+    contractAddress,
+    state.depositAmount,
+    state.premium,
+    estimateFee,
+    connected,
+  ]);
 
   const renderBroadcastBidTx = useMemo(() => {
     return (
@@ -184,9 +235,38 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
     [connected, withdrawCollateralTx, openConfirm],
   );
 
-  useMemo(() => {
-    collateralState.updateTxFee();
-  }, [collateralState]);
+  const handleSliderChange = useCallback(
+    (newValue: any) => {
+      state.updatePremiumValue(newValue);
+    },
+    [state],
+  );
+  const handleInputChange = (event: any) => {
+    state.updatePremiumValue(
+      event.target.value === '' ? undefined : Number(event.target.value),
+    );
+  };
+
+  /*******************************
+   * Update the premium based on the bars clicked
+   *
+   *
+   * ******************************/
+
+  useEffect(() => {
+    if (!clickedBar) {
+      return;
+    }
+    handleSliderChange(clickedBar);
+    setClickedBar(undefined);
+  }, [setClickedBar, clickedBar, handleSliderChange]);
+
+  /******************************
+   * Render
+   *
+   *********************************/
+
+  const theme = useTheme();
 
   const renderBroadcastCollateralTx = useMemo(() => {
     return (
@@ -239,7 +319,7 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
           proceedBid(
             state.depositAmount,
             state.premium ?? 0,
-            state.txFee,
+            state.estimatedFee,
             state.invalidNextTxFee,
           );
         }}
@@ -264,16 +344,18 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
                     { target }: Event,
                     newValue: number | number[],
                   ) => {
-                    handleSliderChange(target, newValue);
+                    handleSliderChange(newValue);
                   }}
                   valueLabelFormat={(value) => `${value}%`}
                 />
               </Grid>
               <Grid xs={12} sm={3}>
-                <OutlinedInput
-                  endAdornment={
-                    <InputAdornment position="end">%</InputAdornment>
-                  }
+                <TextInput
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">%</InputAdornment>
+                    ),
+                  }}
                   fullWidth
                   value={state.premium ?? ''}
                   margin="dense"
@@ -360,7 +442,9 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
                     <AmountSlider
                       disabled={!connected}
                       max={Number(demicrofy(state.maxAmount))}
-                      txFee={Number(demicrofy(state.txFee ?? ('0' as UST)))}
+                      txFee={Number(
+                        demicrofy(state.estimatedFee?.txFee ?? ('0' as UST)),
+                      )}
                       value={Number(state.depositAmount)}
                       onChange={(value) => {
                         state.updateDepositAmount(
@@ -386,15 +470,25 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
               labelPlacement="end"
               aria-describedby="bid-terms-helper-text"
             />
-            {state.txFee && (
+
+            {connected && state.depositAmount && (
               <TxFeeList className="receipt">
-                {big(state.txFee).gt(0) && (
-                  <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-                    {`${luna.formatOutput(luna.demicrofy(state.txFee))} ${
-                      luna.symbol
-                    }`}
-                  </TxFeeListItem>
-                )}
+                <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
+                  {estimatedFeeError}
+
+                  {!estimatedFeeError && !state.estimatedFee && (
+                    <CircleSpinner size={14} color={theme.colors.positive} />
+                  )}
+
+                  {!estimatedFeeError &&
+                    state.estimatedFee &&
+                    big(state.estimatedFee?.txFee ?? '0').gt(0) &&
+                    `${luna.formatOutput(
+                      luna.demicrofy(
+                        state.estimatedFee?.txFee ?? ('0' as u<Luna>),
+                      ),
+                    )} ${luna.symbol}`}
+                </TxFeeListItem>
               </TxFeeList>
             )}
             <Button
@@ -428,23 +522,27 @@ export function PlaceBidSectionBase({ className }: PlaceBidSectionProps) {
             <Grid container spacing={1}>
               <Grid xs={12}>
                 <OutlinedInput
-                  disabled
                   fullWidth
                   value={withdrawable_balance}
-                  style={{ fontSize: '3em' }}
+                  style={{ fontSize: '3em', caretColor: 'transparent' }}
                 />
               </Grid>
-              {collateralState.txFee?.txFee && (
-                <TxFeeList className="receipt">
-                  {big(collateralState.txFee?.txFee).gt(0) && (
-                    <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-                      {`${luna.formatOutput(
-                        luna.demicrofy(collateralState.txFee?.txFee),
-                      )} ${luna.symbol}`}
-                    </TxFeeListItem>
-                  )}
-                </TxFeeList>
-              )}
+              <TxFeeList className="receipt">
+                <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
+                  {!collateralState.txFee?.txFee ||
+                    (!big(collateralState.txFee?.txFee ?? ('0' as u<Luna>)).gt(
+                      0,
+                    ) && (
+                      <CircleSpinner size={14} color={theme.colors.positive} />
+                    ))}
+                  {!!collateralState.txFee?.txFee &&
+                    big(collateralState.txFee?.txFee).gt(0) &&
+                    `${luna.formatOutput(
+                      luna.demicrofy(collateralState.txFee?.txFee),
+                    )} ${luna.symbol}`}
+                </TxFeeListItem>
+              </TxFeeList>
+
               <Grid xs={12}>
                 <Button
                   variant="contained"

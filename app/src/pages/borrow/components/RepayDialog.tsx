@@ -135,7 +135,9 @@ function RepayDialogBase(props: RepayDialogProps) {
             updateRepayAmount(target.value)
           }
           InputProps={{
-            endAdornment: <InputAdornment position="end">UST</InputAdornment>,
+            endAdornment: (
+              <InputAdornment position="end">axlUSDC</InputAdornment>
+            ),
           }}
         />
 
@@ -154,7 +156,7 @@ function RepayDialogBase(props: RepayDialogProps) {
                 )
               }
             >
-              {formatUST(demicrofy(states.maxRepayingAmount))} UST
+              {formatUST(demicrofy(states.maxRepayingAmount))} axlUSDC
             </span>
           </span>
         </div>
@@ -183,7 +185,7 @@ function RepayDialogBase(props: RepayDialogProps) {
               {states.totalOutstandingLoan.lt(0)
                 ? 0
                 : formatUST(demicrofy(states.totalOutstandingLoan))}{' '}
-              UST
+              axlUSDC
             </TxFeeListItem>
             {big(states.txFee).gt(0) && (
               <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>

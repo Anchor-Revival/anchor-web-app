@@ -56,6 +56,7 @@ function DepositDialogBase(props: DepositDialogProps) {
 
   const {
     axlUSDC: { formatOutput, formatInput, demicrofy, symbol },
+    luna: { symbol: feeSymbol },
   } = useFormatters();
 
   const renderBroadcastTx = useMemo(() => {
@@ -147,7 +148,7 @@ function DepositDialogBase(props: DepositDialogProps) {
           <TxFeeList className="receipt">
             {big(txFee).gt(0) && (
               <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-                {`${formatOutput(demicrofy(txFee))} ${symbol}`}
+                {`${formatOutput(demicrofy(txFee))} ${feeSymbol}`}
               </TxFeeListItem>
             )}
             <TxFeeListItem label="Send Amount">

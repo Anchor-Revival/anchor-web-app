@@ -5,7 +5,7 @@ import { createTheme } from '@mui/material/styles';
 const GREEN_100 = '#15cc93';
 const GREEN_200 = '#4BDB4B';
 const GREEN_300 = 'rgba(75, 219, 75, 0.1)';
-const GREEN_400 = '#285e28';
+//const GREEN_400 = '#285e28';
 const GREEN_500 = '#36a337';
 const GREEN_600 = '#2d832d';
 const GREEN_700 = '#246d25';
@@ -14,6 +14,7 @@ const GREEN_900 = '#0e3311';
 const RED_100 = '#e95979';
 const YELLOW_100 = '#ff9a63';
 const GRAY_200 = '#101010';
+const GRAY_0 = '#7B7B7B';
 
 // DEFAULT DARK THEME VARIABLES FOR CONSTANTS
 export const DARK_BLUE_100 = '#1b1e31';
@@ -37,6 +38,52 @@ export const WHITE = '#FFFFFF';
 export const defaultDarkTheme = {
   ...createTheme({
     ...muiThemeBase,
+    palette: {
+      primary: {
+        main: GREEN_100,
+      },
+      secondary: {
+        main: GREEN_200,
+      },
+      text: {
+        primary: WHITE,
+      },
+    },
+    components: {
+      MuiInputBase: {
+        styleOverrides: {
+          // Name of the slot
+          root: {
+            // Some CSS
+            color: WHITE,
+          },
+          input: {
+            color: WHITE,
+          },
+        },
+      },
+      MuiRadio: {
+        styleOverrides: {
+          root: {
+            color: WHITE,
+          },
+        },
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          input: {
+            color: WHITE,
+          },
+        },
+      },
+      MuiDialogContentText: {
+        styleOverrides: {
+          root: {
+            color: WHITE,
+          },
+        },
+      },
+    },
   }),
   MuiTouchRipple: {
     root: {
@@ -74,7 +121,7 @@ export const defaultDarkTheme = {
   messageBox: {
     borderColor: GREEN_200,
     backgroundColor: GREEN_300,
-    textColor: GREEN_400,
+    textColor: GREEN_100,
     linkColor: GREEN_200,
   },
 
@@ -87,6 +134,9 @@ export const defaultDarkTheme = {
     GREEN_900,
     GRAY_200,
   ],
+  liquidationChart: {
+    lineColor: GRAY_0,
+  },
 
   // CONSTANTS (CAN BE DEFAULT)
   intensity: 0.45,
@@ -125,7 +175,7 @@ export const defaultDarkTheme = {
   },
 
   formControl: {
-    labelColor: DARK_GRAY_100,
+    labelColor: WHITE,
     labelFocusedColor: DARK_BLUE_600,
     labelErrorColor: DARK_RED_200,
   },

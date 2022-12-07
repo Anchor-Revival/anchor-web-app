@@ -1,6 +1,6 @@
-import { HumanAddr, Token, u, UST } from '@anchor-protocol/types';
+import { HumanAddr, Token } from '@anchor-protocol/types';
 import { terraSendTx } from '@anchor-protocol/app-fns';
-import { useRefetchQueries } from '@libs/app-provider';
+import { EstimatedFee, useRefetchQueries } from '@libs/app-provider';
 import { useStream } from '@rx-stream/react';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
@@ -14,7 +14,7 @@ export interface TerraSendTxParams {
   currency: CurrencyInfo;
   memo?: string;
   amount: Token;
-  txFee: u<UST>;
+  estimatedFee: EstimatedFee;
   onTxSucceed?: () => void;
 }
 
@@ -33,7 +33,7 @@ export function useTerraSendTx() {
       currency,
       memo,
       amount,
-      txFee,
+      estimatedFee,
       onTxSucceed,
     }: TerraSendTxParams) => {
       if (!availablePost || !connected || !connectedWallet) {
@@ -46,11 +46,11 @@ export function useTerraSendTx() {
         amount,
         currency,
         memo,
-        txFee,
+        txFee: estimatedFee.txFee,
         // post
         network: connectedWallet.network,
         post: connectedWallet.post,
-        gasFee: constants.gasWanted,
+        gasFee: estimatedFee.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         // query
         queryClient,
@@ -67,7 +67,6 @@ export function useTerraSendTx() {
       availablePost,
       connected,
       connectedWallet,
-      constants.gasWanted,
       constants.gasAdjustment,
       queryClient,
       txErrorReporter,

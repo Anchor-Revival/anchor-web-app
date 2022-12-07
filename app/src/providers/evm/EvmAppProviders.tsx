@@ -85,7 +85,7 @@ export function EvmAppProviders({ children }: UIElementProps) {
   return (
     <EvmWalletProvider>
       <ThemeProvider
-        initialTheme="light"
+        initialTheme="dark"
         lightTheme={
           target.chain === Chain.Ethereum
             ? ethereumLightTheme

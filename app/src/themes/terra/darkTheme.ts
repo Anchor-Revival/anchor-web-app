@@ -10,7 +10,7 @@ import {
 const GREEN_100 = '#15cc93';
 const GREEN_200 = '#4BDB4B';
 const GREEN_300 = 'rgba(75, 219, 75, 0.1)';
-const GREEN_400 = '#285e28';
+//const GREEN_400 = '#285e28';
 const GREEN_500 = '#36a337';
 const GREEN_600 = '#2d832d';
 const GREEN_700 = '#246d25';
@@ -44,7 +44,7 @@ export const darkTheme: DefaultTheme = {
   messageBox: {
     borderColor: GREEN_200,
     backgroundColor: GREEN_300,
-    textColor: GREEN_400,
+    textColor: GREEN_100,
     linkColor: GREEN_200,
   },
 

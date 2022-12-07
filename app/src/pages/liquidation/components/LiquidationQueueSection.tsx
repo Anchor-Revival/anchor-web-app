@@ -1,5 +1,12 @@
-import React, { useRef, useEffect, useState, useMemo } from 'react';
-import styled from 'styled-components';
+import React, {
+  useRef,
+  useEffect,
+  useState,
+  useMemo,
+  Dispatch,
+  SetStateAction,
+} from 'react';
+import styled, { useTheme } from 'styled-components';
 import { screen } from 'env';
 
 import { Section } from '@libs/neumorphism-ui/components/Section';
@@ -23,12 +30,14 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { useMediaQuery } from '@mui/material';
+import { AnimateNumber } from '@libs/ui';
 
 export interface LiquidationQueueProps {
   className?: string;
+  setClickedBar: Dispatch<SetStateAction<number | undefined>>;
 }
 
-function Component({ className }: LiquidationQueueProps) {
+function Component({ className, setClickedBar }: LiquidationQueueProps) {
   // ---------------------------------------------
   // dependencies
   // ---------------------------------------------
@@ -71,6 +80,7 @@ function Component({ className }: LiquidationQueueProps) {
   // Graph imports
   // ---------------------------------------------
 
+  const theme = useTheme();
   const graphData = useLiquidationGraph();
 
   const chartRef = useRef<ChartJS<'bar', number[], number>>(null);
@@ -96,6 +106,7 @@ function Component({ className }: LiquidationQueueProps) {
           align: 'end',
           labels: {
             usePointStyle: true,
+            color: theme.palette.text.primary,
           },
           title: { text: 'UST positions' },
         },
@@ -119,6 +130,7 @@ function Component({ className }: LiquidationQueueProps) {
             display: false,
           },
           ticks: {
+            color: theme.palette.text.primary,
             // Include a % sign in the ticks
             callback: function (value: number) {
               if (value % 2 === 0) {
@@ -128,17 +140,39 @@ function Component({ className }: LiquidationQueueProps) {
           },
         },
         y: {
+          grid: {
+            color: theme.liquidationChart?.lineColor,
+          },
           ticks: {
+            color: theme.palette.text.primary,
             display: !isSmallScreen,
             // Include a dollar sign in the ticks
             callback: function (value: number) {
-              return '$' + value;
+              if (value !== 0) {
+                return '$' + value;
+              }
             },
           },
         },
       },
+      onClick(e: any) {
+        const chart = chartRef.current;
+        if (!chart) {
+          return;
+        }
+        const activePoints = chart.getElementsAtEventForMode(
+          e,
+          'nearest',
+          {
+            intersect: true,
+          },
+          false,
+        );
+        const [{ index }] = activePoints;
+        setClickedBar(index);
+      },
     }),
-    [isSmallScreen],
+    [isSmallScreen, theme, setClickedBar],
   );
 
   const data = useMemo(
@@ -200,7 +234,7 @@ function Component({ className }: LiquidationQueueProps) {
     };
     setChartData(chartDisplayData);
     setChartOptions(chartOptions);
-  }, [data, options]);
+  }, [data, options, theme]);
 
   // ---------------------------------------------
   // Liquidation Stats
@@ -229,7 +263,9 @@ function Component({ className }: LiquidationQueueProps) {
           {liquidationStats.otherStats.map((stat) => {
             return (
               <StatsFigureCard title={stat.title} key={stat.title}>
-                {stat.value}
+                <AnimateNumber format={(v: any) => stat.format_func(v)}>
+                  {stat.value}
+                </AnimateNumber>
               </StatsFigureCard>
             );
           })}

@@ -10,7 +10,7 @@ export default {
 };
 
 const textAdornmentInputProps = {
-  endAdornment: <InputAdornment position="end">UST</InputAdornment>,
+  endAdornment: <InputAdornment position="end">axlUSDC</InputAdornment>,
 };
 
 const warningTooltipAdornmentInputProps = {

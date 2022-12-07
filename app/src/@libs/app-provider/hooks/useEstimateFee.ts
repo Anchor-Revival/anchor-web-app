@@ -16,7 +16,7 @@ export interface EstimatedHumanFee {
   txFee: u<Luna>;
 }
 
-export function defaultFee() {
+export function defaultFee(): EstimatedFee {
   return {
     gasWanted: 0 as Gas,
     txFee: '0' as u<Luna>,
@@ -63,28 +63,47 @@ export function useEstimateFee(
 
 export function useFeeEstimationFor(
   walletAddress: HumanAddr | undefined,
-): [EstimatedFee | null, (msgs: Msg[] | null) => void] {
+): [
+  EstimatedFee | undefined,
+  string | undefined,
+  (msgs: Msg[] | null) => void,
+] {
   const estimateFee = useEstimateFee(walletAddress);
+  const [estimatedFeeError, setEstimatedFeeError] = useState<
+    string | undefined
+  >();
 
-  const [estimatedFee, setEstimatedFee] = useState<EstimatedFee | null>(null);
+  const [estimatedFee, setEstimatedFee] = useState<EstimatedFee | undefined>();
 
   return [
     estimatedFee,
+    estimatedFeeError,
     useMemo(() => {
       return debounce((msgs: Msg[] | null) => {
+        setEstimatedFeeError(undefined);
+        setEstimatedFee(undefined);
         if (!msgs) {
-          setEstimatedFee(null);
+          setEstimatedFee(undefined);
           return;
         }
 
-        estimateFee(msgs).then((estimated) => {
-          if (estimated) {
-            setEstimatedFee(estimated);
-          } else {
-            setEstimatedFee(null);
-          }
-        });
+        estimateFee(msgs)
+          .then((estimated) => {
+            if (estimated) {
+              setEstimatedFee(estimated);
+            } else {
+              setEstimatedFee(undefined);
+              setEstimatedFeeError(() => 'Error when estimating the Fee');
+            }
+          })
+          .catch(() => {
+            console.log('error');
+            setEstimatedFeeError(() => 'Error when estimating the Fee');
+          })
+          .then((ui) => {
+            console.log('stopped estimating fee', ui);
+          });
       }, 500);
-    }, [estimateFee]),
+    }, [estimateFee, setEstimatedFeeError]),
   ];
 }

@@ -61,7 +61,8 @@ function Component({ className }: BLunaMintProps) {
 
   const { contractAddress, gasPrice, constants } = useAnchorWebapp();
 
-  const [estimatedFee, estimateFee] = useFeeEstimationFor(terraWalletAddress);
+  const [estimatedFee, estimatedFeeError, estimateFee] =
+    useFeeEstimationFor(terraWalletAddress);
 
   const [mint, mintResult] = useBondMintTx();
 
@@ -338,7 +339,7 @@ function Component({ className }: BLunaMintProps) {
         error={!!invalidBondAmount}
       >
         <SelectAndTextInputContainerLabel>
-          <TokenIcon token="bluna" /> bLuna
+          <TokenIcon token="bluna" /> aLuna
         </SelectAndTextInputContainerLabel>
         <NumberMuiInput
           placeholder="0.00"
@@ -357,7 +358,7 @@ function Component({ className }: BLunaMintProps) {
           <SwapListItem
             label="Price"
             currencyA="Luna"
-            currencyB="bLuna"
+            currencyB="aLuna"
             exchangeRateAB={exchangeRate.exchange_rate}
             formatExchangeRate={(ratio) => formatLuna(ratio as Luna<Big>)}
           />
@@ -369,7 +370,7 @@ function Component({ className }: BLunaMintProps) {
         )}
         {bondAmount.length > 0 && (
           <TxFeeListItem label={<IconSpan>Estimated Tx Fee</IconSpan>}>
-            {!estimatedFee && (
+            {!estimatedFeeError && !estimatedFee && (
               <span className="spinner">
                 <CircleSpinner size={14} color={theme.colors.positive} />
               </span>
@@ -377,6 +378,8 @@ function Component({ className }: BLunaMintProps) {
 
             {estimatedFee &&
               `≈ ${formatLuna(demicrofy(estimatedFee.txFee))} Luna`}
+
+            {estimatedFeeError}
           </TxFeeListItem>
         )}
       </TxFeeList>

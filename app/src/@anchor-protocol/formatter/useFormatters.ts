@@ -33,7 +33,7 @@ const useFormatters = (): Formatters => {
   return useMemo<Formatters>(() => {
     const tokens = {
       axlUSDC: createFormatter<UST>('axlUSDC', 6),
-      ust: createFormatter<UST>('UST', 6),
+      ust: createFormatter<UST>('axlUSDC', 6),
       aUST: createFormatter<aUST>('aUST', 6),
       anc: createFormatter<ANC>('ANC', 6),
       luna: createFormatter<Luna>('Luna', 6),

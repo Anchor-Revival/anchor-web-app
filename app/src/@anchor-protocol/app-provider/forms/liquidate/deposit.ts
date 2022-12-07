@@ -1,33 +1,40 @@
-
-import { liquidationDepositForm, LiquidationDepositFormStates } from '@anchor-protocol/app-fns/forms/liquidate/deposit';
+import {
+  liquidationDepositForm,
+  LiquidationDepositFormStates,
+} from '@anchor-protocol/app-fns/forms/liquidate/deposit';
 import { useAnchorBank } from '@anchor-protocol/app-provider/hooks/useAnchorBank';
 import { UST } from '@anchor-protocol/types';
-import { useFixedFee} from '@libs/app-provider';
+import { defaultFee, EstimatedFee } from '@libs/app-provider';
 import { useForm } from '@libs/use-form';
 import { useAccount } from 'contexts/account';
 import { useCallback } from 'react';
 
-export interface LiquidationDepositFormReturn extends LiquidationDepositFormStates {
+export interface LiquidationDepositFormReturn
+  extends LiquidationDepositFormStates {
   updateDepositAmount: (depositAmount: UST) => void;
   updatePremiumValue: (premium: number | undefined) => void;
+  updateEstimatedFee: (estimatedFee: EstimatedFee | undefined) => void;
 }
 
 export function useLiquidationDepositForm(): LiquidationDepositFormReturn {
   const { connected } = useAccount();
 
-  const fixedFee = useFixedFee();
-
-  const { tokenBalances: {uUST, uLuna} } = useAnchorBank();
+  const {
+    tokenBalances: { uUST, uLuna },
+  } = useAnchorBank();
 
   const [input, states] = useForm(
     liquidationDepositForm,
     {
       isConnected: connected,
-      fixedGas: fixedFee,
       userUUSTBalance: uUST,
-      userULunaBalance: uLuna, 
+      userULunaBalance: uLuna,
     },
-    () => ({ depositAmount: '' as UST, premium: 0 }),
+    () => ({
+      depositAmount: '' as UST,
+      premium: 0,
+      estimatedFee: defaultFee(),
+    }),
   );
 
   const updateDepositAmount = useCallback(
@@ -42,7 +49,16 @@ export function useLiquidationDepositForm(): LiquidationDepositFormReturn {
   const updatePremiumValue = useCallback(
     (premium: number | undefined) => {
       input({
-        premium
+        premium,
+      });
+    },
+    [input],
+  );
+
+  const updateEstimatedFee = useCallback(
+    (estimatedFee: EstimatedFee | undefined) => {
+      input({
+        estimatedFee,
       });
     },
     [input],
@@ -52,5 +68,6 @@ export function useLiquidationDepositForm(): LiquidationDepositFormReturn {
     ...states,
     updateDepositAmount,
     updatePremiumValue,
+    updateEstimatedFee,
   };
 }

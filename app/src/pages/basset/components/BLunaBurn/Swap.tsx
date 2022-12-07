@@ -7,7 +7,6 @@ import {
 import {
   formatLuna,
   formatLunaInput,
-  formatUST,
   LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
   LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
@@ -33,7 +32,7 @@ import { Luna } from '@libs/types';
 import { useResolveLast } from '@libs/use-resolve-last';
 import { InfoOutlined } from '@mui/icons-material';
 import { StreamStatus } from '@rx-stream/react';
-import big, { Big } from 'big.js';
+import big from 'big.js';
 import { DiscloseSlippageSelector } from 'components/DiscloseSlippageSelector';
 import { MessageBox } from 'components/MessageBox';
 import { IconLineSeparator } from 'components/primitives/IconLineSeparator';
@@ -56,13 +55,14 @@ import { SwapSimulation } from '../../models/swapSimulation';
 import { BurnSwitch } from '../BurnSwitch';
 import { ConvertSymbols, ConvertSymbolsContainer } from '../ConvertSymbols';
 import { BurnComponent } from './types';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { fixHMR } from 'fix-hmr';
 import { useFeeEstimationFor } from '@libs/app-provider';
 import { useAlert } from '@libs/neumorphism-ui/components/useAlert';
 import { floor } from '@libs/big-math';
 import { MsgExecuteContract } from '@terra-money/terra.js';
 import { createHookMsg } from '@libs/app-fns/tx/internal';
+import { CircleSpinner } from 'react-spinners-kit';
 
 export interface SwapProps extends BurnComponent {
   className?: string;
@@ -91,7 +91,8 @@ export function Component({
     contractAddress,
   } = useAnchorWebapp();
 
-  const [estimatedFee, estimateFee] = useFeeEstimationFor(terraWalletAddress);
+  const [estimatedFee, estimatedFeeError, estimateFee] =
+    useFeeEstimationFor(terraWalletAddress);
 
   const [swap, swapResult] = useBondSwapTx();
 
@@ -354,6 +355,8 @@ export function Component({
   // ---------------------------------------------
   // presentation
   // ---------------------------------------------
+  const theme = useTheme();
+
   if (
     swapResult?.status === StreamStatus.IN_PROGRESS ||
     swapResult?.status === StreamStatus.DONE
@@ -524,10 +527,14 @@ export function Component({
             {formatLuna(demicrofy(simulation.swapFee))} LUNA
           </TxFeeListItem>
           <TxFeeListItem label="Tx Fee">
-            {formatUST(
-              demicrofy(big(estimatedFee?.txFee ?? '0') as u<Luna<Big>>),
-            )}{' '}
-            UST
+            {!estimatedFeeError && !estimatedFee && (
+              <span className="spinner">
+                <CircleSpinner size={14} color={theme.colors.positive} />
+              </span>
+            )}
+            {estimatedFee &&
+              `≈ ${formatLuna(demicrofy(estimatedFee.txFee))} Luna`}{' '}
+            {estimatedFeeError}
           </TxFeeListItem>
         </TxFeeList>
       )}

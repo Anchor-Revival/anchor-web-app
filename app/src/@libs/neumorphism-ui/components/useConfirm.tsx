@@ -35,6 +35,7 @@ export function Component({
       PaperProps={{
         style: {
           backgroundColor: theme.sectionBackgroundColor,
+          color: theme.dialog.normal.textColor,
           padding: 10,
         },
       }}

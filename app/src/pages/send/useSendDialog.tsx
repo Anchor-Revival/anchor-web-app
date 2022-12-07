@@ -9,14 +9,10 @@ import {
   useAnchorBank,
 } from '@anchor-protocol/app-provider/hooks/useAnchorBank';
 import {
-  ANC_INPUT_MAXIMUM_DECIMAL_POINTS,
-  ANC_INPUT_MAXIMUM_INTEGER_POINTS,
   AUST_INPUT_MAXIMUM_DECIMAL_POINTS,
   AUST_INPUT_MAXIMUM_INTEGER_POINTS,
-  formatANCInput,
   formatAUSTInput,
   formatBAssetInput,
-  formatLunaInput,
   formatUST,
   formatUSTInput,
   LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
@@ -24,9 +20,8 @@ import {
   UST_INPUT_MAXIMUM_DECIMAL_POINTS,
   UST_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
-import { HumanAddr, Token, u, UST } from '@anchor-protocol/types';
-import { useFixedFee } from '@libs/app-provider';
-import { min } from '@libs/big-math';
+import { HumanAddr, Luna, Token, u, UST } from '@anchor-protocol/types';
+import { EstimatedFee, useFeeEstimationFor } from '@libs/app-provider';
 import { demicrofy, microfy } from '@libs/formatter';
 import { ActionButton } from '@libs/neumorphism-ui/components/ActionButton';
 import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
@@ -35,10 +30,15 @@ import { NumberMuiInput } from '@libs/neumorphism-ui/components/NumberMuiInput';
 import { SelectAndTextInputContainer } from '@libs/neumorphism-ui/components/SelectAndTextInputContainer';
 import { TextInput } from '@libs/neumorphism-ui/components/TextInput';
 import { DialogProps, OpenDialog, useDialog } from '@libs/use-dialog';
-import { Modal, NativeSelect as MuiNativeSelect } from '@mui/material';
+import { MenuItem, Modal, Select as MuiNativeSelect } from '@mui/material';
 import { Warning } from '@mui/icons-material';
 import { StreamStatus } from '@rx-stream/react';
-import { AccAddress } from '@terra-money/terra.js';
+import {
+  AccAddress,
+  Coin,
+  MsgExecuteContract,
+  MsgSend,
+} from '@terra-money/terra.js';
 import big, { Big, BigSource } from 'big.js';
 import { MessageBox } from 'components/MessageBox';
 import { TxResultRenderer } from 'components/tx/TxResultRenderer';
@@ -50,10 +50,13 @@ import React, {
   ChangeEvent,
   ReactNode,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
+import { formatTokenInput } from '@libs/formatter';
+import { CircleSpinner } from 'react-spinners-kit';
 
 interface FormParams {
   className?: string;
@@ -75,12 +78,10 @@ function ComponentBase({
   // ---------------------------------------------
   // dependencies
   // ---------------------------------------------
-  const { connected } = useAccount();
-
-  const fixedFee = useFixedFee();
+  const { connected, terraWalletAddress } = useAccount();
 
   const {
-    contractAddress: { cw20 },
+    contractAddress: { cw20, native },
   } = useAnchorWebapp();
 
   const { data: { infoAndBalances = [] } = {} } =
@@ -91,41 +92,17 @@ function ComponentBase({
   const currencies = useMemo<CurrencyInfo[]>(
     () => [
       {
-        label: 'UST',
+        label: 'axlUSDC',
         value: 'usd',
+        name: native.usd,
         integerPoints: UST_INPUT_MAXIMUM_INTEGER_POINTS,
         decimalPoints: UST_INPUT_MAXIMUM_DECIMAL_POINTS,
-        getWithdrawable: (bank: AnchorBank, fixedGas: u<UST<BigSource>>) => {
-          return big(bank.tokenBalances.uUST)
-            .minus(
-              min(
-                big(bank.tokenBalances.uUST).mul(bank.tax.taxRate),
-                bank.tax.maxTaxUUSD,
-              ),
-            )
-            .minus(big(fixedGas).mul(2))
-            .toString() as u<Token>;
-        },
-        getFormatWithdrawable: (
-          bank: AnchorBank,
-          fixedGas: u<UST<BigSource>>,
-        ) => {
-          return formatUSTInput(
-            demicrofy(
-              big(bank.tokenBalances.uUST)
-                .minus(
-                  min(
-                    big(bank.tokenBalances.uUST).mul(bank.tax.taxRate),
-                    bank.tax.maxTaxUUSD,
-                  ),
-                )
-                .minus(big(fixedGas).mul(2)) as u<UST<Big>>,
-            ),
-          );
-        },
+        getWithdrawable: (bank: AnchorBank) => bank.tokenBalances.uUST,
+        getFormatWithdrawable: (bank: AnchorBank) =>
+          formatUSTInput(demicrofy(bank.tokenBalances.uUST)),
       },
       {
-        label: 'aUST',
+        label: 'aaxlUSDC',
         value: 'aust',
         integerPoints: AUST_INPUT_MAXIMUM_INTEGER_POINTS,
         decimalPoints: AUST_INPUT_MAXIMUM_DECIMAL_POINTS,
@@ -137,21 +114,27 @@ function ComponentBase({
       {
         label: 'LUNA',
         value: 'luna',
+        name: 'uluna',
         integerPoints: LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
         decimalPoints: LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
-        getWithdrawable: (bank: AnchorBank) => bank.tokenBalances.uLuna,
-        getFormatWithdrawable: (bank: AnchorBank) =>
-          formatLunaInput(demicrofy(bank.tokenBalances.uLuna)),
-      },
-      {
-        label: 'aLUNA',
-        value: 'bluna',
-        integerPoints: LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
-        decimalPoints: LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
-        getWithdrawable: (bank: AnchorBank) => bank.tokenBalances.ubLuna,
-        getFormatWithdrawable: (bank: AnchorBank) =>
-          formatLunaInput(demicrofy(bank.tokenBalances.ubLuna)),
-        cw20Address: cw20.bLuna,
+
+        getWithdrawable: (bank: AnchorBank, txFee: u<Luna<BigSource>>) => {
+          return big(bank.tokenBalances.uLuna)
+            .minus(big(txFee).mul(2))
+            .toString() as u<Token>;
+        },
+        getFormatWithdrawable: (
+          bank: AnchorBank,
+          txFee: u<Luna<BigSource>>,
+        ) => {
+          return formatUSTInput(
+            demicrofy(
+              big(bank.tokenBalances.uLuna).minus(big(txFee).mul(2)) as u<
+                UST<Big>
+              >,
+            ),
+          );
+        },
       },
       ...infoAndBalances.map(({ bAsset, balance, tokenDisplay }: any) => ({
         label: tokenDisplay?.symbol ?? bAsset.symbol,
@@ -163,19 +146,12 @@ function ComponentBase({
           formatBAssetInput(demicrofy(balance.balance)),
         cw20Address: bAsset.collateral_token,
       })),
-      {
-        label: 'ANC',
-        value: 'anc',
-        integerPoints: ANC_INPUT_MAXIMUM_INTEGER_POINTS,
-        decimalPoints: ANC_INPUT_MAXIMUM_DECIMAL_POINTS,
-        getWithdrawable: (bank: AnchorBank) => bank.tokenBalances.uANC,
-        getFormatWithdrawable: (bank: AnchorBank) =>
-          formatANCInput(demicrofy(bank.tokenBalances.uANC)),
-        cw20Address: cw20.ANC,
-      },
     ],
-    [cw20.ANC, cw20.aUST, cw20.bLuna, infoAndBalances],
+    [cw20.aUST, infoAndBalances, native],
   );
+
+  const [estimatedFee, estimatedFeeError, estimateFee] =
+    useFeeEstimationFor(terraWalletAddress);
 
   // ---------------------------------------------
   // states
@@ -225,20 +201,44 @@ function ComponentBase({
   // ---------------------------------------------
   // logics
   // ---------------------------------------------
-  const txFee = useMemo(() => {
-    if (amount.length === 0 || currency.value !== 'usd') {
-      return fixedFee;
+  useEffect(() => {
+    if (amount.length === 0) {
+      return;
     }
-
-    return min(
-      microfy(amount as UST).mul(bank.tax.taxRate),
-      bank.tax.maxTaxUUSD,
-    ).plus(fixedFee) as u<UST<Big>>;
-  }, [amount, bank.tax.maxTaxUUSD, bank.tax.taxRate, currency.value, fixedFee]);
+    estimateFee(
+      currency.cw20Address
+        ? [
+            new MsgExecuteContract(
+              terraWalletAddress as string,
+              currency.cw20Address,
+              {
+                transfer: {
+                  recipient: address,
+                  amount: formatTokenInput(amount),
+                },
+              },
+            ),
+          ]
+        : [
+            new MsgSend(terraWalletAddress as string, address, [
+              new Coin(`${currency.name}`, formatTokenInput(amount)),
+            ]),
+          ],
+    );
+  }, [
+    amount,
+    terraWalletAddress,
+    currency.value,
+    address,
+    currency.cw20Address,
+    currency.name,
+    estimateFee,
+  ]);
 
   const invalidTxFee = useMemo(
-    () => connected && validateTxFee(bank.tokenBalances.uUST, txFee),
-    [bank, connected, txFee],
+    () =>
+      connected && validateTxFee(bank.tokenBalances.uUST, estimatedFee?.txFee),
+    [bank, connected, estimatedFee],
   );
 
   const invalidAddress = useMemo(() => {
@@ -252,10 +252,12 @@ function ComponentBase({
   const invalidAmount = useMemo(() => {
     if (amount.length === 0) return undefined;
 
-    return microfy(amount as Token).gt(currency.getWithdrawable(bank, fixedFee))
+    return microfy(amount as Token).gt(
+      currency.getWithdrawable(bank, (estimatedFee?.txFee ?? '0') as u<Luna>),
+    )
       ? 'Not enough assets'
       : undefined;
-  }, [amount, currency, bank, fixedFee]);
+  }, [amount, currency, bank, estimatedFee?.txFee]);
 
   const invalidMemo = useMemo(() => {
     return /[<>]/.test(memo) ? 'Characters < and > are not allowed' : undefined;
@@ -266,10 +268,10 @@ function ComponentBase({
       toAddress: string,
       currency: CurrencyInfo,
       amount: Token,
-      txFee: u<UST>,
+      estimatedFee: EstimatedFee | null,
       memo: string,
     ) => {
-      if (!connected || !send) {
+      if (!connected || !send || !estimatedFee) {
         return;
       }
 
@@ -277,12 +279,14 @@ function ComponentBase({
         toWalletAddress: toAddress as HumanAddr,
         amount,
         currency,
-        txFee,
+        estimatedFee,
         memo,
       });
     },
     [connected, send],
   );
+
+  const theme = useTheme();
 
   if (
     sendResult?.status === StreamStatus.IN_PROGRESS ||
@@ -333,21 +337,27 @@ function ComponentBase({
 
         <SelectAndTextInputContainer
           className="amount"
-          gridColumns={[120, '1fr']}
+          gridColumns={[180, '1fr']}
           error={!!invalidAmount}
           leftHelperText={invalidAmount}
           rightHelperText={
             <span>
-              Withdrawable:{' '}
+              Available:{' '}
               <span
                 style={{ textDecoration: 'underline', cursor: 'pointer' }}
                 onClick={() =>
                   setAmount(
-                    currency.getFormatWithdrawable(bank, fixedFee) as Token,
+                    currency.getFormatWithdrawable(
+                      bank,
+                      (estimatedFee?.txFee ?? '0') as u<Luna>,
+                    ) as Token,
                   )
                 }
               >
-                {currency.getFormatWithdrawable(bank, fixedFee)}{' '}
+                {currency.getFormatWithdrawable(
+                  bank,
+                  (estimatedFee?.txFee ?? '0') as u<Luna>,
+                )}{' '}
                 {currency.label}
               </span>
             </span>
@@ -356,11 +366,18 @@ function ComponentBase({
           <MuiNativeSelect
             value={currency.value}
             onChange={({ target }) => updateCurrency(target.value)}
+            MenuProps={{
+              sx: {
+                '& .MuiPaper-root': {
+                  backgroundColor: theme.backgroundColor,
+                },
+              },
+            }}
           >
             {currencies.map(({ label, value }) => (
-              <option key={value} value={value}>
+              <MenuItem key={value} value={value}>
                 {label}
-              </option>
+              </MenuItem>
             ))}
           </MuiNativeSelect>
           <NumberMuiInput
@@ -403,11 +420,32 @@ function ComponentBase({
           )}
         </div>
 
-        <TxFeeList className="receipt">
-          <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-            {formatUST(demicrofy(txFee))} UST
-          </TxFeeListItem>
-        </TxFeeList>
+        {connected &&
+          send &&
+          address.length !== 0 &&
+          amount.length !== 0 &&
+          !invalidAddress &&
+          !invalidAmount &&
+          !invalidTxFee &&
+          !invalidMemo && (
+            <TxFeeList className="receipt">
+              <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
+                {!estimatedFee && !estimatedFeeError && (
+                  <span className="spinner">
+                    <CircleSpinner size={14} color={theme.colors.positive} />
+                  </span>
+                )}
+
+                {estimatedFee &&
+                  !estimatedFeeError &&
+                  `${formatUST(
+                    demicrofy((estimatedFee?.txFee ?? '0') as u<Luna>),
+                  )} Luna`}
+
+                {estimatedFeeError}
+              </TxFeeListItem>
+            </TxFeeList>
+          )}
 
         <ViewAddressWarning>
           <ActionButton
@@ -421,16 +459,11 @@ function ComponentBase({
               !!invalidAmount ||
               !!invalidTxFee ||
               !!invalidMemo ||
-              big(currency.getWithdrawable(bank, fixedFee)).lte(0)
+              !estimatedFee ||
+              big(currency.getWithdrawable(bank, estimatedFee.txFee)).lte(0)
             }
             onClick={() =>
-              submit(
-                address,
-                currency,
-                amount,
-                txFee.toString() as u<UST>,
-                memo,
-              )
+              submit(address, currency, amount, estimatedFee, memo)
             }
           >
             Send

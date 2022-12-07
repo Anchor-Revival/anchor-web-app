@@ -1,5 +1,6 @@
 import { useFormatters } from '@anchor-protocol/formatter';
 import {
+  APY,
   BorrowAPR,
   BorrowValue,
   CollateralValue,
@@ -38,7 +39,7 @@ function Component({ className }: OverviewProps) {
     netAPR,
     currentLtv,
     //dangerLtv,
-    // borrowerDistributionAPYs,
+    borrowerDistributionAPYs,
   } = useBorrowOverviewData();
 
   const { ust } = useFormatters();
@@ -134,9 +135,9 @@ function Component({ className }: OverviewProps) {
             <IconSpan>
               NET APR{' '}
               <InfoTooltip>
-                Distribution APR - Borrow APR. When the net APR is a positive
-                number, ANC rewards distributed to borrowers are greater than
-                the interest to be paid for the loan
+                Distribution APR - Borrow APR. The stablecoin reserves are
+                partially used to incentivize borrowers when the borrowing rate
+                is above 10%. This APR is thus always negative.
               </InfoTooltip>
             </IconSpan>
           </h3>
@@ -156,6 +157,25 @@ function Component({ className }: OverviewProps) {
                 <p>
                   Borrow APR
                   <b>{formatRate(borrowAPR)}%</b>
+                </p>
+              </div>
+              <div>
+                <TooltipIconCircle
+                  style={{ cursor: 'help' }}
+                  title="Annual percentage yield determined by usage of stablecoin reserves to incentivize borrowers"
+                  placement="top"
+                >
+                  <APY />
+                </TooltipIconCircle>
+                <p>
+                  Distribution APR
+                  <b>
+                    {borrowerDistributionAPYs &&
+                    borrowerDistributionAPYs.length > 0
+                      ? formatRate(borrowerDistributionAPYs[0].DistributionAPY)
+                      : 0}
+                    %
+                  </b>
                 </p>
               </div>
             </Circles>

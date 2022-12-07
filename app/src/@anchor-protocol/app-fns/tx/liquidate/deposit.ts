@@ -1,7 +1,4 @@
-import {
-  formatAUSTWithPostfixUnits,
-  formatUSTWithPostfixUnits,
-} from '@anchor-protocol/notation';
+import { formatUSTWithPostfixUnits } from '@anchor-protocol/notation';
 import {
   aUST,
   UST,
@@ -28,10 +25,7 @@ import {
   TxHelper,
 } from '@libs/app-fns/tx/internal';
 import { floor } from '@libs/big-math';
-import {
-  demicrofy,
-  formatTokenInput,
-} from '@libs/formatter';
+import { demicrofy, formatTokenInput } from '@libs/formatter';
 import { QueryClient } from '@libs/query-client';
 import { pipe } from '@rx-stream/pipe';
 import {
@@ -43,7 +37,7 @@ import {
 } from '@terra-money/terra.js';
 import { NetworkInfo, TxResult } from '@terra-money/wallet-provider';
 import { Observable } from 'rxjs';
-import big, { BigSource } from "big.js"
+import big, { BigSource } from 'big.js';
 
 export function placeLiquidationBidTx($: {
   walletAddr: HumanAddr;
@@ -80,7 +74,8 @@ export function placeLiquidationBidTx($: {
 
           // coins
           new Coins([
-            new Coin($.stableDenom,
+            new Coin(
+              $.stableDenom,
               formatTokenInput(big($.depositAmount) as Token<BigSource>),
             ),
           ]),
@@ -122,7 +117,7 @@ export function placeLiquidationBidTx($: {
             },
             bidIdx && {
               name: 'Bid Id',
-              value: bidIdx
+              value: bidIdx,
             },
             helper.txHashReceipt(),
             helper.txFeeReceipt(),

@@ -1,6 +1,5 @@
 import { withdrawLiquidationBidTx } from '@anchor-protocol/app-fns/tx/liquidate/withdraw';
-import { Luna, u } from '@anchor-protocol/types';
-import { useRefetchQueries } from '@libs/app-provider';
+import { EstimatedFee, useRefetchQueries } from '@libs/app-provider';
 import { useStream } from '@rx-stream/react';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
@@ -9,6 +8,7 @@ import { ANCHOR_TX_KEY } from '../../env';
 
 export interface WithdrawLiquidationBidTxParams {
   bid_idx: string;
+  estimatedFee: EstimatedFee;
   onTxSucceed?: () => void;
 }
 
@@ -21,7 +21,11 @@ export function useWithdrawLiquidationBidTx() {
   const refetchQueries = useRefetchQueries();
 
   const stream = useCallback(
-    ({ bid_idx, onTxSucceed }: WithdrawLiquidationBidTxParams) => {
+    ({
+      bid_idx,
+      onTxSucceed,
+      estimatedFee,
+    }: WithdrawLiquidationBidTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
         throw new Error('Can not post!');
       }
@@ -36,8 +40,8 @@ export function useWithdrawLiquidationBidTx() {
         // post
         network: connectedWallet.network,
         post: connectedWallet.post,
-        txFee: '0' as u<Luna>,
-        gasFee: constants.gasWanted,
+        txFee: estimatedFee.txFee,
+        gasFee: estimatedFee.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         // query
         queryClient,
@@ -54,7 +58,6 @@ export function useWithdrawLiquidationBidTx() {
       connectedWallet,
       contractAddress.liquidation.liquidationQueueContract,
       contractAddress.cw20.bLuna,
-      constants.gasWanted,
       constants.gasAdjustment,
       queryClient,
       txErrorReporter,

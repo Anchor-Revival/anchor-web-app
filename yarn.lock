@@ -232,7 +232,7 @@ __metadata:
     resl: ^1.0.3
     smooth-scroll: ^16.1.3
     stats.js: ^0.17.0
-    styled-components: ^5.3.6
+    styled-components: ^5.3.0
     ts-node: ^10.1.0
     tsconfig-paths: ^3.10.1
     typescript: 4.5.5
@@ -9201,6 +9201,15 @@ __metadata:
   version: 1.0.1
   resolution: "async-limiter@npm:1.0.1"
   checksum: 2b849695b465d93ad44c116220dee29a5aeb63adac16c1088983c339b0de57d76e82533e8e364a93a9f997f28bbfc6a92948cefc120652bd07f3b59f8d75cf2b
+  languageName: node
+  linkType: hard
+
+"async-mutex@npm:^0.4.0":
+  version: 0.4.0
+  resolution: "async-mutex@npm:0.4.0"
+  dependencies:
+    tslib: ^2.4.0
+  checksum: 813a71728b35a4fbfd64dba719f04726d9133c67b577fcd951b7028c4a675a13ee34e69beb82d621f87bf81f5d4f135c4c44be0448550c7db728547244ef71fc
   languageName: node
   linkType: hard
 
@@ -24543,6 +24552,7 @@ __metadata:
     "@types/react-dom": ^18.0.9
     "@typescript-eslint/parser": ^5.16.0
     apollo: ^2.33.9
+    async-mutex: ^0.4.0
     eslint: ^7.30.0
     eslint-config-prettier: ^8.3.0
     eslint-config-react-app: ^7.0.0
@@ -26070,7 +26080,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"styled-components@npm:^5.3.6":
+"styled-components@npm:^5.3.0, styled-components@npm:^5.3.6":
   version: 5.3.6
   resolution: "styled-components@npm:5.3.6"
   dependencies:

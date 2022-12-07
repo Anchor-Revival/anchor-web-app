@@ -36,13 +36,13 @@ export const mobileHeaderHeight = 68;
 // links
 // ---------------------------------------------
 export const links = {
-  forum: 'https://forum.anchorprotocol.com/',
+  forum: 'https://forum.cavernprotocol.com/',
   docs: {
-    earn: 'https://docs.anchorprotocol.com/user-guide/webapp/earn',
-    borrow: 'https://docs.anchorprotocol.com/user-guide/webapp/borrow',
-    bond: 'https://docs.anchorprotocol.com/user-guide/webapp/bond',
-    gov: 'https://docs.anchorprotocol.com/user-guide/webapp/govern',
-    liquidate: 'https://docs.anchorprotocol.com/user-guide/webapp/liquidate',
+    earn: 'https://docs.cavernprotocol.com/user-guide/webapp/earn',
+    borrow: 'https://docs.cavernprotocol.com/user-guide/webapp/borrow',
+    bond: 'https://docs.cavernprotocol.com/user-guide/webapp/bond',
+    gov: 'https://docs.cavernprotocol.com/user-guide/webapp/govern',
+    liquidate: 'https://docs.cavernprotocol.com/user-guide/webapp/liquidate',
   },
 } as const;
 
@@ -212,9 +212,9 @@ export const ANCHOR_CONTRACT_ADDRESS = (
 
 export const ANCHOR_INDEXER_API_ENDPOINTS = (network: NetworkInfo): string => {
   if (network.chainID.startsWith('pisco')) {
-    return 'https://api.anchor-rebirth.com/api/testnet';
+    return 'https://api.cavernprotocol.com/api/testnet';
   } else if (network.chainID.startsWith('phoenix')) {
-    return 'https://api.anchor-rebirth.com/api/testnet';
+    return 'https://api.cavernprotocol.com/api/testnet';
   } else {
     return 'https://anchor-services-anchor-protocol.vercel.app/api';
   }

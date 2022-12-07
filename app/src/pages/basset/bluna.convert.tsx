@@ -27,7 +27,7 @@ const tabItems: Item[] = [
 function Component({ className }: UIElementProps) {
   const navigate = useNavigate();
 
-  const match = useMatch({ path: '/basset/bluna/:page', end: true });
+  const match = useMatch({ path: '/aasset/aluna/:page', end: true });
 
   const tab = useMemo<Item | undefined>(() => {
     return tabItems.find(({ value }) => value === match?.params.page);
@@ -35,7 +35,7 @@ function Component({ className }: UIElementProps) {
 
   const tabChange = useCallback(
     (nextTab: Item) => {
-      navigate(`/basset/bluna/${nextTab.value}`);
+      navigate(`/aasset/aluna/${nextTab.value}`);
     },
     [navigate],
   );

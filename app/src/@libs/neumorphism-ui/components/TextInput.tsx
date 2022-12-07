@@ -21,65 +21,70 @@ const TextInputBase: React.FC<TextInputProps> = ({
  * @see https://material-ui.com/api/text-field/
  */
 export const TextInput = styled(TextInputBase)`
-  border-radius: 5px;
+  & {
+    border-radius: 5px;
+    ${({ theme, readOnly, disableBorder }) =>
+      !disableBorder &&
+      softPressed({
+        color: readOnly
+          ? theme.sectionBackgroundColor
+          : theme.textInput.backgroundColor,
+        backgroundColor: theme.sectionBackgroundColor,
+        distance: 1,
+        intensity: theme.intensity * 2,
+      })};
 
-  ${({ theme, readOnly, disableBorder }) =>
-    !disableBorder &&
-    softPressed({
-      color: readOnly
-        ? theme.sectionBackgroundColor
-        : theme.textInput.backgroundColor,
-      backgroundColor: theme.sectionBackgroundColor,
-      distance: 1,
-      intensity: theme.intensity * 2,
-    })};
+    :has(.MuiInputLabel-shrink) {
+      box-shadow: none;
+    }
 
-  :has(.MuiInputLabel-shrink) {
-    box-shadow: none;
-  }
+    ,
+    .MuiFormLabel-root {
+      opacity: 1;
+      color: ${({ theme }) => theme.formControl.labelColor};
+    }
 
-  ,
-  .MuiFormLabel-root {
-    opacity: 1;
-    color: ${({ theme }) => theme.formControl.labelColor};
-  }
+    .MuiFormLabel-root.Mui-focused {
+      opacity: 1;
+      color: ${({ theme }) => theme.formControl.labelFocusedColor};
+    }
 
-  .MuiFormLabel-root.Mui-focused {
-    opacity: 1;
-    color: ${({ theme }) => theme.formControl.labelFocusedColor};
-  }
+    .MuiFormLabel-root.Mui-error {
+      color: ${({ theme }) => theme.formControl.labelErrorColor};
+    }
 
-  .MuiFormLabel-root.Mui-error {
-    color: ${({ theme }) => theme.formControl.labelErrorColor};
-  }
+    .MuiInput-root {
+      margin: 14px 20px;
+      color: ${({ theme }) => theme.textInput.textColor};
+    }
 
-  .MuiInput-root {
-    margin: 14px 20px;
-    color: ${({ theme }) => theme.textInput.textColor};
-  }
+    .MuiInput-root.MuiInput-fullWidth {
+      width: auto;
+    }
 
-  .MuiInput-root.MuiInput-fullWidth {
-    width: auto;
-  }
+    .MuiInput-root.Mui-error {
+      color: ${({ theme }) => theme.formControl.labelErrorColor};
+    }
 
-  .MuiInput-root.Mui-error {
-    color: ${({ theme }) => theme.formControl.labelErrorColor};
-  }
+    .MuiInputAdornment-root > .MuiTypography-root {
+      color: ${({ theme }) => theme.textInput.textColor};
+    }
 
-  .MuiInput-underline:before,
-  .MuiInput-underline:after {
-    display: none;
-  }
+    .MuiInput-underline:before,
+    .MuiInput-underline:after {
+      display: none;
+    }
 
-  .MuiFormHelperText-root {
-    position: absolute;
-    right: 0;
-    bottom: -20px;
-  }
+    .MuiFormHelperText-root {
+      position: absolute;
+      right: 0;
+      bottom: -20px;
+    }
 
-  ${({ disabled }) => (disabled ? 'opacity: 0.5' : '')};
+    ${({ disabled }) => (disabled ? 'opacity: 0.5' : '')};
 
-  .Mui-disabled {
-    opacity: 0.5;
+    .Mui-disabled {
+      opacity: 0.5;
+    }
   }
 ` as any;

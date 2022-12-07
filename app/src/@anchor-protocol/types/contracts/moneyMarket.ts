@@ -260,7 +260,9 @@ export namespace moneyMarket {
       last_reward_updated: number;
       global_interest_index: Num;
       global_reward_index: Num;
-      anc_emission_rate: Rate;
+      reserves_rate_used_for_borrowers: Num;
+
+      prev_borrower_incentives: Num;
     }
 
     export interface UpdateConfig {

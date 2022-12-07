@@ -70,7 +70,7 @@ function EvmUnsupportedNetworkBase({ className }: UIElementProps) {
 }
 
 export const EvmUnsupportedNetwork = styled(EvmUnsupportedNetworkBase)`
-  background-color: white;
+  background-color: ${({ theme }) => theme.backgroundColor};
 
   .title {
     margin: 2rem 0 1rem;

@@ -60,6 +60,9 @@ export interface NeumorphismTheme extends Theme {
   // the colors to display on the charts
   chart: string[];
 
+  liquidationChart?: {
+    lineColor: string;
+  };
   // action buttons
   actionButton: {
     backgroundColor: string;

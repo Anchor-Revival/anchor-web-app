@@ -1,5 +1,5 @@
 import { placeLiquidationBidTx } from '@anchor-protocol/app-fns/tx/liquidate/deposit';
-import { Luna, u, UST} from '@anchor-protocol/types';
+import { UST } from '@anchor-protocol/types';
 import { EstimatedFee, useRefetchQueries } from '@libs/app-provider';
 import { useStream } from '@rx-stream/react';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
@@ -10,7 +10,7 @@ import { ANCHOR_TX_KEY } from '../../env';
 export interface PlaceLiquidationBidTxParams {
   depositAmount: UST;
   premium: number;
-  txFee: u<Luna>
+  txFee: EstimatedFee;
   onTxSucceed?: () => void;
 }
 
@@ -23,7 +23,12 @@ export function usePlaceLiquidationBidTx() {
   const refetchQueries = useRefetchQueries();
 
   const stream = useCallback(
-    ({ depositAmount, premium, txFee, onTxSucceed }: PlaceLiquidationBidTxParams) => {
+    ({
+      depositAmount,
+      premium,
+      txFee,
+      onTxSucceed,
+    }: PlaceLiquidationBidTxParams) => {
       if (!connectedWallet || !connectedWallet.availablePost) {
         throw new Error('Can not post!');
       }
@@ -31,7 +36,8 @@ export function usePlaceLiquidationBidTx() {
       return placeLiquidationBidTx({
         // fabricateMarketDepositStableCoin
         walletAddr: connectedWallet.walletAddress,
-        liquidationQueueAddr: contractAddress.liquidation.liquidationQueueContract,
+        liquidationQueueAddr:
+          contractAddress.liquidation.liquidationQueueContract,
         bLunaAddr: contractAddress.cw20.bLuna,
         depositAmount,
         premium,
@@ -39,8 +45,8 @@ export function usePlaceLiquidationBidTx() {
         // post
         network: connectedWallet.network,
         post: connectedWallet.post,
-        txFee: txFee,
-        gasFee: constants.fixedGas,
+        txFee: txFee.txFee,
+        gasFee: txFee.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         // query
         queryClient,
@@ -59,7 +65,6 @@ export function usePlaceLiquidationBidTx() {
       contractAddress.cw20.bLuna,
       contractAddress.native.usd,
       constants.gasAdjustment,
-      constants.fixedGas,
       queryClient,
       txErrorReporter,
       refetchQueries,

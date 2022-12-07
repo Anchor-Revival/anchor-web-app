@@ -90,8 +90,8 @@ function EarnBase({ className }: EarnProps) {
                   <TokenIcon token="ust" />
                 </i>
                 <div>
-                  <div className="coin">UST</div>
-                  <p className="name">Terra USD</p>
+                  <div className="coin">axlUSDC</div>
+                  <p className="name">Axelar USDC</p>
                 </div>
               </div>
             </td>

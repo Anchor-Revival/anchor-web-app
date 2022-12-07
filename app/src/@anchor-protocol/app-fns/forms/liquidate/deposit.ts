@@ -1,18 +1,20 @@
 import { UST, Luna, u } from '@anchor-protocol/types';
+import { EstimatedFee } from '@libs/app-provider';
 import { max, min } from '@libs/big-math';
 import { microfy } from '@libs/formatter';
 import { FormReturn } from '@libs/use-form';
 import big, { Big } from 'big.js';
+const _ = require('lodash');
 
 export interface LiquidationDepositFormInput {
   depositAmount: UST;
   premium: number;
+  estimatedFee: EstimatedFee | undefined;
 }
 
 export interface LiquidationDepositFormDependency {
   userUUSTBalance: u<UST>;
   userULunaBalance: u<UST>;
-  fixedGas: u<Luna>;
   isConnected: boolean;
 }
 
@@ -21,7 +23,6 @@ export interface LiquidationDepositFormStates
   availablePost: boolean;
   maxAmount: u<UST>;
   sendAmount?: u<UST>;
-  txFee?: u<Luna>;
   invalidTxFee?: string;
   invalidDepositAmount?: string;
   invalidPremium?: string;
@@ -32,7 +33,6 @@ export interface LiquidationDepositFormAsyncStates {}
 
 export const liquidationDepositForm =
   ({
-    fixedGas,
     userUUSTBalance,
     userULunaBalance,
     isConnected,
@@ -40,6 +40,7 @@ export const liquidationDepositForm =
   ({
     depositAmount,
     premium,
+    estimatedFee,
   }: LiquidationDepositFormInput): FormReturn<
     LiquidationDepositFormStates,
     LiquidationDepositFormAsyncStates
@@ -54,7 +55,9 @@ export const liquidationDepositForm =
 
       const ratioTxFee = big('0');
       const maxTax = big('0');
-      return max(min(ratioTxFee, maxTax), 0).plus(fixedGas) as u<Luna<Big>>;
+      return max(min(ratioTxFee, maxTax), 0).plus(
+        estimatedFee?.txFee ?? '0',
+      ) as u<Luna<Big>>;
     })();
 
     // sendAmount
@@ -103,16 +106,15 @@ export const liquidationDepositForm =
         return undefined;
       }
 
-      return big(userULunaBalance).lt(big(fixedGas).mul(2))
+      return big(userULunaBalance).lt(big(estimatedFee?.txFee ?? '0').mul(2))
         ? `Leaving less Luna in your account may lead to insufficient transaction fees for future transactions.`
         : undefined;
     })();
-
     return [
       {
         depositAmount,
         premium,
-        txFee: txFee?.toFixed() as u<Luna>,
+        estimatedFee: _.cloneDeep(estimatedFee),
         sendAmount: sendAmount?.toFixed() as u<UST>,
         maxAmount: maxAmount?.toFixed() as u<UST>,
         invalidTxFee,

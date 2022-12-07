@@ -10,14 +10,13 @@ export interface LiquidationWithdrawFormInput {
 export interface LiquidationWithdrawFormDependency {
   userUUSTBalance: u<UST>;
   userULunaBalance: u<UST>;
-  fixedGas: u<Luna>;
   isConnected: boolean;
 }
 
-export interface LiquidationWithdrawFormStates extends LiquidationWithdrawFormInput {
+export interface LiquidationWithdrawFormStates
+  extends LiquidationWithdrawFormInput {
   bid_idx: string;
   availablePost: boolean;
-  txFee?: u<Luna>;
   invalidTxFee?: string;
   invalidNextTxFee?: string;
 }
@@ -26,7 +25,6 @@ export interface LiquidationWithdrawFormAsyncStates {}
 
 export const liquidationWithdrawForm =
   ({
-    fixedGas,
     userUUSTBalance,
     userULunaBalance,
     isConnected,
@@ -44,9 +42,9 @@ export const liquidationWithdrawForm =
         return undefined;
       }
 
-      const ratioTxFee = big("0");
-      const maxTax = big("0");
-      return max(min(ratioTxFee, maxTax), 0).plus(fixedGas) as u<Luna<Big>>;
+      const ratioTxFee = big('0');
+      const maxTax = big('0');
+      return max(min(ratioTxFee, maxTax), 0) as u<Luna<Big>>;
     })();
 
     // invalidTxFee
@@ -66,31 +64,15 @@ export const liquidationWithdrawForm =
     })();
 
     // invalidNextTxFee
-    const invalidNextTxFee = (() => {
-      if (
-        !isConnected ||
-        !!invalidDepositAmount ||
-        !idxExists
-      ) {
-        return undefined;
-      }
-
-      return big(userULunaBalance).lt(big(fixedGas).mul(2))
-        ? `Leaving less Luna in your account may lead to insufficient transaction fees for future transactions.`
-        : undefined;
-    })();
+    const invalidNextTxFee = undefined;
 
     return [
       {
         bid_idx,
-        txFee: txFee?.toFixed() as u<Luna>,
         invalidTxFee,
         invalidNextTxFee,
         availablePost:
-          isConnected &&
-          idxExists &&
-          !invalidTxFee &&
-          !invalidDepositAmount,
+          isConnected && idxExists && !invalidTxFee && !invalidDepositAmount,
       },
       undefined,
     ];

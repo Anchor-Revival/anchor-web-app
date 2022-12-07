@@ -94,7 +94,7 @@ function Component({ className }: BAssetClaimProps) {
                   break;
                 case StreamStatus.DONE:
                   claimResult.clear();
-                  navigate('/basset');
+                  navigate('/aasset');
                   break;
               }
             }}
@@ -114,17 +114,17 @@ function Component({ className }: BAssetClaimProps) {
         )}
 
         <div className="amount">
-          {formatUST(demicrofy(totalRewardsUST))} <Sub>UST</Sub>
+          {formatUST(demicrofy(totalRewardsUST))} <Sub>axlUSDC</Sub>
         </div>
 
         <TxFeeList className="receipt">
           {estimatedAmount && (
             <TxFeeListItem label="Estimated Amount">
-              {formatUST(demicrofy(estimatedAmount))} UST
+              {formatUST(demicrofy(estimatedAmount))} Luna
             </TxFeeListItem>
           )}
           <TxFeeListItem label="Tx Fee">
-            {formatUST(demicrofy(fixedFee))} UST
+            {formatUST(demicrofy(fixedFee))} Luna
           </TxFeeListItem>
         </TxFeeList>
 

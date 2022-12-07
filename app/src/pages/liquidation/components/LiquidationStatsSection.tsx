@@ -11,6 +11,9 @@ import { styled } from '@mui/material';
 import { PaddingSection } from './PaddingSection';
 import { useLiquidationHistoryQuery } from '@anchor-protocol/app-provider/queries/liquidate/history';
 import { LiquidationData } from '@anchor-protocol/app-fns/queries/liquidate/history';
+import { useFormatters } from '@anchor-protocol/formatter';
+import { u, UST } from '@libs/types';
+import { bLuna } from '@anchor-protocol/types';
 
 export interface LiquidationStatsSectionProps {
   className?: string;
@@ -23,15 +26,25 @@ export function LiquidationStatsSection({
 }: LiquidationStatsSectionProps) {
   const { data: liquidationHistory } = useLiquidationHistoryQuery();
 
+  const { bLuna: bluna, ust } = useFormatters();
+
   const liquidations = useMemo(
     () =>
-      liquidationHistory?.map((liquidation: LiquidationData) => ({
-        time: liquidation?.date,
-        collateral: liquidation?.amountLiquidated,
-        axlUSDC: liquidation?.amountPaid,
-        price: liquidation?.currentPrice,
-      })) ?? [],
-    [liquidationHistory],
+      liquidationHistory?.map((liquidation: LiquidationData) => {
+        return {
+          time: new Date(Date.parse(liquidation?.date)).toLocaleString(),
+          collateral: bluna.formatOutput(
+            bluna.demicrofy(
+              liquidation?.amountLiquidated.toString() as u<bLuna>,
+            ),
+          ),
+          axlUSDC: ust.formatOutput(
+            ust.demicrofy(liquidation?.amountPaid.toString() as u<UST>),
+          ),
+          price: liquidation?.currentPrice,
+        };
+      }) ?? [],
+    [liquidationHistory, bluna, ust],
   );
 
   const LowPaddingTableCell = styled(TableCell)({

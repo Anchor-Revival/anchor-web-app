@@ -3,13 +3,11 @@ import { CenteredLayout } from 'components/layouts/CenteredLayout';
 import { FlexTitleContainer, PageTitle } from 'components/primitives/PageTitle';
 import { links, screen } from 'env';
 import { fixHMR } from 'fix-hmr';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { LiquidationQueueSection } from './components/LiquidationQueueSection';
 import { LiquidationStatsSection } from './components/LiquidationStatsSection';
 import { EarnProps } from 'pages/earn';
-import { useAnchorWebapp, useBidPoolsByCollateralQuery } from '@anchor-protocol/app-provider';
-import { HumanAddr } from '@libs/types';
 import { PlaceBidSection } from './components/PlaceBidSection';
 import { MyBidsSection } from './components/MyBidsSection';
 
@@ -18,6 +16,7 @@ export interface LiquidationProps {
 }
 
 function Component({ className }: EarnProps) {
+  const [clickedBar, setClickedBar] = useState<number | undefined>();
 
   return (
     <CenteredLayout className={className} maxWidth={2000}>
@@ -25,8 +24,14 @@ function Component({ className }: EarnProps) {
         <PageTitle title="LIQUIDATE" docs={links.docs.liquidate} />
       </FlexTitleContainer>
       <section className="grid">
-        <PlaceBidSection className="place-bid" />
-        <LiquidationQueueSection className="liquidation-graph" />
+        <PlaceBidSection
+          className="place-bid"
+          clickedBarState={[clickedBar, setClickedBar]}
+        />
+        <LiquidationQueueSection
+          className="liquidation-graph"
+          setClickedBar={setClickedBar}
+        />
         <LiquidationStatsSection className="liquidation-stats" />
         <MyBidsSection className="my-bids" />
       </section>

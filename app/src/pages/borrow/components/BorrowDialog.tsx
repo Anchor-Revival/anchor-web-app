@@ -5,10 +5,12 @@ import {
   computeLtvToBorrowAmount,
 } from '@anchor-protocol/app-fns';
 import {
+  useAnchorWebapp,
   useBorrowBorrowForm,
   useDeploymentTarget,
 } from '@anchor-protocol/app-provider';
 import {
+  formatLuna,
   formatUST,
   formatUSTInput,
   UST_INPUT_MAXIMUM_DECIMAL_POINTS,
@@ -16,7 +18,7 @@ import {
 } from '@anchor-protocol/notation';
 import { CollateralAmount, Rate, u, UST } from '@anchor-protocol/types';
 import { TxResultRendering } from '@libs/app-fns';
-import { demicrofy, formatRate } from '@libs/formatter';
+import { demicrofy, formatRate, formatTokenInput } from '@libs/formatter';
 import { ActionButton } from '@libs/neumorphism-ui/components/ActionButton';
 import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
@@ -25,7 +27,7 @@ import { NumberInput } from '@libs/neumorphism-ui/components/NumberInput';
 import { useConfirm } from '@libs/neumorphism-ui/components/useConfirm';
 import { UIElementProps } from '@libs/ui';
 import type { DialogProps } from '@libs/use-dialog';
-import { InputAdornment, Modal } from '@mui/material';
+import { InputAdornment, Modal, Box } from '@mui/material';
 import {
   StreamDone,
   StreamInProgress,
@@ -38,9 +40,9 @@ import { TxResultRenderer } from 'components/tx/TxResultRenderer';
 import { TxFeeList, TxFeeListItem } from 'components/TxFeeList';
 import { ViewAddressWarning } from 'components/ViewAddressWarning';
 import { useAccount } from 'contexts/account';
-import { ChangeEvent, ReactNode } from 'react';
+import { ChangeEvent, ReactNode, useEffect } from 'react';
 import React, { useCallback } from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import big from 'big.js';
 import { BorrowCollateralInput } from './BorrowCollateralInput';
 import { EstimatedLiquidationPrice } from './EstimatedLiquidationPrice';
@@ -49,13 +51,16 @@ import { BorrowFormParams } from './types';
 import { PageDivider } from './PageDivider';
 import { WhitelistCollateral } from 'queries';
 import { useBalances } from 'contexts/balances';
+import { EstimatedFee, useFeeEstimationFor } from '@libs/app-provider';
+import { MsgExecuteContract } from '@terra-money/terra.js';
+import { CircleSpinner } from 'react-spinners-kit';
 
 export interface BorrowDialogParams extends UIElementProps, BorrowFormParams {
   txResult: StreamResult<TxResultRendering> | null;
   proceedable: boolean;
   onProceed: (
     borrowAmount: UST,
-    txFee: u<UST>,
+    txFee: EstimatedFee,
     collateral?: WhitelistCollateral,
     collateralAmount?: u<CollateralAmount<Big>>,
   ) => void;
@@ -90,9 +95,10 @@ function BorrowDialogBase(props: BorrowDialogProps) {
     target: { isNative },
   } = useDeploymentTarget();
 
-  const { availablePost, connected } = useAccount();
+  const { availablePost, connected, terraWalletAddress } = useAccount();
 
   const { fetchWalletBalance } = useBalances();
+  const { contractAddress } = useAnchorWebapp();
 
   const [input, states] = useBorrowBorrowForm(
     fallbackBorrowMarket,
@@ -109,6 +115,9 @@ function BorrowDialogBase(props: BorrowDialogProps) {
     },
     [input],
   );
+
+  const [estimatedFee, estimatedFeeError, estimateFee] =
+    useFeeEstimationFor(terraWalletAddress);
 
   const onCollateralChanged = useCallback(
     (collateral: WhitelistCollateral) => {
@@ -128,12 +137,11 @@ function BorrowDialogBase(props: BorrowDialogProps) {
   const proceed = useCallback(
     async (
       borrowAmount: UST,
-      txFee: u<UST>,
       confirm: ReactNode,
       collateral?: WhitelistCollateral,
       collateralAmount?: u<CollateralAmount<Big>>,
     ) => {
-      if (!connected || !onProceed) {
+      if (!connected || !onProceed || !estimatedFee) {
         return;
       }
 
@@ -149,10 +157,35 @@ function BorrowDialogBase(props: BorrowDialogProps) {
         }
       }
 
-      onProceed(borrowAmount, txFee, collateral, collateralAmount);
+      onProceed(borrowAmount, estimatedFee, collateral, collateralAmount);
     },
-    [onProceed, connected, openConfirm],
+    [onProceed, connected, estimatedFee, openConfirm],
   );
+
+  useEffect(() => {
+    if (!connected || !states.borrowAmount) {
+      return;
+    }
+
+    estimateFee([
+      new MsgExecuteContract(
+        terraWalletAddress as string,
+        contractAddress.moneyMarket.market,
+        {
+          // @see https://github.com/Anchor-Protocol/money-market-contracts/blob/master/contracts/market/src/msg.rs#L68
+          borrow_stable: {
+            borrow_amount: formatTokenInput(states.borrowAmount),
+          },
+        },
+      ),
+    ]);
+  }, [
+    terraWalletAddress,
+    contractAddress.moneyMarket.market,
+    states.borrowAmount,
+    estimateFee,
+    connected,
+  ]);
 
   const ltvStepFunction = useCallback(
     (draftLtv: Rate<Big>) => {
@@ -186,6 +219,12 @@ function BorrowDialogBase(props: BorrowDialogProps) {
     },
     [input, states.borrowLimit, states.borrowedAmount],
   );
+
+  // ---------------------------------------------
+  // presentation
+  // ---------------------------------------------
+
+  const theme = useTheme();
 
   if (
     txResult?.status === StreamStatus.IN_PROGRESS ||
@@ -238,7 +277,9 @@ function BorrowDialogBase(props: BorrowDialogProps) {
             updateBorrowAmount(target.value)
           }
           InputProps={{
-            endAdornment: <InputAdornment position="end">UST</InputAdornment>,
+            endAdornment: (
+              <InputAdornment position="end">axlUSDC</InputAdornment>
+            ),
           }}
         />
 
@@ -260,7 +301,7 @@ function BorrowDialogBase(props: BorrowDialogProps) {
                 updateBorrowAmount(formatUSTInput(demicrofy(states.safeMax)))
               }
             >
-              {formatUST(demicrofy(states.safeMax))} UST
+              {formatUST(demicrofy(states.safeMax))} axlUSDC
             </span>
           </span>
         </div>
@@ -295,6 +336,25 @@ function BorrowDialogBase(props: BorrowDialogProps) {
           </EstimatedLiquidationPrice>
         )}
 
+        <Box
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: '5px',
+            marginBottom: '10px',
+          }}
+        >
+          Tx Fee :
+          {!estimatedFeeError && !estimatedFee && (
+            <span className="spinner">
+              <CircleSpinner size={14} color={theme.colors.positive} />
+            </span>
+          )}
+          {estimatedFee &&
+            `≈ ${formatLuna(demicrofy(estimatedFee.txFee))} Luna`}{' '}
+          {estimatedFeeError}
+        </Box>
         {isNative === false ||
           (false && (
             <>
@@ -321,11 +381,11 @@ function BorrowDialogBase(props: BorrowDialogProps) {
             <TxFeeList className="receipt">
               {big(states.txFee).gt(0) && (
                 <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-                  {formatUST(demicrofy(states.txFee))} UST
+                  {formatUST(demicrofy(states.txFee))} Luna
                 </TxFeeListItem>
               )}
               <TxFeeListItem label="Receive Amount">
-                {formatUST(demicrofy(states.receiveAmount))} UST
+                {formatUST(demicrofy(states.receiveAmount))} Luna
               </TxFeeListItem>
             </TxFeeList>
           )}
@@ -343,7 +403,6 @@ function BorrowDialogBase(props: BorrowDialogProps) {
               states.txFee &&
               proceed(
                 states.borrowAmount,
-                states.txFee.toFixed() as u<UST>,
                 states.warningOverSafeLtv,
                 states.collateral,
                 states.collateralAmount,

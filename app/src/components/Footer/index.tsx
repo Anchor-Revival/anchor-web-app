@@ -88,6 +88,7 @@ function FooterBase({ className, style }: FooterProps) {
         >
           <GitHub />
         </IconButton> */}
+        {/* Forcing the dark theme, no change possible*/}
         {switchable && (
           <IconButton
             onClick={() =>

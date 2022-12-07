@@ -1,11 +1,12 @@
 import React from 'react';
-import { u, UST } from '@anchor-protocol/types';
+import { UST } from '@anchor-protocol/types';
 import type { DialogProps } from '@libs/use-dialog';
 import { useAccount } from 'contexts/account';
 import { useCallback } from 'react';
 import { useBorrowBorrowTx } from '@anchor-protocol/app-provider';
 import { BorrowDialog } from '../BorrowDialog';
 import { BorrowFormParams } from '../types';
+import { EstimatedFee } from '@libs/app-provider';
 
 export const TerraBorrowDialog = (props: DialogProps<BorrowFormParams>) => {
   const { connected } = useAccount();
@@ -13,7 +14,7 @@ export const TerraBorrowDialog = (props: DialogProps<BorrowFormParams>) => {
   const [postTx, txResult] = useBorrowBorrowTx();
 
   const proceed = useCallback(
-    (borrowAmount: UST, txFee: u<UST>) => {
+    (borrowAmount: UST, txFee: EstimatedFee) => {
       if (connected && postTx) {
         postTx({ borrowAmount, txFee });
       }
