@@ -30,7 +30,7 @@ const ContentBase = (props: ContentProps) => {
     connection,
     onClose,
     onDisconnectWallet,
-    onSend,
+    // onSend,
     onBuyUST,
   } = props;
 
@@ -80,9 +80,9 @@ const ContentBase = (props: ContentProps) => {
                 </FlatButton>
               </div>
             </div>
-            <div className="send">
+            {/* <div className="send">
               <FlatButton onClick={onSend}>SEND</FlatButton>
-            </div>
+            </div> */}
             <div className="outlink">
               <button onClick={viewOnTerraFinder}>
                 View on Terra Finder{' '}
