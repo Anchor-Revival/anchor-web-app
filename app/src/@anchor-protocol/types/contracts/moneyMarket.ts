@@ -531,7 +531,7 @@ export namespace moneyMarket {
     }
 
     /**
-     * @see https://docs.anchorprotocol.com/smart-contracts/money-market/overseer#whitelist
+     * @see https://docs.cavernprotocol.com/smart-contracts/money-market/overseer#whitelist
      */
     export interface RegisterWhitelist {
       whitelist: {

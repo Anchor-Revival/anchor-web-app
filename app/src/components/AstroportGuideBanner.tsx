@@ -27,7 +27,7 @@ function Component({ className }: AstroportGuideBannerProps) {
         To withdraw liquidity on Terraswap /Unstake LP tokens from previous
         staking contract,{' '}
         <a
-          href="https://terraswap-app.anchorprotocol.com/anc-ust-lp/withdraw"
+          href="https://terraswap-app.cavernprotocol.com/anc-ust-lp/withdraw"
           target="_blank"
           rel="noreferrer"
         >
@@ -35,7 +35,7 @@ function Component({ className }: AstroportGuideBannerProps) {
         </a>
         . To claim rewards earned on the previous LP staking contract,{' '}
         <a
-          href="https://terraswap-app.anchorprotocol.com/claim/anc-ust-lp"
+          href="https://terraswap-app.cavernprotocol.com/claim/anc-ust-lp"
           target="_blank"
           rel="noreferrer"
         >
@@ -45,7 +45,7 @@ function Component({ className }: AstroportGuideBannerProps) {
         <br />
         <br />
         <a
-          href="https://terraswap-app.anchorprotocol.com/anc-ust-lp/withdraw"
+          href="https://terraswap-app.cavernprotocol.com/anc-ust-lp/withdraw"
           target="_blank"
           rel="noreferrer"
         >
@@ -54,7 +54,7 @@ function Component({ className }: AstroportGuideBannerProps) {
         </a>
         ,{' '}
         <a
-          href="https://terraswap-app.anchorprotocol.com/anc-ust-lp/unstake"
+          href="https://terraswap-app.cavernprotocol.com/anc-ust-lp/unstake"
           target="_blank"
           rel="noreferrer"
         >
@@ -62,7 +62,7 @@ function Component({ className }: AstroportGuideBannerProps) {
         </a>
         ,{' '}
         <a
-          href="https://terraswap-app.anchorprotocol.com/claim/anc-ust-lp"
+          href="https://terraswap-app.cavernprotocol.com/claim/anc-ust-lp"
           target="_blank"
           rel="noreferrer"
         >

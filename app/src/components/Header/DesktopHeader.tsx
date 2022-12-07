@@ -23,7 +23,7 @@ function DesktopHeaderBase({ className }: DesktopHeaderProps) {
     <header className={className}>
       <a
         className="logo"
-        href="https://anchorprotocol.com/"
+        href="https://cavernprotocol.com/"
         target="_blank"
         rel="noreferrer"
       >

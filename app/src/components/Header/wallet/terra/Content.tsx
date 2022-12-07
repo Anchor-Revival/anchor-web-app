@@ -72,7 +72,7 @@ const ContentBase = (props: ContentProps) => {
                 </Tooltip>
                 <FlatButton
                   component="a"
-                  href="https://docs.anchorprotocol.com/user-guide/interchain-transfers"
+                  href="https://docs.cavernprotocol.com/user-guide/interchain-transfers"
                   target="_blank"
                   rel="noreferrer"
                 >

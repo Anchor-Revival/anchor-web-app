@@ -24,7 +24,7 @@ To access or use the Interface, you must be able to form a legally binding contr
 
 ### 4. Modification of this Agreement
 
-We reserve the right, in our sole discretion, to modify this Agreement from time to time. If we make any modifications, we will notify you by updating the date at the top of the Agreement and by maintaining a current version of the Agreement at [app.anchorprotocol.com/terms](https://app.anchorprotocol.com/terms). All modifications will be effective when they are posted, and your continued use of the Interface will serve as confirmation of your acceptance of those modifications. If you do not agree with any modifications to this Agreement, you must immediately stop accessing and using the Interface.
+We reserve the right, in our sole discretion, to modify this Agreement from time to time. If we make any modifications, we will notify you by updating the date at the top of the Agreement and by maintaining a current version of the Agreement at [app.cavernprotocol.com/terms](https://app.cavernprotocol.com/terms). All modifications will be effective when they are posted, and your continued use of the Interface will serve as confirmation of your acceptance of those modifications. If you do not agree with any modifications to this Agreement, you must immediately stop accessing and using the Interface.
 
 ### 5. Proprietary Rights
 
@@ -103,7 +103,7 @@ Under no circumstances shall we or any of our officers, directors, employees, co
 
 ### 18. Dispute Resolution
 
-We will use our best efforts to resolve any potential disputes through informal, good faith negotiations. If a potential dispute arises, you must contact us by sending an email to legal@anchorprotocol.com so that we can attempt to resolve it without resorting to formal dispute resolution. If we aren’t able to reach an informal resolution within sixty days of your email, then you and we both agree to resolve the potential dispute according to the process set forth below.
+We will use our best efforts to resolve any potential disputes through informal, good faith negotiations. If a potential dispute arises, you must contact us by sending an email to legal@cavernprotocol.com so that we can attempt to resolve it without resorting to formal dispute resolution. If we aren’t able to reach an informal resolution within sixty days of your email, then you and we both agree to resolve the potential dispute according to the process set forth below.
 
 Any claim or controversy arising out of or relating to the Interface, this Agreement, including any question regarding this Agreement’s existence, validity or termination, or any other acts or omissions for which you may contend that we are liable, including (but not limited to) any claim or controversy as to arbitrability (“Dispute”), shall be referred to and finally resolved by arbitration in Singapore in accordance with the Arbitration Rules of the Singapore International Arbitration Centre ("SIAC Rules")
 
