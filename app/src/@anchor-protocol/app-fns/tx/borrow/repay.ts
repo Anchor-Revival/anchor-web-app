@@ -70,7 +70,14 @@ export function borrowRepayTx($: {
             repay_stable: {},
           },
           // sending stablecoin
-          new Coins([new Coin('uluna', formatTokenInput($.repayAmount))]),
+          new Coins([
+            new Coin(
+              $.network.name !== 'pisco'
+                ? 'ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389'
+                : 'ibc/B3504E092456BA618CC28AC671A71FB08C6CA0FD0BE7C8A5B5A3E2DD933CC9E4',
+              formatTokenInput($.repayAmount),
+            ),
+          ]),
         ),
       ],
       // FIXME repay's txFee is not fixed_gas (user ust transfer)
