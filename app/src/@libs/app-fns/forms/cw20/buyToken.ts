@@ -163,7 +163,7 @@ export const cw20BuyTokenForm = <T extends Token>({
 
             const invalidUstAmount =
               connected && microfy(ustAmount!).plus(txFee).gt(ustBalance)
-                ? 'Not enough UST'
+                ? 'Not enough axlUSDC'
                 : null;
 
             const availableTx =
@@ -246,7 +246,7 @@ export const cw20BuyTokenForm = <T extends Token>({
 
             const invalidUstAmount =
               connected && big(return_amount).plus(txFee).gt(ustBalance)
-                ? 'Not enough UST'
+                ? 'Not enough axlUSD'
                 : null;
 
             const invalidTxFee =

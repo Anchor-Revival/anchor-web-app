@@ -62,7 +62,6 @@ export interface AmountSliderProps {
   max: number;
   onChange: (value: number) => void;
   disabled?: boolean;
-  txFee: number;
 }
 
 export const AmountSlider = ({
@@ -70,11 +69,9 @@ export const AmountSlider = ({
   max,
   onChange,
   disabled,
-  txFee,
 }: AmountSliderProps) => {
   const theme = useTheme();
   const valueRatio = Math.min(1, value / max);
-  const allowed = max - txFee * 1.1;
 
   const amountSliderLabelRenderer = useCallback(
     (data: Data, rect: Rect, i: number) => {
@@ -85,14 +82,14 @@ export const AmountSlider = ({
     [max, onChange],
   );
 
-  const quarterValueUST = (0.25 * max).toFixed(2);
-  const halfValueUST = (0.5 * max).toFixed(2);
-  const threeFourthsValueUST = (0.75 * max).toFixed(2);
-  const maxValueUST = max.toFixed(2);
+  const quarterValueUSD = (0.25 * max).toFixed(2);
+  const halfValueUSD = (0.5 * max).toFixed(2);
+  const threeFourthsValueUSD = (0.75 * max).toFixed(2);
+  const maxValueUSD = max.toFixed(2);
 
   // console.log('value', value);
   // console.log('max', max);
-  // console.log('valueRatio', valueRatio);
+  console.log('valueRatio', valueRatio);
 
   return (
     <HorizontalGraphBar<Data>
@@ -104,34 +101,33 @@ export const AmountSlider = ({
           label: '25%',
           color: 'rgba(0, 0, 0, 0)',
           value: 0.25,
-          tooltip: `${quarterValueUST} axlUSDC`,
+          tooltip: `${quarterValueUSD} axlUSDC`,
         },
         {
           variant: 'label',
           label: '50%',
           color: 'rgba(0, 0, 0, 0)',
           value: 0.5,
-          tooltip: `${halfValueUST} axlUSDC`,
+          tooltip: `${halfValueUSD} axlUSDC`,
         },
         {
           variant: 'label',
           label: '75%',
           color: 'rgba(0, 0, 0, 0)',
           value: 0.75,
-          tooltip: `${threeFourthsValueUST} axlUSDC`,
+          tooltip: `${threeFourthsValueUSD} axlUSDC`,
         },
         {
           variant: 'label',
           label: `Max`,
           color: 'rgba(0, 0, 0, 0)',
           value: 1,
-          tooltip: `${maxValueUST} axlUSDC`,
+          tooltip: `${maxValueUSD} axlUSDC`,
         },
         {
           variant: 'value',
           label: `${formatRate(valueRatio.toFixed(2) as Rate)}%`,
-          color:
-            value > allowed ? theme.colors.negative : theme.colors.positive,
+          color: theme.colors.positive,
           value: Math.min(value, max) / max,
         },
       ]}

@@ -7,7 +7,7 @@ import {
   UST_INPUT_MAXIMUM_DECIMAL_POINTS,
   UST_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
-import { UST, Luna } from '@anchor-protocol/types';
+import { UST } from '@anchor-protocol/types';
 import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
 import { NumberInput } from '@libs/neumorphism-ui/components/NumberInput';
@@ -145,7 +145,6 @@ function WithdrawDialogBase(props: WithdrawDialogProps) {
           <AmountSlider
             disabled={!connected}
             max={Number(demicrofy(totalDeposit))}
-            txFee={Number(luna.demicrofy(txFee ?? ('0' as Luna)))}
             value={Number(withdrawAmount)}
             onChange={(value) => {
               updateWithdrawAmount(formatInput(value.toString() as UST));

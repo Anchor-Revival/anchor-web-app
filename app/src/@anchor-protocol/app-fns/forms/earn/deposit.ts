@@ -61,7 +61,7 @@ export const earnDepositForm =
 
     // sendAmount
     const sendAmount = txFee
-      ? (microfy(depositAmount).plus(txFee) as u<UST<Big>>)
+      ? (microfy(depositAmount) as u<UST<Big>>)
       : undefined;
 
     // maxAmount
@@ -86,7 +86,7 @@ export const earnDepositForm =
       }
 
       return microfy(depositAmount).plus(txFee).gt(userUUSTBalance)
-        ? `Not enough UST`
+        ? `Not enough axlUSDC`
         : undefined;
     })();
 
@@ -101,13 +101,7 @@ export const earnDepositForm =
         return undefined;
       }
 
-      const remainUUSD = big(userUUSTBalance)
-        .minus(microfy(depositAmount))
-        .minus(txFee ?? 0);
-
-      return remainUUSD.lt(big(fixedGas).mul(2))
-        ? `Leaving less UST in your account may lead to insufficient transaction fees for future transactions.`
-        : undefined;
+      return undefined;
     })();
 
     return [

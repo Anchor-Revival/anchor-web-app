@@ -123,7 +123,7 @@ export const sendForm = <T extends Token>({
       ? null
       : isUst
       ? microfy(amount!).plus(txFee).gt(balance)
-        ? 'Not enough UST'
+        ? 'Not enough axlUSDC'
         : null
       : microfy(amount!).gt(balance)
       ? 'Not enough assets'

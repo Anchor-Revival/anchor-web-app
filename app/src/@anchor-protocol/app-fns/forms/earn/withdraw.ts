@@ -8,7 +8,7 @@ export interface EarnWithdrawFormInput {
 }
 
 export interface EarnWithdrawFormDependency {
-  userUUSTBalance: u<UST<BigSource>>;
+  userUUSTBalance: u<Luna<BigSource>>;
   fixedGas: u<Luna<BigSource>>;
   totalDeposit: u<UST<BigSource>>;
   isConnected: boolean;
@@ -50,9 +50,7 @@ export const earnWithdrawForm =
       const txFee = big(fixedGas) as u<Luna<Big>>;
 
       // receiveAmount
-      const receiveAmount = microfy(withdrawAmount).minus(txFee) as u<
-        UST<Big>
-      >;
+      const receiveAmount = microfy(withdrawAmount) as u<UST<Big>>;
 
       // invalidTxFee
       const invalidTxFee = (() => {
