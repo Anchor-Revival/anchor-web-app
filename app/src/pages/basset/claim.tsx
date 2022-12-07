@@ -114,7 +114,7 @@ function Component({ className }: BAssetClaimProps) {
         )}
 
         <div className="amount">
-          {formatUST(demicrofy(totalRewardsUST))} <Sub>axlUSDC</Sub>
+          {formatUST(demicrofy(totalRewardsUST))} <Sub> axlUSDC</Sub>
         </div>
 
         <TxFeeList className="receipt">

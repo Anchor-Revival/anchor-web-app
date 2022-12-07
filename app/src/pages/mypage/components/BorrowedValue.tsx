@@ -51,7 +51,7 @@ function BorrowedValueBase({
           <p>
             <AnimateNumber format={formatUSTWithPostfixUnits}>
               {demicrofy(borrowedValue)}
-            </AnimateNumber>
+            </AnimateNumber>{' '}
             <Sub>axlUSDC</Sub>
           </p>
         </div>

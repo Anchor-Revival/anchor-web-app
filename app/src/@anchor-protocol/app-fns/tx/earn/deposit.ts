@@ -2,14 +2,7 @@ import {
   formatAUSTWithPostfixUnits,
   formatUSTWithPostfixUnits,
 } from '@anchor-protocol/notation';
-import {
-  aUST,
-  UST,
-  Gas,
-  HumanAddr,
-  Rate,
-  u,
-} from '@anchor-protocol/types';
+import { aUST, UST, Gas, HumanAddr, Rate, u } from '@anchor-protocol/types';
 import {
   pickAttributeValue,
   pickEvent,
@@ -126,7 +119,8 @@ export function earnDepositTx($: {
             receivedAmount && {
               name: 'Received Amount',
               value:
-                formatAUSTWithPostfixUnits(demicrofy(receivedAmount)) + ' aUST',
+                formatAUSTWithPostfixUnits(demicrofy(receivedAmount)) +
+                ' aUSDC',
             },
             exchangeRate && {
               name: 'Exchange Rate',
