@@ -30,7 +30,7 @@ const ContentBase = (props: ContentProps) => {
     connection,
     onClose,
     onDisconnectWallet,
-    onSend,
+    // onSend,
     onBuyUST,
   } = props;
 
@@ -72,7 +72,7 @@ const ContentBase = (props: ContentProps) => {
                 </Tooltip>
                 <FlatButton
                   component="a"
-                  href="https://docs.anchorprotocol.com/user-guide/interchain-transfers"
+                  href="https://docs.cavernprotocol.com/user-guide/interchain-transfers"
                   target="_blank"
                   rel="noreferrer"
                 >
@@ -80,9 +80,9 @@ const ContentBase = (props: ContentProps) => {
                 </FlatButton>
               </div>
             </div>
-            <div className="send">
+            {/* <div className="send">
               <FlatButton onClick={onSend}>SEND</FlatButton>
-            </div>
+            </div> */}
             <div className="outlink">
               <button onClick={viewOnTerraFinder}>
                 View on Terra Finder{' '}

@@ -32,7 +32,7 @@ export async function airdropCheckQuery(
 
   try {
     const airdrops: Airdrop[] = await fetch(
-      `https://airdrop.anchorprotocol.com/api/get?address=${walletAddress}&chainId=columbus-4`,
+      `https://airdrop.cavernprotocol.com/api/get?address=${walletAddress}&chainId=columbus-4`,
     ).then((res) => res.json());
 
     if (airdrops.length === 0) {

@@ -55,7 +55,7 @@ function MobileHeaderBase({
         <section className="header">
           <a
             className="logo"
-            href="https://anchorprotocol.com"
+            href="https://cavernprotocol.com"
             target="_blank"
             rel="noreferrer"
           >

@@ -96,7 +96,9 @@ function EarnBase({ className }: EarnProps) {
               </div>
             </td>
             <td>{formatRate(apy)}%</td>
-            <td>{formatUSTWithPostfixUnits(demicrofy(totalDeposit))} UST</td>
+            <td>
+              {formatUSTWithPostfixUnits(demicrofy(totalDeposit))} axlUSDC
+            </td>
             <td>
               <ActionButton
                 disabled={

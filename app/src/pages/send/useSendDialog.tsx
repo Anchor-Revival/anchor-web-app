@@ -102,7 +102,7 @@ function ComponentBase({
           formatUSTInput(demicrofy(bank.tokenBalances.uUST)),
       },
       {
-        label: 'aaxlUSDC',
+        label: 'aUSDC',
         value: 'aust',
         integerPoints: AUST_INPUT_MAXIMUM_INTEGER_POINTS,
         decimalPoints: AUST_INPUT_MAXIMUM_DECIMAL_POINTS,

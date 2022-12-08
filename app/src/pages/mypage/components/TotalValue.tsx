@@ -6,19 +6,19 @@ import {
   useBAssetInfoAndBalanceTotalQuery,
   useBorrowBorrowerQuery,
   useBorrowMarketQuery,
-  useDeploymentTarget,
+  // useDeploymentTarget,
   useEarnEpochStatesQuery,
   useRewardsAncGovernanceRewardsQuery,
 } from '@anchor-protocol/app-provider';
 import { useFormatters } from '@anchor-protocol/formatter/useFormatters';
 import { UST, u } from '@anchor-protocol/types';
 import { sum } from '@libs/big-math';
-import { BorderButton } from '@libs/neumorphism-ui/components/BorderButton';
+// import { BorderButton } from '@libs/neumorphism-ui/components/BorderButton';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
 import { InfoTooltip } from '@libs/neumorphism-ui/components/InfoTooltip';
 import { Section } from '@libs/neumorphism-ui/components/Section';
 import { AnimateNumber } from '@libs/ui';
-import { Send } from '@mui/icons-material';
+// import { Send } from '@mui/icons-material';
 import big, { Big, BigSource } from 'big.js';
 import { Sub } from 'components/Sub';
 import { useAccount } from 'contexts/account';
@@ -27,7 +27,7 @@ import { useTheme } from 'contexts/theme';
 import { fixHMR } from 'fix-hmr';
 import { computeHoldings } from 'pages/mypage/logics/computeHoldings';
 import { useRewards } from 'pages/mypage/logics/useRewards';
-import { useSendDialog } from 'pages/send/useSendDialog';
+// import { useSendDialog } from 'pages/send/useSendDialog';
 import { useAssetPriceInUstQuery } from 'queries';
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
@@ -45,9 +45,9 @@ interface Item {
 }
 
 function TotalValueBase({ className }: TotalValueProps) {
-  const {
-    target: { isNative },
-  } = useDeploymentTarget();
+  // const {
+  //   target: { isNative },
+  // } = useDeploymentTarget();
 
   const { theme } = useTheme();
 
@@ -61,7 +61,7 @@ function TotalValueBase({ className }: TotalValueProps) {
 
   const { data: { moneyMarketEpochState } = {} } = useEarnEpochStatesQuery();
 
-  const [openSend, sendElement] = useSendDialog();
+  // const [openSend, sendElement] = useSendDialog();
 
   const { ancUstLp, ustBorrow } = useRewards();
 
@@ -197,18 +197,18 @@ function TotalValueBase({ className }: TotalValueProps) {
           <p>
             <AnimateNumber format={formatOutput}>
               {demicrofy(totalValue)}
-            </AnimateNumber>
+            </AnimateNumber>{' '}
             <Sub>axlUSDC</Sub>
           </p>
         </div>
-        {isNative && (
+        {/* {isNative && (
           <div>
             <BorderButton onClick={() => openSend({})} disabled={!connected}>
               <Send />
               Send
             </BorderButton>
           </div>
-        )}
+        )} */}
       </header>
 
       <div className="values">
@@ -238,7 +238,7 @@ function TotalValueBase({ className }: TotalValueProps) {
         )}
       </div>
 
-      {sendElement}
+      {/* {sendElement} */}
     </Section>
   );
 }

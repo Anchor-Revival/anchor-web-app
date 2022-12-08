@@ -113,7 +113,7 @@ export namespace liquidation {
   }
   export namespace liquidationQueueContract {
     /**
-     * @see https://docs.anchorprotocol.com/smart-contracts/liquidations/liquidation-queue-contract#whitelistcollateral
+     * @see https://docs.cavernprotocol.com/smart-contracts/liquidations/liquidation-queue-contract#whitelistcollateral
      */
     export interface WhitelistCollateral {
       whitelist_collateral: {
@@ -124,7 +124,7 @@ export namespace liquidation {
       };
     }
     /**
-     * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bid
+     * @see https://docs.cavernprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bid
      */
     export interface Bid {
       bid: {
@@ -133,7 +133,7 @@ export namespace liquidation {
     }
 
     /**
-     * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidresponse
+     * @see https://docs.cavernprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidresponse
      */
     export interface BidResponse {
       collateral_token: HumanAddr;
@@ -151,7 +151,7 @@ export namespace liquidation {
     }
 
     /**
-     * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidpool
+     * @see https://docs.cavernprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidpool
      */
     export interface BidPool {
       bid_pool: {
@@ -161,7 +161,7 @@ export namespace liquidation {
     }
 
     /**
-     * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidpoolresponse
+     * @see https://docs.cavernprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidpoolresponse
      */
     export interface BidPoolResponse {
       sum_snapshot: string;
@@ -173,7 +173,7 @@ export namespace liquidation {
     }
 
     /**
-     * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidpoolsbycollateral
+     * @see https://docs.cavernprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidpoolsbycollateral
      */
     export interface BidPoolsByCollateral {
       bid_pools_by_collateral: {
@@ -188,7 +188,7 @@ export namespace liquidation {
     }
 
     /**
-     * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidsbyuser
+     * @see https://docs.cavernprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidsbyuser
      */
     export interface BidsByUser {
       bids_by_user: {
@@ -200,7 +200,7 @@ export namespace liquidation {
     }
 
     /**
-     * @see https://docs.anchorprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidsbyuserresponse
+     * @see https://docs.cavernprotocol.com/anchor-2/smart-contracts/liquidations/liquidation-queue-contract#bidsbyuserresponse
      */
     export interface BidsByUserResponse {
       bids: Array<BidResponse>;

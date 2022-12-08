@@ -11,7 +11,7 @@ export function BuyUstButton(buttonProps: ButtonBaseProps) {
   return (
     <>
       <Button {...buttonProps} onClick={() => openBuyUst({})}>
-        <DollarCoin /> Buy UST
+        <DollarCoin /> Buy axlUSDC
       </Button>
       {buyUstElement}
     </>

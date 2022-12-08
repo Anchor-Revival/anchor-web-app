@@ -15,16 +15,16 @@ export const landingMobileLayout = 680;
 export const headerHeight = 84;
 
 export const links = {
-  developers: 'https://docs.anchorprotocol.com/developers-earn/anchor-earn-sdk',
-  app: 'https://app.anchorprotocol.com',
-  betterYield: 'https://docs.anchorprotocol.com/protocol/overview',
+  developers: 'https://docs.cavernprotocol.com/developers-earn/anchor-earn-sdk',
+  app: 'https://app.cavernprotocol.com',
+  betterYield: 'https://docs.cavernprotocol.com/protocol/overview',
   easierIntegration:
-    'https://docs.anchorprotocol.com/developers-earn/anchor-earn-sdk',
-  frictionlessAccess: 'https://app.anchorprotocol.com',
-  contact: 'mailto:info@anchorprotocol.com',
-  whitepaper: 'https://anchorprotocol.com/docs/anchor-v1.1.pdf',
+    'https://docs.cavernprotocol.com/developers-earn/anchor-earn-sdk',
+  frictionlessAccess: 'https://app.cavernprotocol.com',
+  contact: 'mailto:info@cavernprotocol.com',
+  whitepaper: 'https://cavernprotocol.com/docs/anchor-v1.1.pdf',
   discord: 'https://discord.gg/9aUYgpKZ9c',
-  forum: 'https://forum.anchorprotocol.com/',
+  forum: 'https://forum.cavernprotocol.com/',
   terra: 'https://terra.money/',
 };
 

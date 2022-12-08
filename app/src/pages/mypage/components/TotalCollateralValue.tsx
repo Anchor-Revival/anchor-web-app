@@ -67,7 +67,7 @@ function TotalCollateralValueBase({
         <p>
           <AnimateNumber format={formatUSTWithPostfixUnits}>
             {demicrofy(total)}
-          </AnimateNumber>
+          </AnimateNumber>{' '}
           <Sub>axlUSDC</Sub>
         </p>
       </header>

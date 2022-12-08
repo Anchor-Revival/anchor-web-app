@@ -4,7 +4,7 @@ describe('queries/borrowAPY', () => {
   test('should get result from query', async () => {
     const { borrowerDistributionAPYs, lpRewards, govRewards } =
       await borrowAPYQuery(
-        'https://api-testnet.anchorprotocol.com/api',
+        'https://api-testnet.cavernprotocol.com/api',
         'terra13r3vngakfw457dwhw9ef36mc8w6agggefe70d9',
       );
 

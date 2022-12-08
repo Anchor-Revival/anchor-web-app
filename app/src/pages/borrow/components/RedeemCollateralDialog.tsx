@@ -198,7 +198,7 @@ function RedeemCollateralDialogBase(props: RedeemCollateralDialogProps) {
         <h1>
           <IconSpan>
             Withdraw Collateral{' '}
-            <InfoTooltip>Withdraw bAsset to your wallet</InfoTooltip>
+            <InfoTooltip>Withdraw aAsset to your wallet</InfoTooltip>
           </IconSpan>
         </h1>
 
