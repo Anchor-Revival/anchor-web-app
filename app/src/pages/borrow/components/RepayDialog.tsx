@@ -1,13 +1,17 @@
-import { useBorrowRepayForm } from '@anchor-protocol/app-provider';
 import {
+  useAnchorWebapp,
+  useBorrowRepayForm,
+} from '@anchor-protocol/app-provider';
+import {
+  formatLuna,
   formatUST,
   formatUSTInput,
   UST_INPUT_MAXIMUM_DECIMAL_POINTS,
   UST_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
-import { Rate, u, UST } from '@anchor-protocol/types';
+import { Rate, UST } from '@anchor-protocol/types';
 import { TxResultRendering } from '@libs/app-fns';
-import { demicrofy, formatRate } from '@libs/formatter';
+import { demicrofy, formatRate, formatTokenInput } from '@libs/formatter';
 import { ActionButton } from '@libs/neumorphism-ui/components/ActionButton';
 import { Dialog } from '@libs/neumorphism-ui/components/Dialog';
 import { IconSpan } from '@libs/neumorphism-ui/components/IconSpan';
@@ -24,17 +28,20 @@ import { TxFeeList, TxFeeListItem } from 'components/TxFeeList';
 import { ViewAddressWarning } from 'components/ViewAddressWarning';
 import { useAccount } from 'contexts/account';
 import { BroadcastTxStreamResult } from 'pages/earn/components/types';
-import React, { ChangeEvent, useCallback, useMemo } from 'react';
-import styled from 'styled-components';
+import React, { ChangeEvent, useCallback, useEffect, useMemo } from 'react';
+import styled, { useTheme } from 'styled-components';
 import { EstimatedLiquidationPrice } from './EstimatedLiquidationPrice';
 import { LTVGraph } from './LTVGraph';
 import { RepayFormParams } from './types';
 import big from 'big.js';
+import { EstimatedFee, useFeeEstimationFor } from '@libs/app-provider';
+import { Coin, Coins, MsgExecuteContract } from '@terra-money/terra.js';
+import { CircleSpinner } from 'react-spinners-kit';
 
 export interface RepayDialogParams extends UIElementProps, RepayFormParams {
   txResult: StreamResult<TxResultRendering> | null;
   proceedable: boolean;
-  onProceed: (repayAmount: UST, txFee: u<UST>) => void;
+  onProceed: (repayAmount: UST, txFee: EstimatedFee) => void;
 }
 
 export type RepayDialogProps = DialogProps<RepayDialogParams> & {
@@ -53,7 +60,8 @@ function RepayDialogBase(props: RepayDialogProps) {
     renderBroadcastTxResult,
   } = props;
 
-  const { availablePost, connected } = useAccount();
+  const { availablePost, connected, terraWalletAddress } = useAccount();
+  const { contractAddress } = useAnchorWebapp();
 
   const [input, states] = useBorrowRepayForm(
     fallbackBorrowMarket,
@@ -67,6 +75,40 @@ function RepayDialogBase(props: RepayDialogProps) {
     [input],
   );
 
+  const [estimatedFee, estimatedFeeError, estimateFee] =
+    useFeeEstimationFor(terraWalletAddress);
+
+  useEffect(() => {
+    if (!connected || !states.repayAmount) {
+      return;
+    }
+
+    estimateFee([
+      new MsgExecuteContract(
+        terraWalletAddress,
+        contractAddress.moneyMarket.market,
+        {
+          // @see https://github.com/Anchor-Protocol/money-market-contracts/blob/master/contracts/market/src/msg.rs#L74
+          repay_stable: {},
+        },
+        // sending stablecoin
+        new Coins([
+          new Coin(
+            contractAddress.native.usd,
+            formatTokenInput(states.repayAmount),
+          ),
+        ]),
+      ),
+    ]);
+  }, [
+    terraWalletAddress,
+    contractAddress.moneyMarket.market,
+    contractAddress.native.usd,
+    states.repayAmount,
+    estimateFee,
+    connected,
+  ]);
+
   const onLtvChange = useCallback(
     (nextLtv: Rate<Big>) => {
       const ltvToAmount = states.ltvToAmount;
@@ -79,6 +121,10 @@ function RepayDialogBase(props: RepayDialogProps) {
     },
     [input, states.ltvToAmount],
   );
+
+  ///////////////////// Presentation /////////////////
+
+  const theme = useTheme();
 
   const renderBroadcastTx = useMemo(() => {
     if (renderBroadcastTxResult) {
@@ -187,13 +233,19 @@ function RepayDialogBase(props: RepayDialogProps) {
                 : formatUST(demicrofy(states.totalOutstandingLoan))}{' '}
               axlUSDC
             </TxFeeListItem>
-            {big(states.txFee).gt(0) && (
-              <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-                {formatUST(demicrofy(states.txFee))} Luna
-              </TxFeeListItem>
-            )}
+            <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
+              {estimatedFee &&
+                big(estimatedFee.txFee).gt(0) &&
+                `${formatLuna(demicrofy(estimatedFee.txFee))} Luna`}
+              {!estimatedFeeError && !estimatedFee && (
+                <span className="spinner">
+                  <CircleSpinner size={14} color={theme.colors.positive} />
+                </span>
+              )}
+              {estimatedFeeError}
+            </TxFeeListItem>
             <TxFeeListItem label="Send Amount">
-              {formatUST(demicrofy(states.sendAmount))} axlUSDC
+              {states.repayAmount} axlUSDC
             </TxFeeListItem>
           </TxFeeList>
         )}
@@ -205,11 +257,11 @@ function RepayDialogBase(props: RepayDialogProps) {
               !availablePost ||
               !connected ||
               !states.availablePost ||
-              !proceedable
+              !proceedable ||
+              !estimatedFee
             }
             onClick={() =>
-              states.txFee &&
-              onProceed(states.repayAmount, states.txFee.toFixed() as u<UST>)
+              estimatedFee && onProceed(states.repayAmount, estimatedFee)
             }
           >
             Proceed

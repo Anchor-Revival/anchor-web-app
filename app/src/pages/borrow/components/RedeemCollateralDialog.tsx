@@ -1,6 +1,10 @@
 import { ANCHOR_SAFE_RATIO } from '@anchor-protocol/app-fns';
-import { useBorrowRedeemCollateralForm } from '@anchor-protocol/app-provider';
 import {
+  useAnchorWebapp,
+  useBorrowRedeemCollateralForm,
+} from '@anchor-protocol/app-provider';
+import {
+  formatLuna,
   LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
   LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
@@ -23,8 +27,8 @@ import { TxResultRenderer } from 'components/tx/TxResultRenderer';
 import { TxFeeList, TxFeeListItem } from 'components/TxFeeList';
 import { ViewAddressWarning } from 'components/ViewAddressWarning';
 import { useAccount } from 'contexts/account';
-import React, { ChangeEvent, useCallback, useMemo } from 'react';
-import styled from 'styled-components';
+import React, { ChangeEvent, useCallback, useEffect, useMemo } from 'react';
+import styled, { useTheme } from 'styled-components';
 import { LTVGraph } from './LTVGraph';
 import { RedeemCollateralFormParams } from './types';
 import {
@@ -32,9 +36,13 @@ import {
   formatOutput,
   demicrofy,
   useFormatters,
+  microfy,
 } from '@anchor-protocol/formatter';
 import { BroadcastTxStreamResult } from 'pages/earn/components/types';
 import big from 'big.js';
+import { EstimatedFee, useFeeEstimationFor } from '@libs/app-provider';
+import { MsgExecuteContract } from '@terra-money/terra.js';
+import { CircleSpinner } from 'react-spinners-kit';
 
 export interface RedeemCollateralDialogParams
   extends UIElementProps,
@@ -42,7 +50,7 @@ export interface RedeemCollateralDialogParams
   txResult: StreamResult<TxResultRendering> | null;
   uTokenBalance: u<bAsset>;
   proceedable: boolean;
-  onProceed: (amount: bAsset & NoMicro) => void;
+  onProceed: (amount: bAsset & NoMicro, txFee: EstimatedFee) => void;
 }
 
 export type RedeemCollateralDialogProps =
@@ -64,14 +72,11 @@ function RedeemCollateralDialogBase(props: RedeemCollateralDialogProps) {
     renderBroadcastTxResult,
   } = props;
 
-  const { availablePost, connected } = useAccount();
+  const { availablePost, connected, terraWalletAddress } = useAccount();
+  const { contractAddress } = useAnchorWebapp();
 
   const {
-    ust: {
-      formatInput: formatUSTInput,
-      formatOutput: formatUSTOutput,
-      demicrofy: demicrofyUST,
-    },
+    ust: { formatInput: formatUSTInput, demicrofy: demicrofyUST },
   } = useFormatters();
 
   const [input, states] = useBorrowRedeemCollateralForm(
@@ -88,6 +93,59 @@ function RedeemCollateralDialogBase(props: RedeemCollateralDialogProps) {
     [input],
   );
 
+  const [estimatedFee, estimatedFeeError, estimateFee] =
+    useFeeEstimationFor(terraWalletAddress);
+
+  useEffect(() => {
+    if (!connected || !states.redeemAmount) {
+      return;
+    }
+
+    estimateFee([
+      // unlock collateral
+      new MsgExecuteContract(
+        terraWalletAddress,
+        contractAddress.moneyMarket.overseer,
+        {
+          // @see https://github.com/Anchor-Protocol/money-market-contracts/blob/master/contracts/overseer/src/msg.rs#L78
+          unlock_collateral: {
+            collaterals: [
+              [
+                props.collateral.collateral_token,
+                formatInput(
+                  microfy(states.redeemAmount, props.collateral.decimals),
+                  props.collateral.decimals,
+                ),
+              ],
+            ],
+          },
+        },
+      ),
+
+      // withdraw from custody
+      new MsgExecuteContract(
+        terraWalletAddress,
+        props.collateral.custody_contract,
+        {
+          // @see https://github.com/Anchor-Protocol/money-market-contracts/blob/master/contracts/custody/src/msg.rs#L69
+          withdraw_collateral: {
+            amount: formatInput(
+              microfy(states.redeemAmount, props.collateral.decimals),
+              props.collateral.decimals,
+            ),
+          },
+        },
+      ),
+    ]);
+  }, [
+    terraWalletAddress,
+    contractAddress.moneyMarket.overseer,
+    props.collateral,
+    estimateFee,
+    connected,
+    states.redeemAmount,
+  ]);
+
   const onLtvChange = useCallback(
     (nextLtv: Rate<Big>) => {
       const ltvToAmount = states.ltvToAmount;
@@ -103,6 +161,12 @@ function RedeemCollateralDialogBase(props: RedeemCollateralDialogProps) {
     },
     [input, states.ltvToAmount, collateral.decimals],
   );
+
+  // ---------------------------------------------
+  // presentation
+  // ---------------------------------------------
+
+  const theme = useTheme();
 
   const renderBroadcastTx = useMemo(() => {
     if (renderBroadcastTxResult) {
@@ -244,7 +308,15 @@ function RedeemCollateralDialogBase(props: RedeemCollateralDialogProps) {
         {states.redeemAmount.length > 0 && big(states.txFee).gt(0) && (
           <TxFeeList className="receipt">
             <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-              {formatUSTOutput(demicrofyUST(states.txFee))} Luna
+              {estimatedFee &&
+                big(estimatedFee.txFee).gt(0) &&
+                `${formatLuna(demicrofy(estimatedFee.txFee, 6))} Luna`}
+              {!estimatedFeeError && !estimatedFee && (
+                <span className="spinner">
+                  <CircleSpinner size={14} color={theme.colors.positive} />
+                </span>
+              )}
+              {estimatedFeeError}
             </TxFeeListItem>
           </TxFeeList>
         )}
@@ -256,13 +328,16 @@ function RedeemCollateralDialogBase(props: RedeemCollateralDialogProps) {
               !availablePost ||
               !connected ||
               !states.availablePost ||
-              !proceedable
+              !proceedable ||
+              !estimatedFee
             }
             onClick={() =>
+              estimatedFee &&
               onProceed(
                 states.redeemAmount.length > 0
                   ? states.redeemAmount
                   : ('0' as bAsset),
+                estimatedFee,
               )
             }
           >

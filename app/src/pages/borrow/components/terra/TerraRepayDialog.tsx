@@ -1,11 +1,12 @@
 import React from 'react';
-import { u, UST } from '@anchor-protocol/types';
+import { UST } from '@anchor-protocol/types';
 import type { DialogProps } from '@libs/use-dialog';
 import { useAccount } from 'contexts/account';
 import { useCallback } from 'react';
 import { useBorrowRepayTx } from '@anchor-protocol/app-provider';
 import { RepayFormParams } from '../types';
 import { RepayDialog } from '../RepayDialog';
+import { EstimatedFee } from '@libs/app-provider';
 
 export const TerraRepayDialog = (props: DialogProps<RepayFormParams>) => {
   const { connected } = useAccount();
@@ -13,7 +14,7 @@ export const TerraRepayDialog = (props: DialogProps<RepayFormParams>) => {
   const [postTx, txResult] = useBorrowRepayTx();
 
   const proceed = useCallback(
-    (repayAmount: UST, txFee: u<UST>) => {
+    (repayAmount: UST, txFee: EstimatedFee) => {
       if (connected && postTx) {
         postTx({ repayAmount, txFee });
       }

@@ -129,7 +129,7 @@ function Receipts({ resultRendering }: { resultRendering: TxResultRendering }) {
   const filteredReceipts = resultRendering.receipts.filter(
     (receipt): receipt is TxReceipt => !!receipt,
   );
-
+  console.log(resultRendering, filteredReceipts);
   return filteredReceipts.length > 0 ? (
     <>
       <HorizontalHeavyRuler />

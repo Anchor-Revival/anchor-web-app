@@ -91,6 +91,7 @@ export function useFeeEstimationFor(
           .then((estimated) => {
             if (estimated) {
               setEstimatedFee(estimated);
+              console.log('estimaed ', estimated);
             } else {
               setEstimatedFee(undefined);
               setEstimatedFeeError(() => 'Error when estimating the Fee');

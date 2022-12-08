@@ -1,6 +1,6 @@
 import { borrowRepayTx } from '@anchor-protocol/app-fns';
-import { u, UST } from '@anchor-protocol/types';
-import { useRefetchQueries } from '@libs/app-provider';
+import { UST } from '@anchor-protocol/types';
+import { EstimatedFee, useRefetchQueries } from '@libs/app-provider';
 import { useStream } from '@rx-stream/react';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
@@ -12,7 +12,7 @@ import { useBorrowMarketQuery } from '../../queries/borrow/market';
 
 export interface BorrowRepayTxParams {
   repayAmount: UST;
-  txFee: u<UST>;
+  txFee: EstimatedFee;
   onTxSucceed?: () => void;
 }
 
@@ -45,11 +45,12 @@ export function useBorrowRepayTx() {
         walletAddr: terraWalletAddress,
         repayAmount,
         marketAddr: contractAddress.moneyMarket.market,
+        stableCoin: contractAddress.native.usd,
         // post
         network: connectedWallet.network,
         post: connectedWallet.post,
-        txFee,
-        gasFee: constants.gasWanted,
+        txFee: txFee.txFee,
+        gasFee: txFee.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         // query
         queryClient,
@@ -71,8 +72,8 @@ export function useBorrowRepayTx() {
       connected,
       connectedWallet,
       constants.gasAdjustment,
-      constants.gasWanted,
       contractAddress.moneyMarket.market,
+      contractAddress.native.usd,
       queryClient,
       refetchQueries,
       terraWalletAddress,

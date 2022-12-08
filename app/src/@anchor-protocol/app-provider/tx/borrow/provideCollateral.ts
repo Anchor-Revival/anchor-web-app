@@ -1,6 +1,6 @@
 import { borrowProvideCollateralTx } from '@anchor-protocol/app-fns';
 import { bAsset } from '@anchor-protocol/types';
-import { useFixedFee, useRefetchQueries } from '@libs/app-provider';
+import { EstimatedFee, useRefetchQueries } from '@libs/app-provider';
 import { useStream } from '@rx-stream/react';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
@@ -13,6 +13,7 @@ import { WhitelistCollateral } from 'queries';
 
 export interface BorrowProvideCollateralTxParams {
   depositAmount: bAsset;
+  txFee: EstimatedFee;
   onTxSucceed?: () => void;
 }
 
@@ -27,12 +28,14 @@ export function useBorrowProvideCollateralTx(collateral: WhitelistCollateral) {
   const { refetch: borrowMarketQuery } = useBorrowMarketQuery();
   const { refetch: borrowBorrowerQuery } = useBorrowBorrowerQuery();
 
-  const fixedFee = useFixedFee();
-
   const refetchQueries = useRefetchQueries();
 
   const stream = useCallback(
-    ({ depositAmount, onTxSucceed }: BorrowProvideCollateralTxParams) => {
+    ({
+      depositAmount,
+      txFee,
+      onTxSucceed,
+    }: BorrowProvideCollateralTxParams) => {
       if (
         !connectedWallet ||
         !connected ||
@@ -50,8 +53,8 @@ export function useBorrowProvideCollateralTx(collateral: WhitelistCollateral) {
         overseerAddr: contractAddress.moneyMarket.overseer,
         network: connectedWallet.network,
         post: connectedWallet.post,
-        fixedGas: fixedFee,
-        gasFee: constants.gasWanted,
+        fixedGas: txFee.txFee,
+        gasFee: txFee.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         // query
         queryClient,
@@ -74,9 +77,7 @@ export function useBorrowProvideCollateralTx(collateral: WhitelistCollateral) {
       connected,
       connectedWallet,
       constants.gasAdjustment,
-      constants.gasWanted,
       contractAddress.moneyMarket.overseer,
-      fixedFee,
       queryClient,
       refetchQueries,
       terraWalletAddress,

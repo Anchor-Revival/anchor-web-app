@@ -27,7 +27,7 @@ import { NumberInput } from '@libs/neumorphism-ui/components/NumberInput';
 import { useConfirm } from '@libs/neumorphism-ui/components/useConfirm';
 import { UIElementProps } from '@libs/ui';
 import type { DialogProps } from '@libs/use-dialog';
-import { InputAdornment, Modal, Box } from '@mui/material';
+import { InputAdornment, Modal } from '@mui/material';
 import {
   StreamDone,
   StreamInProgress,
@@ -336,25 +336,6 @@ function BorrowDialogBase(props: BorrowDialogProps) {
           </EstimatedLiquidationPrice>
         )}
 
-        <Box
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: '5px',
-            marginBottom: '10px',
-          }}
-        >
-          Tx Fee :
-          {!estimatedFeeError && !estimatedFee && (
-            <span className="spinner">
-              <CircleSpinner size={14} color={theme.colors.positive} />
-            </span>
-          )}
-          {estimatedFee &&
-            `≈ ${formatLuna(demicrofy(estimatedFee.txFee))} Luna`}{' '}
-          {estimatedFeeError}
-        </Box>
         {isNative === false ||
           (false && (
             <>
@@ -374,21 +355,24 @@ function BorrowDialogBase(props: BorrowDialogProps) {
             </>
           ))}
 
-        {states.txFee &&
-          states.txFee.gt(0) &&
-          states.receiveAmount &&
-          states.receiveAmount.gt(0) && (
-            <TxFeeList className="receipt">
-              {big(states.txFee).gt(0) && (
-                <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-                  {formatUST(demicrofy(states.txFee))} Luna
-                </TxFeeListItem>
+        {states.receiveAmount && states.receiveAmount.gt(0) && (
+          <TxFeeList className="receipt">
+            <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
+              {estimatedFee &&
+                big(estimatedFee.txFee).gt(0) &&
+                `${formatLuna(demicrofy(estimatedFee.txFee))} Luna`}
+              {!estimatedFeeError && !estimatedFee && (
+                <span className="spinner">
+                  <CircleSpinner size={14} color={theme.colors.positive} />
+                </span>
               )}
-              <TxFeeListItem label="Receive Amount">
-                {formatUST(demicrofy(states.receiveAmount))} Luna
-              </TxFeeListItem>
-            </TxFeeList>
-          )}
+              {estimatedFeeError}
+            </TxFeeListItem>
+            <TxFeeListItem label="Receive Amount">
+              {states.borrowAmount} alxUSDC
+            </TxFeeListItem>
+          </TxFeeList>
+        )}
 
         <ViewAddressWarning>
           <ActionButton
@@ -397,7 +381,8 @@ function BorrowDialogBase(props: BorrowDialogProps) {
               !availablePost ||
               !connected ||
               !states.availablePost ||
-              !proceedable
+              !proceedable ||
+              !estimatedFee
             }
             onClick={() =>
               states.txFee &&

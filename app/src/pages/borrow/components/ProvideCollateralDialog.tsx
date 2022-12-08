@@ -1,5 +1,9 @@
-import { useBorrowProvideCollateralForm } from '@anchor-protocol/app-provider';
 import {
+  useAnchorWebapp,
+  useBorrowProvideCollateralForm,
+} from '@anchor-protocol/app-provider';
+import {
+  formatLuna,
   LUNA_INPUT_MAXIMUM_DECIMAL_POINTS,
   LUNA_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
@@ -18,9 +22,9 @@ import { IconLineSeparator } from 'components/primitives/IconLineSeparator';
 import { TxResultRenderer } from 'components/tx/TxResultRenderer';
 import { TxFeeList, TxFeeListItem } from 'components/TxFeeList';
 import { useAccount } from 'contexts/account';
-import { ChangeEvent, useMemo } from 'react';
+import { ChangeEvent, useEffect, useMemo } from 'react';
 import React, { useCallback } from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { LTVGraph } from './LTVGraph';
 import { UIElementProps } from '@libs/ui';
 import { TxResultRendering } from '@libs/app-fns';
@@ -32,8 +36,13 @@ import {
   formatOutput,
   demicrofy,
   useFormatters,
+  microfy,
 } from '@anchor-protocol/formatter';
 import { BroadcastTxStreamResult } from 'pages/earn/components/types';
+import { EstimatedFee, useFeeEstimationFor } from '@libs/app-provider';
+import { MsgExecuteContract } from '@terra-money/terra.js';
+import { createHookMsg } from '@libs/app-fns/tx/internal';
+import { CircleSpinner } from 'react-spinners-kit';
 
 export interface ProvideCollateralDialogParams
   extends UIElementProps,
@@ -41,7 +50,7 @@ export interface ProvideCollateralDialogParams
   txResult: StreamResult<TxResultRendering> | null;
   uTokenBalance: u<bAsset>;
   proceedable: boolean;
-  onProceed: (amount: bAsset & NoMicro) => void;
+  onProceed: (amount: bAsset & NoMicro, txFee: EstimatedFee) => void;
 }
 
 export type ProvideCollateralDialogProps =
@@ -63,7 +72,8 @@ function ProvideCollateralDialogBase(props: ProvideCollateralDialogProps) {
     renderBroadcastTxResult,
   } = props;
 
-  const { connected, availablePost } = useAccount();
+  const { availablePost, connected, terraWalletAddress } = useAccount();
+  const { contractAddress } = useAnchorWebapp();
 
   const [input, states] = useBorrowProvideCollateralForm(
     collateral,
@@ -73,11 +83,7 @@ function ProvideCollateralDialogBase(props: ProvideCollateralDialogProps) {
   );
 
   const {
-    luna: {
-      formatInput: formatUSTInput,
-      formatOutput: formatUSTOutput,
-      demicrofy: demicrofyUST,
-    },
+    luna: { formatInput: formatUSTInput, demicrofy: demicrofyUST },
   } = useFormatters();
 
   const updateDepositAmount = useCallback(
@@ -90,6 +96,61 @@ function ProvideCollateralDialogBase(props: ProvideCollateralDialogProps) {
   );
 
   const { ltvToAmount } = states;
+
+  const [estimatedFee, estimatedFeeError, estimateFee] =
+    useFeeEstimationFor(terraWalletAddress);
+
+  useEffect(() => {
+    if (!connected || !states.depositAmount) {
+      return;
+    }
+
+    estimateFee([
+      // provide_collateral call
+      new MsgExecuteContract(
+        terraWalletAddress,
+        props.collateral.collateral_token,
+        {
+          send: {
+            contract: props.collateral.custody_contract,
+            amount: formatInput(
+              microfy(states.depositAmount, props.collateral.decimals),
+              props.collateral.decimals,
+            ),
+            msg: createHookMsg({
+              deposit_collateral: {},
+            }),
+          },
+        },
+      ),
+      // lock_collateral call
+      new MsgExecuteContract(
+        terraWalletAddress,
+        contractAddress.moneyMarket.overseer,
+        {
+          // @see https://github.com/Anchor-Protocol/money-market-contracts/blob/master/contracts/overseer/src/msg.rs#L75
+          lock_collateral: {
+            collaterals: [
+              [
+                props.collateral.collateral_token,
+                formatInput(
+                  microfy(states.depositAmount, props.collateral.decimals),
+                  props.collateral.decimals,
+                ),
+              ],
+            ],
+          },
+        },
+      ),
+    ]);
+  }, [
+    terraWalletAddress,
+    contractAddress.moneyMarket.overseer,
+    props.collateral,
+    estimateFee,
+    connected,
+    states.depositAmount,
+  ]);
 
   const onLtvChange = useCallback(
     (nextLtv: Rate<Big>) => {
@@ -105,6 +166,12 @@ function ProvideCollateralDialogBase(props: ProvideCollateralDialogProps) {
     },
     [updateDepositAmount, ltvToAmount, collateral.decimals],
   );
+
+  // ---------------------------------------------
+  // presentation
+  // ---------------------------------------------
+
+  const theme = useTheme();
 
   const renderBroadcastTx = useMemo(() => {
     if (renderBroadcastTxResult) {
@@ -228,10 +295,18 @@ function ProvideCollateralDialogBase(props: ProvideCollateralDialogProps) {
           </figure>
         )}
 
-        {states.depositAmount.length > 0 && big(states.txFee).gt(0) && (
+        {states.depositAmount.length > 0 && (
           <TxFeeList className="receipt">
             <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-              {formatUSTOutput(demicrofyUST(states.txFee))} Luna
+              {estimatedFee &&
+                big(estimatedFee.txFee).gt(0) &&
+                `${formatLuna(demicrofy(estimatedFee.txFee, 6))} Luna`}
+              {!estimatedFeeError && !estimatedFee && (
+                <span className="spinner">
+                  <CircleSpinner size={14} color={theme.colors.positive} />
+                </span>
+              )}
+              {estimatedFeeError}
             </TxFeeListItem>
           </TxFeeList>
         )}
@@ -243,9 +318,12 @@ function ProvideCollateralDialogBase(props: ProvideCollateralDialogProps) {
               !availablePost ||
               !connected ||
               !states.availablePost ||
-              !proceedable
+              !proceedable ||
+              !estimatedFee
             }
-            onClick={() => onProceed(states.depositAmount)}
+            onClick={() =>
+              estimatedFee && onProceed(states.depositAmount, estimatedFee)
+            }
           >
             Proceed
           </ActionButton>

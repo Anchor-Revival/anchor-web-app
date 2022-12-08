@@ -205,7 +205,14 @@ export function pickRawLog(
   txInfo: TxInfoData,
   index: number,
 ): RawLogMsg | undefined {
-  return Array.isArray(txInfo[0].RawLog) ? txInfo[0].RawLog[index] : undefined;
+  let rawLog = undefined;
+  if (typeof txInfo[0].RawLog === 'string') {
+    rawLog = JSON.parse(txInfo[0].RawLog);
+  }
+
+  console.log(rawLog);
+
+  return Array.isArray(rawLog) ? rawLog[index] : undefined;
 }
 
 export function pickRawLogs(txInfo: TxInfoData): RawLogMsg[] {
@@ -217,9 +224,13 @@ export function pickRawLogs(txInfo: TxInfoData): RawLogMsg[] {
 
 export function pickEvent(
   rawLog: RawLogMsg,
-  type: string,
+  eventType: string,
 ): RawLogEvent | undefined {
-  return rawLog.events.find((event) => event.type === type);
+  // There is a change of event type from classi to Terra 2.0
+  if (eventType === 'from_contract') {
+    eventType = 'wasm';
+  }
+  return rawLog.events.find((event) => event.type === eventType);
 }
 
 export function pickAttributeValue<T extends string>(

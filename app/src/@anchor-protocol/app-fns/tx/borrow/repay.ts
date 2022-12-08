@@ -4,7 +4,14 @@ import {
   computeBorrowedAmount,
 } from '@anchor-protocol/app-fns';
 import { formatUSTWithPostfixUnits } from '@anchor-protocol/notation';
-import { Gas, HumanAddr, Rate, u, UST } from '@anchor-protocol/types';
+import {
+  Gas,
+  HumanAddr,
+  NativeDenom,
+  Rate,
+  u,
+  UST,
+} from '@anchor-protocol/types';
 import {
   pickAttributeValue,
   pickEvent,
@@ -41,7 +48,7 @@ export function borrowRepayTx($: {
   walletAddr: HumanAddr;
   marketAddr: HumanAddr;
   repayAmount: UST;
-
+  stableCoin: NativeDenom;
   gasFee: Gas;
   gasAdjustment: Rate<number>;
   txFee: u<UST>;
@@ -70,14 +77,7 @@ export function borrowRepayTx($: {
             repay_stable: {},
           },
           // sending stablecoin
-          new Coins([
-            new Coin(
-              $.network.name !== 'pisco'
-                ? 'ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389'
-                : 'ibc/B3504E092456BA618CC28AC671A71FB08C6CA0FD0BE7C8A5B5A3E2DD933CC9E4',
-              formatTokenInput($.repayAmount),
-            ),
-          ]),
+          new Coins([new Coin($.stableCoin, formatTokenInput($.repayAmount))]),
         ),
       ],
       // FIXME repay's txFee is not fixed_gas (user ust transfer)
@@ -144,6 +144,7 @@ export function borrowRepayTx($: {
           ],
         } as TxResultRendering;
       } catch (error) {
+        console.log('receipts error', error);
         return helper.failedToParseTxResult();
       }
     },

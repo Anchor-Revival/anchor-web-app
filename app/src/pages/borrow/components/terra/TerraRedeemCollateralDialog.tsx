@@ -1,7 +1,7 @@
 import React from 'react';
 import { useBorrowRedeemCollateralTx } from '@anchor-protocol/app-provider';
 import { bAsset } from '@anchor-protocol/types';
-import { useCW20Balance } from '@libs/app-provider';
+import { EstimatedFee, useCW20Balance } from '@libs/app-provider';
 import type { DialogProps } from '@libs/use-dialog';
 import { useAccount } from 'contexts/account';
 import { useCallback } from 'react';
@@ -26,9 +26,9 @@ export const TerraRedeemCollateralDialog = (
   const [postTx, txResult] = useBorrowRedeemCollateralTx(collateral);
 
   const proceed = useCallback(
-    (redeemAmount: bAsset) => {
+    (redeemAmount: bAsset, txFee: EstimatedFee) => {
       if (connected && postTx) {
-        postTx({ redeemAmount });
+        postTx({ redeemAmount, txFee });
       }
     },
     [connected, postTx],
@@ -38,6 +38,7 @@ export const TerraRedeemCollateralDialog = (
     <RedeemCollateralDialog
       {...props}
       txResult={txResult}
+      collateral={collateral}
       uTokenBalance={uTokenBalance}
       proceedable={postTx !== undefined}
       onProceed={proceed}
