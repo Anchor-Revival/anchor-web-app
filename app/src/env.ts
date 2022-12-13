@@ -105,29 +105,27 @@ const PHOENIX_CONTRACT_ADDRESS = {
 };
 
 const PISCO_CONTRACT_ADDRESS = {
-  bLunaHub: 'terra1u28n7urqhnu2v7d4vs3x6z2yqmz0g5n7dx9lwrnynjxjchm2lv8s276kdn',
+  bLunaHub: 'terra1m8unfkpp4kdnc693yxnl6wgvu5wkeps9ages9p4034gjgtvmk22qg9le2l',
   bLunaToken:
-    'terra1qplftykc0sehm2632zd0n5swdxc3k24sjtsf9lm8em50fqyyt8aq2k6u26',
-  bLunaReward:
-    'terra18e9c80ehqaee0963uqeaykapfef3v0a2xdm5uc28f44l9cv3tdeqyesm2e',
-  bLunaValidatorsRegistry: '',
-  bLunaAirdrop: '',
-  //bEthReward: 'terra1ja3snkedk4t0zp7z3ljd064hcln8dsv5x004na',
-  //bEthToken: 'terra19mkj9nec6e3y5754tlnuz4vem7lzh4n0lc2s3l',
+    'terra1wmmjpacj6c7eeacyk0jnugtqe24cxw7mvq0zwvc7l3ke2au8u4nqfnd76k',
   mmInterestModel:
-    'terra192p3z7wdqq0hgvgu23wkrkpeqwyp99nxrex78d3mrehdgu87gexq6aw2lu',
-  mmOracle: 'terra1z7483ujm8fdqmmdy8c2ncq9p5lf4rx2dca6dmsm2536mwvskvt6qjaqz4s',
-  mmMarket: 'terra17xhgwkrk3pnlkkw0rdsv75qn0m0whgeaw4rd2muqmtgsdmgkutqqaa4a44',
+    'terra1prajqsqnwpshesf38nh4hhqsjuudczkf6hgw899w8nyd4ll9chuqst4xmd',
+  mmOracle: 'terra1avsapmp5u9g8n9zefqgg0vjcttjtlv02fm7ynr0l6qw0sl736t3s4rcy4v',
+  mmMarket: 'terra1fpvh7a5fe42403w72ggvq2vg963d2vjsgyn2txmplwjvcqp6avpsflckww',
   mmOverseer:
-    'terra1qq3m9yn7h9gjgd6rs2t58qkjrqngl436sv6w3dak2svkc8lapx4qtxylsv',
-  mmCustody: 'terra1mv0mhsdzhkf20jpja28u9xfa27esmdgcgs6c6enzx3dru5mqpu4qua9007',
-  mmCustodyBEth: '',
-  mmLiquidation:
-    'terra1l34ampvph32lmsa086gdplc2g8y68r4du4pepjecf9wu0xfnt0eq3ur8dv',
+    'terra1smv0s7d4g847amtqtgjm2kkkhzgcutmfhpmj6znt5eac8ej0ddvq7s7pcq',
   mmLiquidationQueue:
-    'terra1jhydm6anuuweuzx2p6aq7j03qtehakwv0m4y9x9ce8jqcn3d2r4qw90w48',
-  mmDistributionModel: 'terra14mufqpr5mevdfn92p4jchpkxp7xr46uyknqjwq',
-  aTerra: 'terra1nn7dewwfnjqzy580uykvfp2fa3c8rmpu5dh7cmrptye0lgzsrh7q7mkeme',
+    'terra1k5c0l7t3wvu4vhedv870n9748ycw53h6qmrrr6x76pg7ptdjdw0sudqt3q',
+  aUSDC: 'terra1phktkrnr99m56gqjk37n0xlr7vk2zp3p835tqtu6v2sgzl4tet4srypktp',
+  custodyBLuna:
+    'terra1gd5wqk7tq66je4y0msd5ftayp3u8yqq3jzj3ryng2lnwr37lk3gq047m3z',
+  bLunaReward:
+    'terra1ml375eu9c0k04muchdt3csjwdcmspqz4cn6qkldmfhav0jd60fes7kwn5n',
+  bLunaValidatorsRegistry:
+    'terra1nvwugmg05x29a27pdjztcjmun0st0wc0e5lzfffesn9elgmetvtsx9kkwl',
+  mmDistributionModel:
+    'terra1wf2dx5exzllqznx6yd5ed8kahe006uternlvu752paymy6nnq6as07jdg5',
+
   bLunaLunaPair: '',
   bLunaLunaLPToken: '',
   ancUstPair: '',

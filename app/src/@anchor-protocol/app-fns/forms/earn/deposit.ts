@@ -1,6 +1,6 @@
 import { UST, Luna, Rate, u } from '@anchor-protocol/types';
 import { computeMaxUstBalanceForUstTransfer } from '@libs/app-fns';
-import { max, min } from '@libs/big-math';
+import { EstimatedFee } from '@libs/app-provider';
 import { microfy } from '@libs/formatter';
 import { FormReturn } from '@libs/use-form';
 import big, { Big } from 'big.js';
@@ -11,7 +11,8 @@ export interface EarnDepositFormInput {
 
 export interface EarnDepositFormDependency {
   userUUSTBalance: u<UST>;
-  fixedGas: u<Luna>;
+  txFee?: EstimatedFee;
+  estimatedFeeError?: string;
   taxRate: Rate;
   maxTaxUUSD: u<Luna>;
   isConnected: boolean;
@@ -21,7 +22,8 @@ export interface EarnDepositFormStates extends EarnDepositFormInput {
   availablePost: boolean;
   maxAmount: u<UST>;
   sendAmount?: u<UST>;
-  txFee?: u<Luna>;
+  estimatedFee?: EstimatedFee;
+  estimatedFeeError?: string;
   invalidTxFee?: string;
   invalidDepositAmount?: string;
   invalidNextTxFee?: string;
@@ -31,7 +33,8 @@ export interface EarnDepositFormAsyncStates {}
 
 export const earnDepositForm =
   ({
-    fixedGas,
+    txFee,
+    estimatedFeeError,
     taxRate,
     maxTaxUUSD,
     userUUSTBalance,
@@ -45,20 +48,6 @@ export const earnDepositForm =
   > => {
     const depositAmountExists = depositAmount.length > 0;
 
-    // txFee
-    const txFee = (() => {
-      if (!isConnected || !depositAmountExists) {
-        return undefined;
-      }
-
-      const uAmount = microfy(depositAmount);
-      const ratioTxFee = big(uAmount.minus(fixedGas))
-        .div(big(1).add(taxRate))
-        .mul(taxRate);
-      const maxTax = big(maxTaxUUSD);
-      return max(min(ratioTxFee, maxTax), 0).plus(fixedGas) as u<UST<Big>>;
-    })();
-
     // sendAmount
     const sendAmount = txFee
       ? (microfy(depositAmount) as u<UST<Big>>)
@@ -69,12 +58,12 @@ export const earnDepositForm =
       userUUSTBalance,
       taxRate,
       maxTaxUUSD,
-      fixedGas,
+      '0' as u<UST>,
     );
 
     // invalidTxFee
     const invalidTxFee = (() => {
-      return isConnected && txFee && big(userUUSTBalance).lt(txFee)
+      return isConnected && txFee && big(userUUSTBalance).lt(0)
         ? 'Not enough transaction fees'
         : undefined;
     })();
@@ -85,7 +74,7 @@ export const earnDepositForm =
         return undefined;
       }
 
-      return microfy(depositAmount).plus(txFee).gt(userUUSTBalance)
+      return microfy(depositAmount).plus(0).gt(userUUSTBalance)
         ? `Not enough axlUSDC`
         : undefined;
     })();
@@ -107,7 +96,8 @@ export const earnDepositForm =
     return [
       {
         depositAmount,
-        txFee: txFee?.toFixed() as u<Luna>,
+        estimatedFee: txFee,
+        estimatedFeeError,
         sendAmount: sendAmount?.toFixed() as u<UST>,
         maxAmount: maxAmount?.toFixed() as u<UST>,
         invalidTxFee,

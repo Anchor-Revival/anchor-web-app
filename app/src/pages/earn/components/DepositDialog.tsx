@@ -1,4 +1,5 @@
 import {
+  formatLuna,
   UST_INPUT_MAXIMUM_DECIMAL_POINTS,
   UST_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
@@ -14,7 +15,7 @@ import { MessageBox } from 'components/MessageBox';
 import { TxFeeList, TxFeeListItem } from 'components/TxFeeList';
 import { TxResultRenderer } from 'components/tx/TxResultRenderer';
 import React, { ChangeEvent, useMemo } from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { useAccount } from 'contexts/account';
 import { AmountSlider } from './AmountSlider';
 import { UIElementProps } from '@libs/ui';
@@ -22,6 +23,7 @@ import { TxResultRendering } from '@libs/app-fns';
 import { useFormatters } from '@anchor-protocol/formatter/useFormatters';
 import { BroadcastTxStreamResult } from './types';
 import big from 'big.js';
+import { CircleSpinner } from 'react-spinners-kit';
 
 interface DepositDialogParams extends UIElementProps, EarnDepositFormReturn {
   txResult: StreamResult<TxResultRendering> | null;
@@ -42,8 +44,8 @@ function DepositDialogBase(props: DepositDialogProps) {
     txResult,
     closeDialog,
     depositAmount,
-    txFee,
-    sendAmount,
+    estimatedFee,
+    estimatedFeeError,
     maxAmount,
     invalidTxFee,
     invalidNextTxFee,
@@ -56,8 +58,9 @@ function DepositDialogBase(props: DepositDialogProps) {
 
   const {
     axlUSDC: { formatOutput, formatInput, demicrofy, symbol },
-    luna,
   } = useFormatters();
+
+  const theme = useTheme();
 
   const renderBroadcastTx = useMemo(() => {
     if (renderBroadcastTxResult) {
@@ -135,7 +138,6 @@ function DepositDialogBase(props: DepositDialogProps) {
             <AmountSlider
               disabled={!account.connected}
               max={Number(demicrofy(maxAmount))}
-              txFee={Number(demicrofy(txFee ?? ('0' as UST)))}
               value={Number(depositAmount)}
               onChange={(value) => {
                 updateDepositAmount(formatInput(value.toString() as UST));
@@ -144,15 +146,21 @@ function DepositDialogBase(props: DepositDialogProps) {
           </figure>
         )}
 
-        {txFee && sendAmount && (
+        {depositAmount && (
           <TxFeeList className="receipt">
-            {big(txFee).gt(0) && (
-              <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-                {`${luna.formatOutput(luna.demicrofy(txFee))} ${luna.symbol}`}
-              </TxFeeListItem>
-            )}
+            <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
+              {estimatedFee &&
+                big(estimatedFee.txFee).gt(0) &&
+                `${formatLuna(demicrofy(estimatedFee.txFee))} Luna`}
+              {!estimatedFeeError && !estimatedFee && (
+                <span className="spinner">
+                  <CircleSpinner size={14} color={theme.colors.positive} />
+                </span>
+              )}
+              {estimatedFeeError}
+            </TxFeeListItem>
             <TxFeeListItem label="Send Amount">
-              {`${formatOutput(demicrofy(sendAmount))} ${symbol}`}
+              {`${depositAmount} ${symbol}`}
             </TxFeeListItem>
           </TxFeeList>
         )}

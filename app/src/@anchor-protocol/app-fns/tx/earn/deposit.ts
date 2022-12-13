@@ -2,7 +2,15 @@ import {
   formatAUSTWithPostfixUnits,
   formatUSTWithPostfixUnits,
 } from '@anchor-protocol/notation';
-import { aUST, UST, Gas, HumanAddr, Rate, u } from '@anchor-protocol/types';
+import {
+  aUST,
+  UST,
+  Gas,
+  HumanAddr,
+  Rate,
+  u,
+  NativeDenom,
+} from '@anchor-protocol/types';
 import {
   pickAttributeValue,
   pickEvent,
@@ -40,6 +48,7 @@ export function earnDepositTx($: {
   walletAddr: HumanAddr;
   marketAddr: HumanAddr;
   depositAmount: UST;
+  stableDenom: NativeDenom;
 
   gasFee: Gas;
   gasAdjustment: Rate<number>;
@@ -66,9 +75,7 @@ export function earnDepositTx($: {
           // coins
           new Coins([
             new Coin(
-              $.network.name !== 'pisco'
-                ? 'ibc/D70F005DE981F6EFFB3AD1DF85601258D1C01B9DEDC1F7C1B95C0993E83CF389'
-                : 'ibc/B3504E092456BA618CC28AC671A71FB08C6CA0FD0BE7C8A5B5A3E2DD933CC9E4',
+              $.stableDenom,
 
               formatTokenInput($.depositAmount),
             ),

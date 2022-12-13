@@ -89,7 +89,7 @@ export const AmountSlider = ({
 
   // console.log('value', value);
   // console.log('max', max);
-  console.log('valueRatio', valueRatio);
+  //console.log('valueRatio', valueRatio);
 
   return (
     <HorizontalGraphBar<Data>

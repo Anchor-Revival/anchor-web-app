@@ -30,15 +30,7 @@ export function TokenIconBase({
   ...imgProps
 }: IconProps) {}
 
-export const tokens = [
-  'ust',
-  'krt',
-  'aust',
-  'akrt',
-  'luna',
-  'bluna',
-  'beth',
-] as const;
+export const tokens = ['ust', 'aust', 'luna', 'bluna'] as const;
 
 export const variants = ['svg', '@2x', '@3x', '@4x'] as const;
 

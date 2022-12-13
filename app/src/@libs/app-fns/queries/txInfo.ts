@@ -210,8 +210,6 @@ export function pickRawLog(
     rawLog = JSON.parse(txInfo[0].RawLog);
   }
 
-  console.log(rawLog);
-
   return Array.isArray(rawLog) ? rawLog[index] : undefined;
 }
 

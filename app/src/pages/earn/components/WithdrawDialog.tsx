@@ -4,6 +4,7 @@ import {
   EarnWithdrawFormReturn,
 } from '@anchor-protocol/app-provider';
 import {
+  formatLuna,
   UST_INPUT_MAXIMUM_DECIMAL_POINTS,
   UST_INPUT_MAXIMUM_INTEGER_POINTS,
 } from '@anchor-protocol/notation';
@@ -19,7 +20,7 @@ import { TxFeeList, TxFeeListItem } from 'components/TxFeeList';
 import { TxResultRenderer } from 'components/tx/TxResultRenderer';
 import { useAccount } from 'contexts/account';
 import React, { ChangeEvent, useMemo } from 'react';
-import styled from 'styled-components';
+import styled, { useTheme } from 'styled-components';
 import { useBalances } from 'contexts/balances';
 import { AmountSlider } from './AmountSlider';
 import { TxResultRendering } from '@libs/app-fns';
@@ -27,6 +28,7 @@ import { UIElementProps } from '@libs/ui';
 import { useFormatters } from '@anchor-protocol/formatter/useFormatters';
 import { BroadcastTxStreamResult } from './types';
 import big from 'big.js';
+import { CircleSpinner } from 'react-spinners-kit';
 
 interface WithdrawDialogParams extends UIElementProps, EarnWithdrawFormReturn {
   txResult: StreamResult<TxResultRendering> | null;
@@ -48,8 +50,8 @@ function WithdrawDialogBase(props: WithdrawDialogProps) {
     txResult,
     closeDialog,
     withdrawAmount,
-    receiveAmount,
-    txFee,
+    estimatedFee,
+    estimatedFeeError,
     invalidTxFee,
     invalidWithdrawAmount,
     updateWithdrawAmount,
@@ -62,7 +64,6 @@ function WithdrawDialogBase(props: WithdrawDialogProps) {
 
   const {
     axlUSDC: { formatOutput, formatInput, demicrofy, symbol },
-    luna,
   } = useFormatters();
 
   const { data } = useEarnEpochStatesQuery();
@@ -72,6 +73,8 @@ function WithdrawDialogBase(props: WithdrawDialogProps) {
       totalDeposit: computeTotalDeposit(uaUST, data?.moneyMarketEpochState),
     };
   }, [data?.moneyMarketEpochState, uaUST]);
+
+  const theme = useTheme();
 
   const renderBroadcastTx = useMemo(() => {
     if (renderBroadcastTxResult) {
@@ -152,16 +155,21 @@ function WithdrawDialogBase(props: WithdrawDialogProps) {
           />
         </figure>
 
-        {txFee && receiveAmount && (
+        {withdrawAmount && (
           <TxFeeList className="receipt">
-            {big(txFee).gt(0) && (
-              <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
-                {luna.formatOutput(luna.demicrofy(txFee))}
-                {` ${luna.symbol}`}
-              </TxFeeListItem>
-            )}
+            <TxFeeListItem label={<IconSpan>Tx Fee</IconSpan>}>
+              {estimatedFee &&
+                big(estimatedFee.txFee).gt(0) &&
+                `${formatLuna(demicrofy(estimatedFee.txFee))} Luna`}
+              {!estimatedFeeError && !estimatedFee && (
+                <span className="spinner">
+                  <CircleSpinner size={14} color={theme.colors.positive} />
+                </span>
+              )}
+              {estimatedFeeError}
+            </TxFeeListItem>
             <TxFeeListItem label="Receive Amount">
-              {formatOutput(demicrofy(receiveAmount))}
+              {withdrawAmount}
               {` ${symbol}`}
             </TxFeeListItem>
           </TxFeeList>

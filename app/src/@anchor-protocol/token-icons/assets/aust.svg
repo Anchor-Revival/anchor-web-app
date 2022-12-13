@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   width="60px"
-   height="60px"
-   viewBox="0 0 60 60"
+   width="2000"
+   height="2000"
+   viewBox="0 0 2000 2000"
    version="1.1"
    id="svg1567"
    sodipodi:docname="aust.svg"
@@ -23,9 +23,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      showgrid="false"
-     inkscape:zoom="9.2159584"
-     inkscape:cx="30.002306"
-     inkscape:cy="40.419019"
+     inkscape:zoom="0.32"
+     inkscape:cx="1007.8125"
+     inkscape:cy="1214.0625"
      inkscape:window-width="1846"
      inkscape:window-height="1016"
      inkscape:window-x="0"
@@ -37,7 +37,7 @@
   <defs
      id="defs1382">
     <linearGradient
-       x1="0.53175518"
+       x1="0.53175521"
        y1="14.152693"
        x2="27.356808"
        y2="14.152693"
@@ -56,7 +56,7 @@
          id="stop6" />
     </linearGradient>
     <linearGradient
-       x1="0.53196115"
+       x1="0.53196114"
        y1="14.044566"
        x2="27.186127"
        y2="14.044566"
@@ -75,9 +75,9 @@
          id="stop11" />
     </linearGradient>
     <linearGradient
-       x1="0.5314714"
+       x1="0.53147137"
        y1="13.960554"
-       x2="26.979989"
+       x2="26.979988"
        y2="13.960554"
        id="linearGradient-3"
        gradientTransform="scale(1.2058974,0.82925792)"
@@ -94,9 +94,9 @@
          id="stop16" />
     </linearGradient>
     <linearGradient
-       x1="0.53158798"
+       x1="0.53158796"
        y1="13.860801"
-       x2="26.804757"
+       x2="26.804756"
        y2="13.860801"
        id="linearGradient-4"
        gradientTransform="scale(1.205633,0.82943983)"
@@ -113,9 +113,9 @@
          id="stop21" />
     </linearGradient>
     <linearGradient
-       x1="0.53061818"
+       x1="0.53061819"
        y1="13.789387"
-       x2="26.575038"
+       x2="26.575039"
        y2="13.789387"
        id="linearGradient-5"
        gradientTransform="scale(1.2078365,0.82792664)"
@@ -132,7 +132,7 @@
          id="stop26" />
     </linearGradient>
     <linearGradient
-       x1="0.53073175"
+       x1="0.53073174"
        y1="13.689949"
        x2="26.399868"
        y2="13.689949"
@@ -151,7 +151,7 @@
          id="stop31" />
     </linearGradient>
     <linearGradient
-       x1="0.53169809"
+       x1="0.53169811"
        y1="13.56888"
        x2="26.266748"
        y2="13.56888"
@@ -170,7 +170,7 @@
          id="stop36" />
     </linearGradient>
     <linearGradient
-       x1="0.53122368"
+       x1="0.53122365"
        y1="13.484842"
        x2="26.062286"
        y2="13.484842"
@@ -189,7 +189,7 @@
          id="stop41" />
     </linearGradient>
     <linearGradient
-       x1="0.53135153"
+       x1="0.53135151"
        y1="13.385948"
        x2="25.887489"
        y2="13.385948"
@@ -208,7 +208,7 @@
          id="stop46" />
     </linearGradient>
     <linearGradient
-       x1="0.53090341"
+       x1="0.5309034"
        y1="13.301759"
        x2="25.68474"
        y2="13.301759"
@@ -227,9 +227,9 @@
          id="stop51" />
     </linearGradient>
     <linearGradient
-       x1="0.53050141"
+       x1="0.53050143"
        y1="13.21664"
-       x2="25.484511"
+       x2="25.48451"
        y2="13.21664"
        id="linearGradient-11"
        gradientTransform="scale(1.2081024,0.82774443)"
@@ -246,7 +246,7 @@
          id="stop56" />
     </linearGradient>
     <linearGradient
-       x1="0.5300767"
+       x1="0.53007668"
        y1="13.132559"
        x2="25.283476"
        y2="13.132559"
@@ -265,9 +265,9 @@
          id="stop61" />
     </linearGradient>
     <linearGradient
-       x1="0.53091328"
+       x1="0.53091329"
        y1="13.017948"
-       x2="25.142461"
+       x2="25.142462"
        y2="13.017948"
        id="linearGradient-13"
        gradientTransform="scale(1.2071651,0.82838708)"
@@ -322,7 +322,7 @@
          id="stop76" />
     </linearGradient>
     <linearGradient
-       x1="0.52980676"
+       x1="0.52980673"
        y1="12.768844"
        x2="24.548429"
        y2="12.768844"
@@ -341,9 +341,9 @@
          id="stop81" />
     </linearGradient>
     <linearGradient
-       x1="0.53028862"
+       x1="0.53028864"
        y1="12.672399"
-       x2="24.390132"
+       x2="24.390133"
        y2="12.672399"
        id="linearGradient-17"
        gradientTransform="scale(1.2085871,0.82741241)"
@@ -359,10 +359,10 @@
          id="stop86" />
     </linearGradient>
     <linearGradient
-       x1="0.272142"
-       y1="7.6031835"
+       x1="0.27214199"
+       y1="7.6031833"
        x2="12.516918"
-       y2="7.6031835"
+       y2="7.6031833"
        id="linearGradient-18"
        gradientTransform="scale(2.3550205,0.42462475)"
        gradientUnits="userSpaceOnUse">
@@ -388,9 +388,9 @@
          id="stop97" />
     </linearGradient>
     <linearGradient
-       x1="6.3972872"
+       x1="6.3972874"
        y1="1.4806647"
-       x2="6.3972872"
+       x2="6.3972874"
        y2="13.732282"
        id="linearGradient-19"
        gradientTransform="scale(2.3539979,0.42480922)"
@@ -429,9 +429,9 @@
          id="stop114" />
     </linearGradient>
     <linearGradient
-       x1="0.56401171"
+       x1="0.56401169"
        y1="13.037726"
-       x2="25.941194"
+       x2="25.941195"
        y2="13.037726"
        id="linearGradient-20"
        gradientTransform="scale(1.1363239,0.88003074)"
@@ -482,9 +482,9 @@
          id="stop137" />
     </linearGradient>
     <linearGradient
-       x1="0.43955802"
+       x1="0.43955803"
        y1="10.970555"
-       x2="20.217063"
+       x2="20.217064"
        y2="10.970555"
        id="linearGradient-21"
        gradientTransform="scale(1.4580555,0.68584494)"
@@ -535,10 +535,10 @@
          id="stop160" />
     </linearGradient>
     <linearGradient
-       x1="0.25333797"
-       y1="37.740899"
+       x1="0.25333798"
+       y1="37.740898"
        x2="11.652045"
-       y2="37.740899"
+       y2="37.740898"
        id="linearGradient-22"
        gradientTransform="scale(2.5298221,0.39528471)"
        gradientUnits="userSpaceOnUse">
@@ -588,10 +588,10 @@
          id="stop183" />
     </linearGradient>
     <linearGradient
-       x1="0.25333797"
-       y1="45.22386"
+       x1="0.25333798"
+       y1="45.223862"
        x2="11.652045"
-       y2="45.22386"
+       y2="45.223862"
        id="linearGradient-23"
        gradientTransform="scale(2.5298221,0.39528471)"
        gradientUnits="userSpaceOnUse">
@@ -642,9 +642,9 @@
     </linearGradient>
     <linearGradient
        x1="0.58198631"
-       y1="8.8655511"
-       x2="26.76801"
-       y2="8.8655511"
+       y1="8.865551"
+       x2="26.768009"
+       y2="8.865551"
        id="linearGradient-24"
        gradientTransform="scale(1.1012286,0.90807663)"
        gradientUnits="userSpaceOnUse">
@@ -746,10 +746,10 @@
          id="stop252" />
     </linearGradient>
     <linearGradient
-       x1="-0.35850029"
-       y1="7.5076"
-       x2="28.4749"
-       y2="7.5076"
+       x1="-0.3585003"
+       y1="7.5075998"
+       x2="28.474899"
+       y2="7.5075998"
        id="linearGradient-26"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -798,10 +798,10 @@
          id="stop275" />
     </linearGradient>
     <linearGradient
-       x1="-0.35850029"
-       y1="9.5717"
-       x2="28.4749"
-       y2="9.5717"
+       x1="-0.3585003"
+       y1="9.5717001"
+       x2="28.474899"
+       y2="9.5717001"
        id="linearGradient-27"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -851,9 +851,9 @@
     </linearGradient>
     <linearGradient
        x1="-0.35879993"
-       y1="6.5306"
+       y1="6.5306001"
        x2="28.476202"
-       y2="6.5306"
+       y2="6.5306001"
        id="linearGradient-28"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -903,9 +903,9 @@
     </linearGradient>
     <linearGradient
        x1="-0.35879993"
-       y1="8.5944"
+       y1="8.5944004"
        x2="28.476202"
-       y2="8.5944"
+       y2="8.5944004"
        id="linearGradient-29"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -1006,10 +1006,10 @@
          id="stop367" />
     </linearGradient>
     <linearGradient
-       x1="-0.36040001"
-       y1="9.4032"
-       x2="28.4815"
-       y2="9.4032"
+       x1="-0.36040002"
+       y1="9.4032001"
+       x2="28.481501"
+       y2="9.4032001"
        id="linearGradient-31"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -1058,9 +1058,9 @@
          id="stop390" />
     </linearGradient>
     <linearGradient
-       x1="-0.35850029"
+       x1="-0.3585003"
        y1="5.4438"
-       x2="28.4749"
+       x2="28.474899"
        y2="5.4438"
        id="linearGradient-32"
        gradientUnits="userSpaceOnUse">
@@ -1110,10 +1110,10 @@
          id="stop413" />
     </linearGradient>
     <linearGradient
-       x1="-0.35840044"
-       y1="8.4652"
-       x2="28.475001"
-       y2="8.4652"
+       x1="-0.35840043"
+       y1="8.4652004"
+       x2="28.475"
+       y2="8.4652004"
        id="linearGradient-33"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -1214,10 +1214,10 @@
          id="stop459" />
     </linearGradient>
     <linearGradient
-       x1="-0.35850029"
-       y1="3.3797"
-       x2="28.4749"
-       y2="3.3797"
+       x1="-0.3585003"
+       y1="3.3796999"
+       x2="28.474899"
+       y2="3.3796999"
        id="linearGradient-35"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -1266,10 +1266,10 @@
          id="stop482" />
     </linearGradient>
     <linearGradient
-       x1="-0.35859976"
-       y1="6.4015"
-       x2="28.4756"
-       y2="6.4015"
+       x1="-0.35859975"
+       y1="6.4015002"
+       x2="28.475599"
+       y2="6.4015002"
        id="linearGradient-36"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -1371,9 +1371,9 @@
     </linearGradient>
     <linearGradient
        x1="-0.37662724"
-       y1="6.2859881"
+       y1="6.2859883"
        x2="29.871336"
-       y2="6.2859881"
+       y2="6.2859883"
        id="linearGradient-38"
        gradientTransform="scale(0.95346259,1.0488088)"
        gradientUnits="userSpaceOnUse">
@@ -1478,7 +1478,7 @@
     <linearGradient
        x1="-0.37662724"
        y1="10.222072"
-       x2="29.863364"
+       x2="29.863363"
        y2="10.222072"
        id="linearGradient-40"
        gradientTransform="scale(0.95346259,1.0488088)"
@@ -1529,10 +1529,10 @@
          id="stop597" />
     </linearGradient>
     <linearGradient
-       x1="-0.39271666"
-       y1="3.9594864"
-       x2="31.1928"
-       y2="3.9594864"
+       x1="-0.39271665"
+       y1="3.9594865"
+       x2="31.192801"
+       y2="3.9594865"
        id="linearGradient-41"
        gradientTransform="scale(0.91287093,1.0954451)"
        gradientUnits="userSpaceOnUse">
@@ -1582,10 +1582,10 @@
          id="stop620" />
     </linearGradient>
     <linearGradient
-       x1="-0.39271666"
-       y1="2.0748643"
-       x2="31.1928"
-       y2="2.0748643"
+       x1="-0.39271665"
+       y1="2.0748644"
+       x2="31.192801"
+       y2="2.0748644"
        id="linearGradient-42"
        gradientTransform="scale(0.91287093,1.0954451)"
        gradientUnits="userSpaceOnUse">
@@ -1636,9 +1636,9 @@
     </linearGradient>
     <linearGradient
        x1="-0.37662724"
-       y1="8.2538396"
-       x2="29.863364"
-       y2="8.2538396"
+       y1="8.2538395"
+       x2="29.863363"
+       y2="8.2538395"
        id="linearGradient-43"
        gradientTransform="scale(0.95346259,1.0488088)"
        gradientUnits="userSpaceOnUse">
@@ -1688,10 +1688,10 @@
          id="stop666" />
     </linearGradient>
     <linearGradient
-       x1="-0.34219776"
-       y1="3.6436668"
-       x2="27.149371"
-       y2="3.6436668"
+       x1="-0.34219775"
+       y1="3.6436667"
+       x2="27.14937"
+       y2="3.6436667"
        id="linearGradient-44"
        gradientTransform="scale(1.0488088,0.95346259)"
        gradientUnits="userSpaceOnUse">
@@ -1741,9 +1741,9 @@
          id="stop689" />
     </linearGradient>
     <linearGradient
-       x1="-0.34219776"
+       x1="-0.34219775"
        y1="5.8083034"
-       x2="27.149371"
+       x2="27.14937"
        y2="5.8083034"
        id="linearGradient-45"
        gradientTransform="scale(1.0488088,0.95346259)"
@@ -1794,10 +1794,10 @@
          id="stop712" />
     </linearGradient>
     <linearGradient
-       x1="-0.35890002"
-       y1="9.6661"
-       x2="28.4745"
-       y2="9.6661"
+       x1="-0.35890001"
+       y1="9.6660995"
+       x2="28.474501"
+       y2="9.6660995"
        id="linearGradient-46"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -1846,10 +1846,10 @@
          id="stop735" />
     </linearGradient>
     <linearGradient
-       x1="-0.34219776"
-       y1="7.9731497"
-       x2="27.149371"
-       y2="7.9731497"
+       x1="-0.34219775"
+       y1="7.9731498"
+       x2="27.14937"
+       y2="7.9731498"
        id="linearGradient-47"
        gradientTransform="scale(1.0488088,0.95346259)"
        gradientUnits="userSpaceOnUse">
@@ -1900,9 +1900,9 @@
     </linearGradient>
     <linearGradient
        x1="-0.37662724"
-       y1="2.3494271"
+       y1="2.349427"
        x2="29.870602"
-       y2="2.3494271"
+       y2="2.349427"
        id="linearGradient-48"
        gradientTransform="scale(0.95346259,1.0488088)"
        gradientUnits="userSpaceOnUse">
@@ -1952,10 +1952,10 @@
          id="stop781" />
     </linearGradient>
     <linearGradient
-       x1="-0.36040001"
-       y1="7.3394"
-       x2="28.4815"
-       y2="7.3394"
+       x1="-0.36040002"
+       y1="7.3393998"
+       x2="28.481501"
+       y2="7.3393998"
        id="linearGradient-49"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -2004,7 +2004,7 @@
          id="stop804" />
     </linearGradient>
     <linearGradient
-       x1="-0.37494964"
+       x1="-0.37494963"
        y1="6.5020428"
        x2="29.865042"
        y2="6.5020428"
@@ -2057,10 +2057,10 @@
          id="stop827" />
     </linearGradient>
     <linearGradient
-       x1="-0.37494964"
-       y1="4.5342867"
-       x2="29.864936"
-       y2="4.5342867"
+       x1="-0.37494963"
+       y1="4.5342865"
+       x2="29.864937"
+       y2="4.5342865"
        id="linearGradient-51"
        gradientTransform="scale(0.95346259,1.0488088)"
        gradientUnits="userSpaceOnUse">
@@ -2110,10 +2110,10 @@
          id="stop850" />
     </linearGradient>
     <linearGradient
-       x1="-0.37494964"
-       y1="8.4700849"
-       x2="29.864936"
-       y2="8.4700849"
+       x1="-0.37494963"
+       y1="8.4700851"
+       x2="29.864937"
+       y2="8.4700851"
        id="linearGradient-52"
        gradientTransform="scale(0.95346259,1.0488088)"
        gradientUnits="userSpaceOnUse">
@@ -2163,7 +2163,7 @@
          id="stop873" />
     </linearGradient>
     <linearGradient
-       x1="-0.36300011"
+       x1="-0.36300012"
        y1="3.8734"
        x2="28.484301"
        y2="3.8734"
@@ -2215,9 +2215,9 @@
          id="stop896" />
     </linearGradient>
     <linearGradient
-       x1="-0.37463457"
+       x1="-0.37463456"
        y1="2.5662446"
-       x2="29.864518"
+       x2="29.864517"
        y2="2.5662446"
        id="linearGradient-54"
        gradientTransform="scale(0.95346259,1.0488088)"
@@ -2268,10 +2268,10 @@
          id="stop919" />
     </linearGradient>
     <linearGradient
-       x1="-0.36300011"
-       y1="1.8093"
+       x1="-0.36300012"
+       y1="1.8092999"
        x2="28.484301"
-       y2="1.8093"
+       y2="1.8092999"
        id="linearGradient-55"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -2320,10 +2320,10 @@
          id="stop942" />
     </linearGradient>
     <linearGradient
-       x1="-0.37578763"
-       y1="5.3643712"
-       x2="29.866616"
-       y2="5.3643712"
+       x1="-0.37578762"
+       y1="5.3643713"
+       x2="29.866615"
+       y2="5.3643713"
        id="linearGradient-56"
        gradientTransform="scale(0.95346259,1.0488088)"
        gradientUnits="userSpaceOnUse">
@@ -2373,10 +2373,10 @@
          id="stop965" />
     </linearGradient>
     <linearGradient
-       x1="-0.37578763"
-       y1="3.3963291"
-       x2="29.866616"
-       y2="3.3963291"
+       x1="-0.37578762"
+       y1="3.3963292"
+       x2="29.866615"
+       y2="3.3963292"
        id="linearGradient-57"
        gradientTransform="scale(0.95346259,1.0488088)"
        gradientUnits="userSpaceOnUse">
@@ -2426,10 +2426,10 @@
          id="stop988" />
     </linearGradient>
     <linearGradient
-       x1="-0.37536954"
-       y1="9.3007415"
-       x2="29.866195"
-       y2="9.3007415"
+       x1="-0.37536955"
+       y1="9.3007412"
+       x2="29.866196"
+       y2="9.3007412"
        id="linearGradient-58"
        gradientTransform="scale(0.95346259,1.0488088)"
        gradientUnits="userSpaceOnUse">
@@ -2479,9 +2479,9 @@
          id="stop1011" />
     </linearGradient>
     <linearGradient
-       x1="-0.37578763"
+       x1="-0.37578762"
        y1="1.4277149"
-       x2="29.866616"
+       x2="29.866615"
        y2="1.4277149"
        id="linearGradient-59"
        gradientTransform="scale(0.95346259,1.0488088)"
@@ -2532,10 +2532,10 @@
          id="stop1034" />
     </linearGradient>
     <linearGradient
-       x1="-0.37568261"
-       y1="7.3322227"
-       x2="29.866616"
-       y2="7.3322227"
+       x1="-0.37568262"
+       y1="7.3322225"
+       x2="29.866615"
+       y2="7.3322225"
        id="linearGradient-60"
        gradientTransform="scale(0.95346259,1.0488088)"
        gradientUnits="userSpaceOnUse">
@@ -2585,7 +2585,7 @@
          id="stop1057" />
     </linearGradient>
     <linearGradient
-       x1="-0.36300011"
+       x1="-0.36300012"
        y1="5.9375"
        x2="28.484301"
        y2="5.9375"
@@ -2637,9 +2637,9 @@
          id="stop1080" />
     </linearGradient>
     <linearGradient
-       x1="-0.36040001"
+       x1="-0.36040002"
        y1="3.2112"
-       x2="28.4815"
+       x2="28.481501"
        y2="3.2112"
        id="linearGradient-62"
        gradientUnits="userSpaceOnUse">
@@ -2690,9 +2690,9 @@
     </linearGradient>
     <linearGradient
        x1="-0.3583003"
-       y1="8.2599"
+       y1="8.2599001"
        x2="28.475201"
-       y2="8.2599"
+       y2="8.2599001"
        id="linearGradient-63"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -2741,10 +2741,10 @@
          id="stop1126" />
     </linearGradient>
     <linearGradient
-       x1="-0.36300011"
-       y1="8.0013"
+       x1="-0.36300012"
+       y1="8.0012999"
        x2="28.484301"
-       y2="8.0013"
+       y2="8.0012999"
        id="linearGradient-64"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -2794,9 +2794,9 @@
     </linearGradient>
     <linearGradient
        x1="-0.3583003"
-       y1="4.1319"
+       y1="4.1318998"
        x2="28.4751"
-       y2="4.1319"
+       y2="4.1318998"
        id="linearGradient-65"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -2897,10 +2897,10 @@
          id="stop1195" />
     </linearGradient>
     <linearGradient
-       x1="-0.36040001"
-       y1="5.2751"
-       x2="28.4815"
-       y2="5.2751"
+       x1="-0.36040002"
+       y1="5.2751002"
+       x2="28.481501"
+       y2="5.2751002"
        id="linearGradient-67"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -2949,10 +2949,10 @@
          id="stop1218" />
     </linearGradient>
     <linearGradient
-       x1="-0.36009989"
-       y1="2.0677"
+       x1="-0.36009988"
+       y1="2.0676999"
        x2="28.480299"
-       y2="2.0677"
+       y2="2.0676999"
        id="linearGradient-68"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -3002,9 +3002,9 @@
     </linearGradient>
     <linearGradient
        x1="-0.3583003"
-       y1="6.1961"
+       y1="6.1961002"
        x2="28.4751"
-       y2="6.1961"
+       y2="6.1961002"
        id="linearGradient-69"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -3053,7 +3053,7 @@
          id="stop1264" />
     </linearGradient>
     <linearGradient
-       x1="-0.36300049"
+       x1="-0.36300048"
        y1="10.066"
        x2="28.484301"
        y2="10.066"
@@ -3105,10 +3105,10 @@
          id="stop1287" />
     </linearGradient>
     <linearGradient
-       x1="-0.35830059"
-       y1="9.1694"
-       x2="28.4759"
-       y2="9.1694"
+       x1="-0.3583006"
+       y1="9.1694002"
+       x2="28.475901"
+       y2="9.1694002"
        id="linearGradient-71"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -3157,9 +3157,9 @@
          id="stop1310" />
     </linearGradient>
     <linearGradient
-       x1="-0.35830059"
+       x1="-0.3583006"
        y1="2.9775"
-       x2="28.4759"
+       x2="28.475901"
        y2="2.9775"
        id="linearGradient-72"
        gradientUnits="userSpaceOnUse">
@@ -3209,10 +3209,10 @@
          id="stop1333" />
     </linearGradient>
     <linearGradient
-       x1="-0.35830059"
-       y1="7.1054"
-       x2="28.4759"
-       y2="7.1054"
+       x1="-0.3583006"
+       y1="7.1054001"
+       x2="28.475901"
+       y2="7.1054001"
        id="linearGradient-73"
        gradientUnits="userSpaceOnUse">
       <stop
@@ -3261,9 +3261,9 @@
          id="stop1356" />
     </linearGradient>
     <linearGradient
-       x1="-0.35830059"
+       x1="-0.3583006"
        y1="5.0414"
-       x2="28.4759"
+       x2="28.475901"
        y2="5.0414"
        id="linearGradient-74"
        gradientUnits="userSpaceOnUse">
@@ -3317,6 +3317,18 @@
      id="Market"
      transform="translate(-160,-771)"
      style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:1">
+    <g
+       id="g843"
+       transform="translate(160,771)">
+      <path
+         d="m 1000,2000 c 554.17,0 1000,-445.83 1000,-1000 C 2000,445.83 1554.17,0 1000,0 445.83,0 0,445.83 0,1000 0,1554.17 445.83,2000 1000,2000 Z"
+         fill="#2775ca"
+         id="path868" />
+    </g>
+    <path
+       d="m 1435,1929.33 c 0,-145.83 -87.5,-195.83 -262.5,-216.66 -125,-16.67 -150,-50 -150,-108.34 0,-58.34 41.67,-95.83 125,-95.83 75,0 116.67,25 137.5,87.5 4.17,12.5 16.67,20.83 29.17,20.83 h 66.66 c 16.67,0 29.17,-12.5 29.17,-29.16 v -4.17 c -16.67,-91.67 -91.67,-162.5 -187.5,-170.83 v -100 c 0,-16.67 -12.5,-29.17 -33.33,-33.34 h -62.5 c -16.67,0 -29.17,12.5 -33.34,33.34 v 95.83 c -125,16.67 -204.16,100 -204.16,204.17 0,137.5 83.33,191.66 258.33,212.5 116.67,20.83 154.17,45.83 154.17,112.5 0,66.67 -58.34,112.5 -137.5,112.5 -108.34,0 -145.84,-45.84 -158.34,-108.34 -4.16,-16.66 -16.66,-25 -29.16,-25 h -70.84 c -16.66,0 -29.16,12.5 -29.16,29.17 v 4.17 c 16.66,104.16 83.33,179.16 220.83,200 v 100 c 0,16.66 12.5,29.16 33.33,33.33 h 62.5 c 16.67,0 29.17,-12.5 33.34,-33.33 v -100 c 125,-20.84 208.33,-108.34 208.33,-220.84 z"
+       fill="#ffffff"
+       id="path870" />
     <rect
        id="thum"
        opacity="0.2"
@@ -3325,26 +3337,10 @@
        width="60"
        height="60" />
     <path
-       d="m 190,827 c -14.3,0 -26,-11.7 -26,-26 0,-14.3 11.7,-26 26,-26 14.3,0 26,11.7 26,26 0,14.3 -11.7,26 -26,26 z m 0,-48.1 c -12.2,0 -22.1,9.9 -22.1,22.1 0,12.2 9.9,22.1 22.1,22.1 12.2,0 22.1,-9.9 22.1,-22.1 0,-12.2 -9.9,-22.1 -22.1,-22.1 z"
-       id="Shape"
-       fill="#4bdb4b"
-       style="fill-rule:nonzero" />
-    <g
-       id="g2953"
-       transform="matrix(0.0168,0,0,0.0168,186.96397,786.96959)">
-      <path
-         d="m 180.71611,1835.1432 c 554.17,0 999.99999,-445.83 999.99999,-999.99998 0,-554.17 -445.82999,-1000 -999.99999,-1000 -554.17,0 -1000,445.83 -1000,1000 0,554.16998 445.83,999.99998 1000,999.99998 z"
-         fill="#2775ca"
-         id="path868" />
-      <path
-         d="m 455.71611,993.47322 c 0,-145.83 -87.5,-195.83 -262.5,-216.66 -125,-16.67 -150,-50 -150,-108.34 0,-58.34 41.67,-95.83 125,-95.83 75,0 116.67,25 137.5,87.5 4.17,12.5 16.67,20.83 29.17,20.83 h 66.66 c 16.67,0 29.17,-12.5 29.17,-29.16 v -4.17 c -16.67,-91.67 -91.67,-162.5 -187.5,-170.83 v -100 c 0,-16.67 -12.5,-29.17 -33.33,-33.34 h -62.5 c -16.67,0 -29.17,12.5 -33.34,33.34 v 95.83 c -125,16.67 -204.16,100 -204.16,204.17 0,137.5 83.33,191.66 258.33,212.5 116.67,20.83 154.17,45.83 154.17,112.49998 0,66.67 -58.34,112.5 -137.5,112.5 -108.34,0 -145.84,-45.84 -158.34,-108.34 -4.16,-16.65998 -16.66,-24.99998 -29.16,-24.99998 h -70.84 c -16.66,0 -29.16,12.5 -29.16,29.16998 v 4.17 c 16.66,104.16 83.33,179.16 220.83,200 v 100 c 0,16.66 12.5,29.16 33.33,33.33 h 62.5 c 16.67,0 29.17,-12.5 33.34,-33.33 v -100 c 125,-20.84 208.33,-108.34 208.33,-220.83998 z"
-         fill="#ffffff"
-         id="path870" />
-      <path
-         d="m -31.78389,1430.9732 c -325,-116.66 -491.67,-479.15998 -370.83,-799.99998 62.5,-175 200,-308.33 370.83,-370.83 16.67,-8.33 25,-20.83 25,-41.67 v -58.33 c 0,-16.67 -8.33,-29.17 -25,-33.33 -4.17,0 -12.5,0 -16.67,4.16 -395.83,125 -612.5,545.84 -487.5,941.66998 75,233.33 254.17,412.5 487.5,487.5 16.67,8.33 33.34,0 37.5,-16.67 4.17,-4.16 4.17,-8.33 4.17,-16.66 v -58.34 c 0,-12.5 -12.5,-29.16 -25,-37.5 z m 441.67,-1299.99998 c -16.67,-8.33 -33.34,0 -37.5,16.67 -4.17,4.17 -4.17,8.33 -4.17,16.67 v 58.33 c 0,16.67 12.5,33.33 25,41.67 325,116.66 491.67,479.16 370.83,799.99998 -62.5,175 -200,308.33 -370.83,370.83 -16.67,8.33 -25,20.83 -25,41.67 v 58.33 c 0,16.67 8.33,29.17 25,33.33 4.17,0 12.5,0 16.67,-4.16 395.83,-125 612.49999,-545.84 487.5,-941.66998 -75,-237.5 -258.34,-416.67 -487.5,-491.67 z"
-         fill="#ffffff"
-         id="path872" />
-    </g>
+       id="path4820"
+       style="fill:#4bdb4b;stroke-width:1.03181;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:0.103181, 0.103181;paint-order:stroke markers fill;fill-opacity:1"
+       d="M 1000 0 A 1000 1000 0 0 0 0 1000 A 1000 1000 0 0 0 1000 2000 A 1000 1000 0 0 0 2000 1000 A 1000 1000 0 0 0 1000 0 z M 1000 300 A 700 700 0 0 1 1700 1000 A 700 700 0 0 1 1000 1700 A 700 700 0 0 1 300 1000 A 700 700 0 0 1 1000 300 z "
+       transform="translate(160,771)" />
   </g>
   <metadata
      id="metadata2386">

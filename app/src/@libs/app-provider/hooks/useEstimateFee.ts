@@ -91,19 +91,15 @@ export function useFeeEstimationFor(
           .then((estimated) => {
             if (estimated) {
               setEstimatedFee(estimated);
-              console.log('estimaed ', estimated);
             } else {
               setEstimatedFee(undefined);
               setEstimatedFeeError(() => 'Error when estimating the Fee');
             }
           })
           .catch(() => {
-            console.log('error');
             setEstimatedFeeError(() => 'Error when estimating the Fee');
           })
-          .then((ui) => {
-            console.log('stopped estimating fee', ui);
-          });
+          .then((ui) => {});
       }, 500);
     }, [estimateFee, setEstimatedFeeError]),
   ];

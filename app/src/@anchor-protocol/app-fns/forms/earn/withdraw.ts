@@ -1,4 +1,5 @@
 import { UST, Luna, u } from '@anchor-protocol/types';
+import { EstimatedFee } from '@libs/app-provider';
 import { microfy } from '@libs/formatter';
 import { FormReturn } from '@libs/use-form';
 import big, { Big, BigSource } from 'big.js';
@@ -9,15 +10,17 @@ export interface EarnWithdrawFormInput {
 
 export interface EarnWithdrawFormDependency {
   userUUSTBalance: u<Luna<BigSource>>;
-  fixedGas: u<Luna<BigSource>>;
+  txFee?: EstimatedFee;
+  estimatedFeeError?: string;
   totalDeposit: u<UST<BigSource>>;
   isConnected: boolean;
 }
 
 export interface EarnWithdrawFormStates extends EarnWithdrawFormInput {
   receiveAmount?: u<UST<BigSource>>;
-  txFee?: u<Luna<BigSource>>;
   invalidTxFee?: string;
+  estimatedFee?: EstimatedFee;
+  estimatedFeeError?: string;
   invalidWithdrawAmount?: string;
   availablePost: boolean;
 }
@@ -29,7 +32,8 @@ export const earnWithdrawForm =
     isConnected,
     totalDeposit,
     userUUSTBalance,
-    fixedGas,
+    txFee,
+    estimatedFeeError,
   }: EarnWithdrawFormDependency) =>
   ({
     withdrawAmount,
@@ -46,15 +50,12 @@ export const earnWithdrawForm =
         undefined,
       ];
     } else {
-      // txFee
-      const txFee = big(fixedGas) as u<Luna<Big>>;
-
       // receiveAmount
       const receiveAmount = microfy(withdrawAmount) as u<UST<Big>>;
 
       // invalidTxFee
       const invalidTxFee = (() => {
-        return isConnected && big(userUUSTBalance).lt(txFee)
+        return isConnected && txFee && big(userUUSTBalance).lt(0)
           ? 'Not enough transaction fees'
           : undefined;
       })();
@@ -67,7 +68,7 @@ export const earnWithdrawForm =
 
         return microfy(withdrawAmount).gt(totalDeposit)
           ? `Not enough aUSDC`
-          : big(userUUSTBalance).lt(txFee)
+          : big(userUUSTBalance).lt(0)
           ? `Not enough axlUSDC`
           : undefined;
       })();
@@ -75,8 +76,9 @@ export const earnWithdrawForm =
       return [
         {
           withdrawAmount: withdrawAmount,
-          txFee,
           receiveAmount,
+          estimatedFee: txFee,
+          estimatedFeeError,
           invalidTxFee,
           invalidWithdrawAmount,
           availablePost:

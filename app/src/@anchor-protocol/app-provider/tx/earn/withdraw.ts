@@ -1,6 +1,6 @@
 import { earnWithdrawTx } from '@anchor-protocol/app-fns';
-import { aUST, u, UST } from '@anchor-protocol/types';
-import { useRefetchQueries } from '@libs/app-provider';
+import { aUST } from '@anchor-protocol/types';
+import { EstimatedFee, useRefetchQueries } from '@libs/app-provider';
 import { useStream } from '@rx-stream/react';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
@@ -9,7 +9,7 @@ import { ANCHOR_TX_KEY } from '../../env';
 
 export interface EarnWithdrawTxParams {
   withdrawAmount: aUST;
-  txFee: u<UST>;
+  txFee: EstimatedFee;
   onTxSucceed?: () => void;
 }
 
@@ -36,8 +36,8 @@ export function useEarnWithdrawTx() {
         // post
         network: connectedWallet.network,
         post: connectedWallet.post,
-        txFee,
-        gasFee: constants.gasWanted,
+        txFee: txFee.txFee,
+        gasFee: txFee.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         // query
         queryClient,
@@ -54,7 +54,6 @@ export function useEarnWithdrawTx() {
       connectedWallet,
       contractAddress.moneyMarket.market,
       contractAddress.cw20.aUST,
-      constants.gasWanted,
       constants.gasAdjustment,
       queryClient,
       txErrorReporter,

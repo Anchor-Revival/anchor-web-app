@@ -139,7 +139,7 @@ function DashboardBase({ className }: DashboardProps) {
             <PageTitle title="DASHBOARD" />
             {moneyMarketEpochState && (
               <div>
-                1 <small>aUSDC</small> <TokenIcon token="ust" />{' '}
+                1 <small>aUSDC</small> <TokenIcon token="aust" />{' '}
                 <small>≈</small>{' '}
                 {formatUST(moneyMarketEpochState.exchange_rate)}{' '}
                 <small>axlUSDC</small> <TokenIcon token="ust" />

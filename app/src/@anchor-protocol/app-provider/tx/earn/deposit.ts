@@ -1,6 +1,6 @@
 import { earnDepositTx } from '@anchor-protocol/app-fns';
-import { UST, Luna, u } from '@anchor-protocol/types';
-import { useRefetchQueries } from '@libs/app-provider';
+import { UST } from '@anchor-protocol/types';
+import { EstimatedFee, useRefetchQueries } from '@libs/app-provider';
 import { useStream } from '@rx-stream/react';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useCallback } from 'react';
@@ -9,7 +9,7 @@ import { ANCHOR_TX_KEY } from '../../env';
 
 export interface EarnDepositTxParams {
   depositAmount: UST;
-  txFee: u<Luna>;
+  txFee: EstimatedFee;
   onTxSucceed?: () => void;
 }
 
@@ -32,11 +32,12 @@ export function useEarnDepositTx() {
         walletAddr: connectedWallet.walletAddress,
         marketAddr: contractAddress.moneyMarket.market,
         depositAmount,
+        stableDenom: contractAddress.native.usd,
         // post
         network: connectedWallet.network,
         post: connectedWallet.post,
-        txFee,
-        gasFee: constants.gasWanted,
+        txFee: txFee.txFee,
+        gasFee: txFee.gasWanted,
         gasAdjustment: constants.gasAdjustment,
         // query
         queryClient,
@@ -52,7 +53,7 @@ export function useEarnDepositTx() {
     [
       connectedWallet,
       contractAddress.moneyMarket.market,
-      constants.gasWanted,
+      contractAddress.native.usd,
       constants.gasAdjustment,
       queryClient,
       txErrorReporter,

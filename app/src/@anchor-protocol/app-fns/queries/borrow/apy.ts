@@ -44,11 +44,8 @@ export async function borrowAPYQuery(
       marketState?.marketState.total_liabilities,
     );
   }
-  console.log('market state while computing', marketState);
   // Now we convert to an APY (block to year)
   const rewardsAPY = blockRewards.mul(blocksPerYear);
-
-  console.log(rewardsAPY.toString());
 
   /*await fetch(
     `${endpoint}/v2/distribution-apy`,

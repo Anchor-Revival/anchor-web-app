@@ -1,7 +1,8 @@
 import { Luna, u, UST } from '@libs/types';
 
 export function stripUUSD(uusd: string): u<UST> {
-  return uusd.substring(0, uusd.length - 4) as u<UST>;
+  const amountMatch = uusd.match(/([0-9]+)ibc/);
+  return amountMatch?.[1] as u<UST>;
 }
 
 export function stripULuna(uluna: string): u<Luna> {
